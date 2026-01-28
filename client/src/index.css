@@ -1,0 +1,24 @@
+@import "./styles/var.mobule.css";
+@import "./styles/font.module.css";
+@import "./styles/app.module.css";
+@import "./styles/topbar.module.css";
+@import "styles/list.module.css";
+@import "styles/userhandle.module.css";
+@import "styles/moodchoice.module.css";
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: var(--font-ui), serif;
+}
+
+html, body, #root, #app, main {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: transparent;
+  overflow: hidden;
+}

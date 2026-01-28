@@ -1,0 +1,128 @@
+.list {}
+
+.list__title {
+    padding: 0 0 4px 18px;
+    user-select: none;
+    font-size: var(--font-size-md);
+}
+
+.list__content {
+    display: flex;
+    flex-direction: column;
+}
+
+.list__container {
+    display: flex;
+    flex-direction: column;
+    background: var(--color-block-bg);
+    color: var(--color-text-light);
+    scrollbar-width: none;
+}
+
+.list__container::-webkit-scrollbar {
+    display: none;
+}
+
+.list__container_tile {
+    display: flex;
+    gap: 12px;
+    padding: 4px;
+    cursor: pointer;
+    align-items: center;
+}
+
+.list__container_tile:hover {
+    background: gray;
+}
+
+.tile__mood {
+    image-rendering: pixelated;
+    width: 28px;
+    height: 28px;
+}
+
+.tile_name {
+    font-family: var(--font-text);
+}
+
+.scrollbar {
+    width: 28px;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-block-bg);
+}
+
+.viewport {
+    height: 100%;
+    overflow-y: auto;
+    scrollbar-width: none;
+}
+
+.viewport::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.scrollbar button {
+    height: 20px;
+    background: var(--color-block-bg);
+    color: var(--color-border-light);
+    border: none;
+    cursor: pointer;
+}
+
+.track__btn {
+    border: 2px solid var(--color-border-light);
+}
+
+.track {
+    flex: 1;
+    position: relative;
+    border: 2px solid var(--color-text-light);
+}
+
+.thumb {
+    position: absolute;
+    left: 2px;
+    right: 2px;
+    height: 24px;
+    background:
+            linear-gradient(45deg, #fff 25%, transparent 25%),
+            linear-gradient(-45deg, #fff 25%, transparent 25%),
+            linear-gradient(45deg, transparent 75%, #fff 75%),
+            linear-gradient(-45deg, transparent 75%, #fff 75%);
+    background-size: 6px 6px;
+    background-position:
+            0 0,
+            0 3px,
+            3px -3px,
+            -3px 0;
+}
+
+.list__btns {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    margin: var(--spacing-base) 0 0 0;
+}
+
+.list__btn {
+    flex: 1;
+    background: var(--color-button-bg);
+    border: 4px solid var(--color-button-border);
+    padding: 10px 4px;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+    user-select: none;
+    font-size: var(--font-size-md);
+
+}
+
+.list__btn_block {
+    border-left: none;
+    border-right: none;
+    background: var(--color-button-special-bg);
+}
