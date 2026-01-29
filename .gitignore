@@ -6,19 +6,54 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+debug/
+*.local
 
+# Dependencies / Build outputs
 node_modules
 dist
 dist-ssr
-*.local
+client/dist
+client/.vite
 
-# Editor directories and files
-client/.vscode/extensions.json
-!.vscode/extensions.json
+# Tauri / Rust
+src-tauri/target/
+src-tauri/bundle/
+src-tauri/*.log
+src-tauri/Cargo.lock
+src-tauri/Cargo.lock?
+
+# Go / Server
+server/bin/
+server/pkg/
+server/*.exe
+server/*.exe~
+server/*.test
+server/*.out
+go.work
+
+# Environment / Secrets
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor / OS files
+.vscode/*
 .idea
 .DS_Store
+Thumbs.db
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
+
+# Misc / Temporary
+*.bak
+*.backup
+*.tmp
+*.swp
+*.swo
+coverage/
