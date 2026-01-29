@@ -20,8 +20,6 @@ client/.vite
 src-tauri/target/
 src-tauri/bundle/
 src-tauri/*.log
-src-tauri/Cargo.lock
-src-tauri/Cargo.lock?
 
 # Go / Server
 server/bin/
