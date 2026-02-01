@@ -1,40 +1,29 @@
 package main
 
 import (
-	"github.com/joho/godotenv"
 	"log"
-	"net"
-	"server/internal/config"
-	"server/internal/service"
-	"server/internal/storage/postgres"
-	"server/internal/transport"
-	"server/proto"
+	"os"
+	"server/internal/handler"
 
-	"google.golang.org/grpc"
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+	"server/internal/storage/postgres"
 )
 
 func main() {
 	_ = godotenv.Load()
 
-	cfg := config.Load()
+	db := postgres.NewPostgres()
+	authHandler := handler.NewAuthHandler(db)
 
-	pg, err := postgres.New(cfg)
-	if err != nil {
-		log.Fatal(err)
+	r := gin.Default()
+	r.POST("/auth/register", authHandler.Register)
+	r.POST("/auth/login", authHandler.Login)
+
+	port := os.Getenv("SERVER_PORT")
+	if port == "" {
+		port = "8080"
 	}
 
-	svc := service.New(pg)
-
-	grpcServer := grpc.NewServer()
-	handler := transport.NewChatHandler(svc)
-
-	proto.RegisterChatServiceServer(grpcServer, handler)
-
-	lis, err := net.Listen("tcp", ":"+cfg.GRPCPort)
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	log.Println("grpc started on", cfg.GRPCPort)
-	grpcServer.Serve(lis)
+	log.Fatal(r.Run(":" + port))
 }

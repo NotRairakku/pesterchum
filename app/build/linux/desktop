@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=My Product
+Comment=A my-v3-app application
+# The Exec line includes %u to pass the URL to the application
+Exec=/usr/local/bin/my-v3-app.exe %u
+Terminal=false
+Type=Application
+Icon=my-v3-app.exe
+Categories=Utility;
+StartupWMClass=my-v3-app.exe
+
+ 

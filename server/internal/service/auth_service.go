@@ -1,34 +1,33 @@
 package service
 
 import (
-	"context"
 	"errors"
 
 	"golang.org/x/crypto/bcrypt"
+	"server/internal/storage"
 )
 
-func (s *Service) RegisterService(ctx context.Context, username, password string) error {
+type AuthService struct {
+	repo *storage.UserRepo
+}
+
+func NewAuthService(repo *storage.UserRepo) *AuthService {
+	return &AuthService{repo: repo}
+}
+
+func (s *AuthService) Register(username, password string) error {
 	if username == "" || password == "" {
-		return errors.New("username or password is empty")
+		return errors.New("empty fields")
 	}
 
-	hash, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	exists, err := s.repo.Exists(username)
 	if err != nil {
 		return err
 	}
-
-	return s.storage.CreateUser(ctx, username, string(hash))
-}
-
-func (s *Service) LoginService(ctx context.Context, username, password string) (string, error) {
-	userID, hash, err := s.storage.GetUserByUsername(ctx, username)
-	if err != nil {
-		return "", errors.New("user not found")
+	if exists {
+		return ErrUserExists
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password)); err != nil {
-		return "", errors.New("invalid password")
-	}
-
-	return s.storage.CreateSession(ctx, userID)
+	hash, _ := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return s.repo.Create(username, string(hash))
 }

@@ -3,27 +3,25 @@ package postgres
 import (
 	"context"
 	"fmt"
+	"os"
+
 	"github.com/jackc/pgx/v5/pgxpool"
-	"server/internal/config"
 )
 
-type Postgres struct {
-	DB *pgxpool.Pool
-}
-
-func New(cfg config.Config) (*Postgres, error) {
+func NewPostgres() *pgxpool.Pool {
 	dsn := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s",
-		cfg.DBUser,
-		cfg.DBPass,
-		cfg.DBHost,
-		cfg.DBPort,
-		cfg.DBName,
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_PORT"),
+		os.Getenv("DB_NAME"),
 	)
 
 	db, err := pgxpool.New(context.Background(), dsn)
 	if err != nil {
-		return nil, err
+		panic(err)
 	}
-	return &Postgres{DB: db}, nil
+
+	return db
 }

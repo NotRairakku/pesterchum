@@ -1,0 +1,15 @@
+{
+  "$schema": "https://wails.io/schemas/config.v3.json",
+  "name": "Pesterchum 6.0",
+  "frontend": {
+    "dir": "frontend",
+    "dev": {
+      "command": "npm run dev",
+      "url": "http://localhost:9245"
+    },
+    "build": {
+      "command": "npm run build",
+      "output": "dist"
+    }
+  }
+}

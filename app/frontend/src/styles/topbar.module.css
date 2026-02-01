@@ -1,0 +1,40 @@
+.topbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 460px !important;
+    display: flex;
+    background: var(--color-app-bg);
+    border-top: var(--radius-base) solid var(--color-border-primary);
+    border-left: var(--radius-base) solid var(--color-border-primary);
+    border-right: var(--radius-base) solid var(--color-border-primary);
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 14px;
+    color: white;
+    user-select: none;
+    z-index: 10;
+    --wails-draggable: drag;
+}
+
+.topbar__container {
+    display: flex;
+    gap: 14px;
+    color: var(--color-text-dark);
+    font-size: var(--font-size-sm);
+}
+
+.topbar__container_bnt {
+    --wails-draggable: no-drag;
+    pointer-events: auto;
+    cursor: pointer;
+    user-select: none;
+    font-size: var(--font-size-md);
+}
+
+.bnt__icon {
+    width: 18px;
+    height: 18px;
+    image-rendering: pixelated;
+}
+
