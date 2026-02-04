@@ -1,24 +1,18 @@
 import style from '../../../../assets/styles/topbar.module.css';
 import close_icon from '../../../../assets/img/close_icon.png'
 import minimize_icon from '../../../../assets/img/minimize_icon.png'
+import { WindowMinimise, Quit } from "../../wailsjs/runtime/runtime";
 
-import {
-    WindowMinimise,
-    Quit
-} from "../../wailsjs/runtime/runtime";
-
-export default function TopBar({ setStatus, isLoading }) {
+export default function TopBar({ setStatus }) {
 
     return (
         <div className={style.topbar}>
             <div className={style.topbar__container}>
-                {isLoading &&
-                    <div className={style.topbar__container__btns}>
-                        <p className={style.topbar__container_btn} onClick={() => setStatus("client")}>CLIENT</p>
-                        <p className={style.topbar__container_btn} onClick={() => setStatus("profile")}>PROFILE</p>
-                        <p className={style.topbar__container_btn} onClick={() => setStatus("help")}>HELP</p>
-                    </div>
-                }
+                <div className={style.topbar__container__btns}>
+                    <p className={style.topbar__container_btn} onClick={() => setStatus("client")}>CLIENT</p>
+                    <p className={style.topbar__container_btn} onClick={() => setStatus("profile")}>PROFILE</p>
+                    <p className={style.topbar__container_btn} onClick={() => setStatus("help")}>HELP</p>
+                </div>
             </div>
 
             <div className={style.topbar__container}>

@@ -9,6 +9,8 @@ service ChatService {
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc Logout (Empty) returns (Empty);
   rpc Validate (Empty) returns (Empty);
+  rpc GetUsername (Empty) returns (GetUsernameResponse);
+  rpc UpdateUsername (UpdateUsernameRequest) returns (Empty);
 }
 
 message RegisterRequest {
@@ -23,6 +25,13 @@ message LoginRequest {
 
 message LoginResponse {
   string session_id = 1;
+}
+
+message GetUsernameResponse {
+  string username = 1;
+}
+message UpdateUsernameRequest {
+  string new_username = 1;
 }
 
 message Empty {}

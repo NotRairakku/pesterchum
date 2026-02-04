@@ -2,13 +2,15 @@ package auth
 
 import (
 	"context"
+	"errors"
+	"github.com/google/uuid"
+	"github.com/jackc/pgconn"
+	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/status"
+	"pesterchum/server/internal/session"
 	"sync"
 	"time"
-
-	"github.com/google/uuid"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 
 	"pesterchum/server/proto"
 )
@@ -37,9 +39,12 @@ func (s *Service) Register(ctx context.Context, r *proto.RegisterRequest) (*prot
 	}
 
 	if err := s.repo.CreateUser(ctx, r.Username, hash); err != nil {
-		return nil, err
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+			return nil, status.Error(codes.AlreadyExists, "username already taken")
+		}
+		return nil, status.Error(codes.Internal, err.Error())
 	}
-
 	return &proto.Empty{}, nil
 }
 
@@ -117,4 +122,43 @@ func sessionFromCtx(ctx context.Context) (string, error) {
 	}
 
 	return sid[0], nil
+}
+
+func (s *Service) GetUsername(ctx context.Context, _ *proto.Empty) (*proto.GetUsernameResponse, error) {
+	uid, ok := ctx.Value(session.UserIDKey).(int64)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user id")
+	}
+	var username string
+	err := s.repo.db.QueryRow(ctx, "SELECT username FROM users WHERE id = $1", uid).Scan(&username)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "failed to get username")
+	}
+	return &proto.GetUsernameResponse{Username: username}, nil
+}
+
+func (s *Service) UpdateUsername(ctx context.Context, req *proto.UpdateUsernameRequest) (*proto.Empty, error) {
+	uid, ok := ctx.Value(session.UserIDKey).(int64)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user id")
+	}
+	if req.NewUsername == "" {
+		return nil, status.Error(codes.InvalidArgument, "empty username")
+	}
+	var exists bool
+	err := s.repo.db.QueryRow(ctx,
+		"SELECT EXISTS(SELECT 1 FROM users WHERE username = $1 AND id != $2)",
+		req.NewUsername, uid,
+	).Scan(&exists)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "check failed")
+	}
+	if exists {
+		return nil, status.Error(codes.AlreadyExists, "username taken")
+	}
+	_, err = s.repo.db.Exec(ctx, "UPDATE users SET username = $1 WHERE id = $2", req.NewUsername, uid)
+	if err != nil {
+		return nil, status.Error(codes.Unauthenticated, "update failed")
+	}
+	return &proto.Empty{}, nil
 }

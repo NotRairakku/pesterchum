@@ -13,8 +13,9 @@ export default function UsersList() {
                         <div className={styles.list__container}>
                             <div className={styles.list__container_tile}>
                                 <img className={styles.tile__mood} src={mood_ico} alt="mood" />
-                                <p className={styles.tile_name}>adiosToreador</p>
+                                <p className={styles.tile_name}>turntechGodhead</p>
                             </div>
+
                         </div>
                     </div>
                 </CustomScroll>

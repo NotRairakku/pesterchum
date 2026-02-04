@@ -2,6 +2,7 @@ package session
 
 import (
 	"context"
+	"log"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -24,8 +25,8 @@ func Unary(db *pgxpool.Pool) grpc.UnaryServerInterceptor {
 	) (any, error) {
 
 		// public methods
-		if info.FullMethod == "/api.ChatService/Login" ||
-			info.FullMethod == "/api.ChatService/Register" {
+		if info.FullMethod == "/proto.ChatService/Login" ||
+			info.FullMethod == "/proto.ChatService/Register" {
 			return handler(ctx, req)
 		}
 
@@ -58,6 +59,7 @@ func Unary(db *pgxpool.Pool) grpc.UnaryServerInterceptor {
 		)
 
 		ctx = context.WithValue(ctx, UserIDKey, uid)
+		log.Printf("Incoming method: %s", info.FullMethod)
 		return handler(ctx, req)
 	}
 }

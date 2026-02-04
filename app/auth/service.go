@@ -2,6 +2,7 @@ package auth
 
 import (
 	"context"
+	"time"
 
 	"github.com/zalando/go-keyring"
 	"google.golang.org/grpc/metadata"
@@ -14,7 +15,6 @@ const (
 	keyringUser    = "session"
 )
 
-// AuthService — биндинг для Wails
 type AuthService struct {
 	chat proto.ChatServiceClient
 }
@@ -23,9 +23,11 @@ func New(chat proto.ChatServiceClient) *AuthService {
 	return &AuthService{chat: chat}
 }
 
-// Login через gRPC
+// Login via grpc
 func (s *AuthService) Login(username, password string) error {
-	res, err := s.chat.Login(context.Background(), &proto.LoginRequest{
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	res, err := s.chat.Login(ctx, &proto.LoginRequest{
 		Username: username,
 		Password: password,
 	})
@@ -35,21 +37,25 @@ func (s *AuthService) Login(username, password string) error {
 	return keyring.Set(keyringService, keyringUser, res.SessionId)
 }
 
-// Register через gRPC
+// Register via grpc
 func (s *AuthService) Register(username, password string) error {
-	_, err := s.chat.Register(context.Background(), &proto.RegisterRequest{
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
+	_, err := s.chat.Register(ctx, &proto.RegisterRequest{
 		Username: username,
 		Password: password,
 	})
 	return err
 }
 
-// Logout — удаляем сессию
+// Logout delete session
 func (s *AuthService) Logout() error {
 	sid, err := keyring.Get(keyringService, keyringUser)
 	if err == nil {
-		ctx := metadata.NewOutgoingContext(
-			context.Background(),
+		ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		ctx = metadata.NewOutgoingContext(
+			ctx,
 			metadata.New(map[string]string{"session-id": sid}),
 		)
 		_, _ = s.chat.Logout(ctx, &proto.Empty{})
@@ -57,8 +63,41 @@ func (s *AuthService) Logout() error {
 	return keyring.Delete(keyringService, keyringUser)
 }
 
-// HasSession проверка наличия сессии
+// HasSession check session
 func (s *AuthService) HasSession() bool {
 	sid, _ := keyring.Get(keyringService, keyringUser)
 	return sid != ""
+}
+
+func (s *AuthService) GetUsername() (string, error) {
+	sid, err := keyring.Get(keyringService, keyringUser)
+	if err != nil {
+		return "", err
+	}
+	ctx := metadata.NewOutgoingContext(
+		context.Background(),
+		metadata.New(map[string]string{"session-id": sid}),
+	)
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+	res, err := s.chat.GetUsername(ctx, &proto.Empty{})
+	if err != nil {
+		return "", err
+	}
+	return res.Username, nil
+}
+
+func (s *AuthService) UpdateUsername(newUsername string) error {
+	sid, err := keyring.Get(keyringService, keyringUser)
+	if err != nil {
+		return err
+	}
+	ctx := metadata.NewOutgoingContext(
+		context.Background(),
+		metadata.New(map[string]string{"session-id": sid}),
+	)
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+	_, err = s.chat.UpdateUsername(ctx, &proto.UpdateUsernameRequest{NewUsername: newUsername})
+	return err
 }

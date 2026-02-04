@@ -6,6 +6,7 @@ import Auth from "./modules/Auth.jsx";
 import Loader from "./modules/Loader.jsx";
 import Client from "./modules/Client.jsx";
 import style from "../../../assets/styles/app.module.css";
+import { HasSession } from "../wailsjs/go/auth/AuthService.js";
 
 export default function App() {
     const [status, setStatus] = useState('loading');
@@ -15,17 +16,17 @@ export default function App() {
         loading: <Loader />,
         client: <Client />,
         profile: <Profile />,
-        help: <Help />,
+        help: <Help setStatus={setStatus}/>,
         auth: <Auth setStatus={setStatus} />,
     };
 
-    // проверка сессии при старте
     useEffect(() => {
         const checkSession = async () => {
             try {
-                const ok = await window.runtime.invoke("AuthService.HasSession");
+                const ok = await HasSession();
                 setStatus(ok ? "client" : "auth");
-            } catch {
+            } catch (err) {
+                console.error("Error checking session:", err);
                 setStatus("auth");
             } finally {
                 setLoading(false);
@@ -36,8 +37,8 @@ export default function App() {
 
     return (
         <div className={style.app}>
-            <TopBar setStatus={setStatus} isLoading={loading} />
-            {STATUS_MAP[status]}
+            <TopBar setStatus={setStatus} />
+            {loading ? <Loader /> : STATUS_MAP[status]}
         </div>
     );
 }
