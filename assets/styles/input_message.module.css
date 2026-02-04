@@ -1,0 +1,26 @@
+.input__container {
+    padding: 0 var(--spacing-base) var(--spacing-base);
+}
+
+.input__container_form {
+    display: flex;
+    flex-direction: row;
+    gap: 14px;
+}
+
+.input__container_input {
+    width: 100%;
+    border: var(--radius-base) solid var(--color-app-bg-accent);
+    outline: none;
+    background: var(--color-border-light);
+    color: var(--color-text-dark);
+    padding: 0 var(--spacing-base);
+}
+
+.input__container_btn {
+    background: var(--color-border-primary);
+    border: var(--radius-base) solid var(--color-app-bg-accent);
+    font-size: var(--font-size-sm);
+    padding: 0 8px;
+    cursor: pointer;
+}

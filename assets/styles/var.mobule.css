@@ -1,0 +1,23 @@
+:root {
+    --color-app-bg: #ffb500;
+    --color-app-bg-accent: #c48a00;
+    --color-border-primary: #fdf800;
+    --color-border-light: #ffffff;
+    --color-block-bg: #000001;
+    --color-button-bg: #fdf800;
+    --color-button-border: #e8ba08;
+    --color-button-special-bg: #f60100;
+
+    --color-text-dark: #000001;
+    --color-text-light: #ffffff;
+    --color-error-text: #f60100;
+    --color-text-muted: #707070;
+
+    --font-ui: "Homestuck-Regular", sans-serif;
+    --font-text: "CourierPrime-Regular", sans-serif;
+    --font-size-sm: 18px;
+    --font-size-md: 24px;
+
+    --radius-base: 4px;
+    --spacing-base: 14px;
+}

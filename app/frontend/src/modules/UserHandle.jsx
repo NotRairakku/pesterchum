@@ -1,5 +1,5 @@
-import styles from '../styles/userhandle.module.css';
-import mood_ico from '../assets/img/mood/mood_chummy.png'
+import styles from '../../../../assets/styles/userhandle.module.css';
+import mood_ico from '../../../../assets/img/mood/mood_chummy.png'
 
 export default function UserHandle() {
     return (
@@ -11,7 +11,6 @@ export default function UserHandle() {
                         <img className={styles.handle__mood_img}  src={mood_ico} alt="mood"/>
                     </div>
                     <input className={styles.handle__input} type="text" name="" id=""/>
-                    <div className={styles.handle__color}/>
                 </div>
             </div>
         </>

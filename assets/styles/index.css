@@ -1,0 +1,19 @@
+@import "./var.mobule.css";
+@import "./font.mobule.css";
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: var(--font-ui), serif;
+}
+
+html, body, #root, #app, main {
+  height: 100%;
+  overflow: hidden;
+}
+
+body {
+  background: transparent;
+  overflow: hidden;
+}

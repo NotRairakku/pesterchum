@@ -1,0 +1,35 @@
+.loader {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: var(--color-app-bg);
+    border: var(--radius-base) solid var(--color-border-primary);
+}
+
+.loader__container {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+}
+
+.loader__container_logo {
+    image-rendering: pixelated;
+    width: 186px;
+    height: auto;
+    user-select: none;
+    -webkit-user-drag: none;
+    animation: loading 2s infinite linear;
+}
+
+@keyframes loading {
+    0% {transform: scale(100%);}
+    50% {transform: scale(110%);}
+    100% {transform: scale(100%);}
+}

@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect } from "react";
-import styles from "../styles/list.module.css";
+import styles from "../../../../assets/styles/list.module.css";
 
 export default function CustomScroll({ children, height = 128 }) {
     const contentRef = useRef(null);

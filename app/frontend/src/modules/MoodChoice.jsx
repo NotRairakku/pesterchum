@@ -1,6 +1,6 @@
-import styles from '../styles/moodchoice.module.css';
-import mood_ico from '../assets/img/mood/mood_chummy.png'
-import mood_ico_rancorous from '../assets/img/mood/mood_rancorous.png'
+import styles from '../../../../assets/styles/moodchoice.module.css';
+import mood_ico from '../../../../assets/img/mood/mood_chummy.png'
+import mood_ico_rancorous from '../../../../assets/img/mood/mood_rancorous.png'
 
 
 export default function MoodChoice() {
@@ -51,10 +51,10 @@ export default function MoodChoice() {
                         <p className={styles.btn__text}>RANCOROUS</p>
                         <input className={styles.btn__input} type="radio" name="mood" value="rancorous"/>
                     </label>
-                    <label className={`${styles.section__btn} ${styles.full}`}>
-                        <p className={styles.btn__text}>ABSCOND</p>
-                        <input className={styles.btn__input} type="radio" name="mood" value="rancorous" />
-                    </label>
+                    {/*<label className={`${styles.section__btn} ${styles.full}`}>*/}
+                    {/*    <p className={styles.btn__text}>ABSCOND</p>*/}
+                    {/*    <input className={styles.btn__input} type="radio" name="mood" value="rancorous" />*/}
+                    {/*</label>*/}
                 </form>
             </div>
         </>

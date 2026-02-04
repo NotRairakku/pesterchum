@@ -1,23 +1,31 @@
-import style from '../styles/topbar.module.css';
-import close_icon from '../assets/img/close_icon.png'
-import minimize_icon from '../assets/img/minimize_icon.png'
+import style from '../../../../assets/styles/topbar.module.css';
+import close_icon from '../../../../assets/img/close_icon.png'
+import minimize_icon from '../../../../assets/img/minimize_icon.png'
 
-import { Window } from '@wailsio/runtime';
+import {
+    WindowMinimise,
+    Quit
+} from "../../wailsjs/runtime/runtime";
 
-export default function TopBar({ setSection }) {
+export default function TopBar({ setStatus, isLoading }) {
 
     return (
         <div className={style.topbar}>
             <div className={style.topbar__container}>
-                <p className={style.topbar__container_bnt} onClick={() => setSection("client")}>CLIENT</p>
-                <p className={style.topbar__container_bnt} onClick={() => setSection("profile")}>PROFILE</p>
-                <p className={style.topbar__container_bnt} onClick={() => setSection("help")}>HELP</p>
+                {isLoading &&
+                    <div className={style.topbar__container__btns}>
+                        <p className={style.topbar__container_btn} onClick={() => setStatus("client")}>CLIENT</p>
+                        <p className={style.topbar__container_btn} onClick={() => setStatus("profile")}>PROFILE</p>
+                        <p className={style.topbar__container_btn} onClick={() => setStatus("help")}>HELP</p>
+                    </div>
+                }
             </div>
+
             <div className={style.topbar__container}>
-                <div className={style.topbar__container_bnt} onClick={() => Window.Minimise()}>
+                <div className={style.topbar__container_btn}  onClick={WindowMinimise}>
                     <img className={style.bnt__icon} src={minimize_icon} alt={'-'}/>
                 </div>
-                <div className={style.topbar__container_bnt} onClick={() => Window.Close()}>
+                <div className={style.topbar__container_btn}  onClick={Quit}>
                     <img className={style.bnt__icon} src={close_icon} alt={'X'}/>
                 </div>
             </div>

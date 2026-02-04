@@ -1,0 +1,13 @@
+.messages {
+    height: 100%;
+}
+
+.messages__system {
+    text-align: center;
+}
+
+.messages__container {}
+
+.messages__container_name {}
+
+.messages__container_text {}

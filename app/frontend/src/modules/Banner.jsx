@@ -1,5 +1,5 @@
-import style from "../styles/banner.module.css";
-import banner from "../assets/img/pesterchum-logo.png";
+import style from "../../../../assets/styles/banner.module.css";
+import banner from "../../../../assets/img/pesterchum-logo.png";
 
 export default function Banner() {
     return (
