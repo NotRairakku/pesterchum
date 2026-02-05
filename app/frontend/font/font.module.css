@@ -1,13 +1,13 @@
 @font-face {
     font-family: "Homestuck-Regular";
-    src: url("../font/Homestuck-Regular.ttf") format("truetype");
+    src: url("Homestuck-Regular.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }
 
 @font-face {
     font-family: "CourierPrime-Regular";
-    src: url("../font/CourierPrime-Regular.ttf") format("truetype");
+    src: url("CourierPrime-Regular.ttf") format("truetype");
     font-weight: normal;
     font-style: normal;
 }

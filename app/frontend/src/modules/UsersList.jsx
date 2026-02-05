@@ -13,15 +13,12 @@ export default function UsersList() {
                         <div className={styles.list__container}>
                             <div className={styles.list__container_tile}>
                                 <img className={styles.tile__mood} src={mood_ico} alt="mood" />
-                                <p className={styles.tile_name}>turntechGodhead</p>
+                                <p className={styles.tile_name}>turntechGodhead</p>{/*i like dave... */}
                             </div>
-
                         </div>
                     </div>
                 </CustomScroll>
                 <div className={styles.list__btns}>
-                    {/*<div className={styles.list__btn}>ADD CHUM</div>*/}
-                    {/*<div className={`${styles.list__btn} ${styles.list__btn_block}`}>BLOCK</div>*/}
                     <div className={styles.list__btn}>PESTER!</div>
                 </div>
             </div>

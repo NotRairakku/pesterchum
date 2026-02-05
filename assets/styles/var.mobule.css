@@ -4,13 +4,16 @@
     --color-border-primary: #fdf800;
     --color-border-light: #ffffff;
     --color-block-bg: #000001;
-    --color-button-bg: #fdf800;
+
     --color-button-border: #e8ba08;
-    --color-button-special-bg: #f60100;
+    --color-button-bg: #fdf800;
+    --color-button-bg-hover: #fdf800;
+    --color-button-bg-active: #fdf800;
+    --color-button-danger-bg: #f60100;
 
     --color-text-dark: #000001;
     --color-text-light: #ffffff;
-    --color-error-text: #f60100;
+    --color-text-error: #f60100;
     --color-text-muted: #707070;
 
     --font-ui: "Homestuck-Regular", sans-serif;

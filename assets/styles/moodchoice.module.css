@@ -45,7 +45,7 @@
 }
 
 .section__btn:nth-child(6) {
-    background: var(--color-button-special-bg);
+    background: var(--color-button-danger-bg);
 }
 
 .section__btn_img {

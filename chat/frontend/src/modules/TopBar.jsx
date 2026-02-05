@@ -1,6 +1,6 @@
 import style from '../../../../assets/styles/topbar.module.css';
-import close_icon from '../../../../assets/img/close_icon.png'
-import minimize_icon from '../../../../assets/img/minimize_icon.png'
+import close_icon from '../../../../assets/img/iu/close_icon.png'
+import minimize_icon from '../../../../assets/img/iu/minimize_icon.png'
 import mood_icon from '../../../../assets/img/mood/mood_chipper.png'
 
 import {

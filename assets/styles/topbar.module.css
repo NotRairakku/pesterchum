@@ -7,16 +7,15 @@
     border-right: var(--radius-base) solid var(--color-border-primary);
     justify-content: space-between;
     align-items: center;
-    padding:2px 14px;
+    padding: 2px var(--spacing-base);
     color: white;
     user-select: none;
-    z-index: 10;
     --wails-draggable: drag;
 }
 
 .topbar__container {
     display: flex;
-    gap: 14px;
+    gap: var(--spacing-base);
 }
 
 .topbar__container__btns {

@@ -27,19 +27,19 @@ func main() {
 	chatClient := proto.NewChatServiceClient(conn)
 	authService := auth.New(chatClient)
 
-	app := NewApp() // твоя основная структура
+	app := NewApp()
 
 	err = wails.Run(&options.App{
 		Title:         "Pesterchum 6.0",
 		Width:         460,
-		Height:        770,
+		Height:        760,
 		DisableResize: true,
 		Frameless:     true,
 		AssetServer:   &assetserver.Options{Assets: assets},
 		OnStartup:     app.startup,
 		Bind: []interface{}{
 			app,
-			authService, // биндим AuthService
+			authService,
 		},
 	})
 	if err != nil {

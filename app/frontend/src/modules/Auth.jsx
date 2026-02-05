@@ -2,6 +2,9 @@ import { useState } from "react";
 import logo from "../../../../assets/img/pesterchum-logo.png";
 import style from "../../../../assets/styles/auth.module.css";
 import { Login, Register } from "../../wailsjs/go/auth/AuthService.js";
+import {Quit, WindowMinimise} from "../../wailsjs/runtime/runtime.js";
+import minimize_icon from "../../../../assets/img/iu/minimize_icon.png";
+import close_icon from "../../../../assets/img/iu/close_icon.png";
 
 export default function Auth({ setStatus }) {
     const [authtype, setAuthtype] = useState("login");
@@ -35,6 +38,16 @@ export default function Auth({ setStatus }) {
 
     return (
         <div className={style.auth}>
+            <div className={style.auth__topbar}>
+                <div className={style.auth__topbar__container}>
+                    <div className={style.auth__topbar__container_btn}  onClick={WindowMinimise}>
+                        <img className={style.auth__topbar__container_btn_ico} src={minimize_icon} alt={'-'}/>
+                    </div>
+                    <div className={style.auth__topbar__container_btn}  onClick={Quit}>
+                        <img className={style.auth__topbar__container_btn_ico} src={close_icon} alt={'X'}/>
+                    </div>
+                </div>
+            </div>
             <div className={style.auth__container}>
                 <img className={style.auth__container_image} src={logo} alt="logo" />
                 <p className={style.auth__container_title}>{authtype === "login" ? "Login to Pesterchum" : "Register to Pesterchum"}</p>

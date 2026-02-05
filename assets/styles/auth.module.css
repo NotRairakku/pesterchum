@@ -6,7 +6,41 @@
     left: 0;
     background: var(--color-app-bg);
     border: var(--radius-base) solid var(--color-border-primary);
-    padding: 0 14px 0;
+    padding: 0 var(--spacing-base) 0;
+}
+
+.auth__topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    border: var(--radius-base) solid var(--color-app-bg);
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    user-select: none;
+    z-index: 1000;
+    --wails-draggable: drag;
+}
+
+.auth__topbar__container {
+    display: flex;
+    gap: var(--spacing-base);
+    padding: 2px  var(--spacing-base);
+}
+
+.auth__topbar__container_btn {
+    --wails-draggable: no-drag;
+    pointer-events: auto;
+    cursor: pointer;
+    user-select: none;
+    font-size: var(--font-size-md);
+}
+
+.auth__topbar__container_btn_ico {
+    width: 18px;
+    height: 18px;
+    image-rendering: pixelated;
 }
 
 .auth__container {
@@ -17,7 +51,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 14px;
+    gap: var(--spacing-base);
 }
 
 .auth__container_title {
@@ -38,7 +72,7 @@
     display: flex;
     flex-direction: column;
     width: 80%;
-    gap: 14px;
+    gap: var(--spacing-base);
 }
 
 .auth__container_from_input {
@@ -58,7 +92,7 @@
 }
 
 .auth__container_from_error {
-    color: var(--color-error-text);
+    color: var(--color-text-error);
 }
 
 .auth__container_from_btn {
