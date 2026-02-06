@@ -11,6 +11,8 @@ service ChatService {
   rpc Validate (Empty) returns (Empty);
   rpc GetUsername (Empty) returns (GetUsernameResponse);
   rpc UpdateUsername (UpdateUsernameRequest) returns (Empty);
+  rpc GetMood (Empty) returns (GetMoodResponse);
+  rpc UpdateMood (UpdateMoodRequest) returns (Empty);
 }
 
 message RegisterRequest {
@@ -32,6 +34,14 @@ message GetUsernameResponse {
 }
 message UpdateUsernameRequest {
   string new_username = 1;
+}
+
+message GetMoodResponse {
+  string mood = 1;
+}
+
+message UpdateMoodRequest {
+  string new_mood = 1;
 }
 
 message Empty {}

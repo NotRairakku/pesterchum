@@ -101,3 +101,36 @@ func (s *AuthService) UpdateUsername(newUsername string) error {
 	_, err = s.chat.UpdateUsername(ctx, &proto.UpdateUsernameRequest{NewUsername: newUsername})
 	return err
 }
+
+func (s *AuthService) GetMood() (string, error) {
+	sid, err := keyring.Get(keyringService, keyringUser)
+	if err != nil {
+		return "", err
+	}
+	ctx := metadata.NewOutgoingContext(
+		context.Background(),
+		metadata.New(map[string]string{"session-id": sid}),
+	)
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+	res, err := s.chat.GetMood(ctx, &proto.Empty{})
+	if err != nil {
+		return "", err
+	}
+	return res.Mood, nil
+}
+
+func (s *AuthService) UpdateMood(newMood string) error {
+	sid, err := keyring.Get(keyringService, keyringUser)
+	if err != nil {
+		return err
+	}
+	ctx := metadata.NewOutgoingContext(
+		context.Background(),
+		metadata.New(map[string]string{"session-id": sid}),
+	)
+	ctx, cancel := context.WithTimeout(ctx, 5*time.Second)
+	defer cancel()
+	_, err = s.chat.UpdateMood(ctx, &proto.UpdateMoodRequest{NewMood: newMood})
+	return err
+}

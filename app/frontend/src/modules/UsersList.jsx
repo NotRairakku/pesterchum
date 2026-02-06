@@ -1,27 +1,24 @@
 import styles from '../../../../assets/styles/list.module.css'
 import CustomScroll from "./CustomScroll.jsx";
-
 import mood_ico from '../../../../assets/img/mood/mood_chipper.png'
 
 export default function UsersList() {
     return (
-        <>
-            <div className={styles.list}>
-                <p className={styles.list__title}>CHUMROLL:</p>
-                <CustomScroll height={168}>
-                    <div className={styles.list__content}>
-                        <div className={styles.list__container}>
-                            <div className={styles.list__container_tile}>
-                                <img className={styles.tile__mood} src={mood_ico} alt="mood" />
-                                <p className={styles.tile_name}>turntechGodhead</p>{/*i like dave... */}
-                            </div>
+        <div className={styles.list}>
+            <p className={styles.list__title}>CHUMROLL:</p>
+            <CustomScroll height={168}>
+                <div className={styles.list__content}>
+                    <div className={styles.list__container}>
+                        <div className={styles.list__container_tile}>
+                            <img className={styles.tile__mood} src={mood_ico} alt="mood" />
+                            <p className={styles.tile_name}>turntechGodhead</p>{/*i like dave... */}
                         </div>
                     </div>
-                </CustomScroll>
-                <div className={styles.list__btns}>
-                    <div className={styles.list__btn}>PESTER!</div>
                 </div>
+            </CustomScroll>
+            <div className={styles.list__btns}>
+                <div className={styles.list__btn}>PESTER!</div>
             </div>
-        </>
+        </div>
     )
 }

@@ -130,7 +130,9 @@ func (s *Service) GetUsername(ctx context.Context, _ *proto.Empty) (*proto.GetUs
 		return nil, status.Error(codes.Unauthenticated, "no user id")
 	}
 	var username string
-	err := s.repo.db.QueryRow(ctx, "SELECT username FROM users WHERE id = $1", uid).Scan(&username)
+	err := s.repo.db.QueryRow(ctx, "SELECT username FROM users WHERE id = $1",
+		uid,
+	).Scan(&username)
 	if err != nil {
 		return nil, status.Error(codes.Internal, "failed to get username")
 	}
@@ -156,9 +158,49 @@ func (s *Service) UpdateUsername(ctx context.Context, req *proto.UpdateUsernameR
 	if exists {
 		return nil, status.Error(codes.AlreadyExists, "username taken")
 	}
-	_, err = s.repo.db.Exec(ctx, "UPDATE users SET username = $1 WHERE id = $2", req.NewUsername, uid)
+	_, err = s.repo.db.Exec(ctx, "UPDATE users SET username = $1 WHERE id = $2",
+		req.NewUsername, uid,
+	)
 	if err != nil {
 		return nil, status.Error(codes.Unauthenticated, "update failed")
 	}
+	return &proto.Empty{}, nil
+}
+
+func (s *Service) GetMood(ctx context.Context, _ *proto.Empty) (*proto.GetMoodResponse, error) {
+	uid, ok := ctx.Value(session.UserIDKey).(int64)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user id")
+	}
+	var mood string
+	err := s.repo.db.QueryRow(ctx,
+		"SELECT mood FROM users WHERE id = $1",
+		uid,
+	).Scan(&mood)
+
+	if err != nil {
+		return nil, status.Error(codes.Internal, "check failed")
+	}
+	return &proto.GetMoodResponse{Mood: mood}, nil
+}
+
+func (s *Service) UpdateMood(ctx context.Context, req *proto.UpdateMoodRequest) (*proto.Empty, error) {
+	uid, ok := ctx.Value(session.UserIDKey).(int64)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user id")
+	}
+
+	if req.NewMood == "" {
+		return nil, status.Error(codes.InvalidArgument, "empty mood")
+	}
+
+	_, err := s.repo.db.Exec(ctx,
+		"UPDATE users SET mood = $1 WHERE id = $2",
+		req.NewMood, uid,
+	)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "update failed")
+	}
+
 	return &proto.Empty{}, nil
 }
