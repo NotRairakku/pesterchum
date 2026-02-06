@@ -73,6 +73,18 @@ Windows example with absolute path:
   wails dev
 ```
 
+## Build the project
+### Build gRPC server
+```bash
+  cd server/cmd/server
+  ./build.ps1
+```
+
+### Build Wails client
+```bash
+  cd app
+  wails build
+```
 Server and client should now be running and able to communicate.
 If something fails — check logs and make sure PATH and dependencies are set correctly.
 

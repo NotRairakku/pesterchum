@@ -169,27 +169,29 @@ func (x *LoginResponse) GetSessionId() string {
 	return ""
 }
 
-type GetUsernameResponse struct {
+type GetUserDataResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
+	Mood          string                 `protobuf:"bytes,2,opt,name=mood,proto3" json:"mood,omitempty"`
+	Color         string                 `protobuf:"bytes,3,opt,name=color,proto3" json:"color,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *GetUsernameResponse) Reset() {
-	*x = GetUsernameResponse{}
+func (x *GetUserDataResponse) Reset() {
+	*x = GetUserDataResponse{}
 	mi := &file_proto_api_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *GetUsernameResponse) String() string {
+func (x *GetUserDataResponse) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*GetUsernameResponse) ProtoMessage() {}
+func (*GetUserDataResponse) ProtoMessage() {}
 
-func (x *GetUsernameResponse) ProtoReflect() protoreflect.Message {
+func (x *GetUserDataResponse) ProtoReflect() protoreflect.Message {
 	mi := &file_proto_api_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
@@ -201,14 +203,28 @@ func (x *GetUsernameResponse) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use GetUsernameResponse.ProtoReflect.Descriptor instead.
-func (*GetUsernameResponse) Descriptor() ([]byte, []int) {
+// Deprecated: Use GetUserDataResponse.ProtoReflect.Descriptor instead.
+func (*GetUserDataResponse) Descriptor() ([]byte, []int) {
 	return file_proto_api_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetUsernameResponse) GetUsername() string {
+func (x *GetUserDataResponse) GetUsername() string {
 	if x != nil {
 		return x.Username
+	}
+	return ""
+}
+
+func (x *GetUserDataResponse) GetMood() string {
+	if x != nil {
+		return x.Mood
+	}
+	return ""
+}
+
+func (x *GetUserDataResponse) GetColor() string {
+	if x != nil {
+		return x.Color
 	}
 	return ""
 }
@@ -257,50 +273,6 @@ func (x *UpdateUsernameRequest) GetNewUsername() string {
 	return ""
 }
 
-type GetMoodResponse struct {
-	state         protoimpl.MessageState `protogen:"open.v1"`
-	Mood          string                 `protobuf:"bytes,1,opt,name=mood,proto3" json:"mood,omitempty"`
-	unknownFields protoimpl.UnknownFields
-	sizeCache     protoimpl.SizeCache
-}
-
-func (x *GetMoodResponse) Reset() {
-	*x = GetMoodResponse{}
-	mi := &file_proto_api_proto_msgTypes[5]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *GetMoodResponse) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*GetMoodResponse) ProtoMessage() {}
-
-func (x *GetMoodResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_api_proto_msgTypes[5]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use GetMoodResponse.ProtoReflect.Descriptor instead.
-func (*GetMoodResponse) Descriptor() ([]byte, []int) {
-	return file_proto_api_proto_rawDescGZIP(), []int{5}
-}
-
-func (x *GetMoodResponse) GetMood() string {
-	if x != nil {
-		return x.Mood
-	}
-	return ""
-}
-
 type UpdateMoodRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	NewMood       string                 `protobuf:"bytes,1,opt,name=new_mood,json=newMood,proto3" json:"new_mood,omitempty"`
@@ -310,7 +282,7 @@ type UpdateMoodRequest struct {
 
 func (x *UpdateMoodRequest) Reset() {
 	*x = UpdateMoodRequest{}
-	mi := &file_proto_api_proto_msgTypes[6]
+	mi := &file_proto_api_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -322,7 +294,7 @@ func (x *UpdateMoodRequest) String() string {
 func (*UpdateMoodRequest) ProtoMessage() {}
 
 func (x *UpdateMoodRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_api_proto_msgTypes[6]
+	mi := &file_proto_api_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -335,12 +307,56 @@ func (x *UpdateMoodRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMoodRequest.ProtoReflect.Descriptor instead.
 func (*UpdateMoodRequest) Descriptor() ([]byte, []int) {
-	return file_proto_api_proto_rawDescGZIP(), []int{6}
+	return file_proto_api_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *UpdateMoodRequest) GetNewMood() string {
 	if x != nil {
 		return x.NewMood
+	}
+	return ""
+}
+
+type UpdateColorRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	NewColor      string                 `protobuf:"bytes,1,opt,name=new_color,json=newColor,proto3" json:"new_color,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateColorRequest) Reset() {
+	*x = UpdateColorRequest{}
+	mi := &file_proto_api_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateColorRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateColorRequest) ProtoMessage() {}
+
+func (x *UpdateColorRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_api_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateColorRequest.ProtoReflect.Descriptor instead.
+func (*UpdateColorRequest) Descriptor() ([]byte, []int) {
+	return file_proto_api_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UpdateColorRequest) GetNewColor() string {
+	if x != nil {
+		return x.NewColor
 	}
 	return ""
 }
@@ -394,26 +410,28 @@ const file_proto_api_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\".\n" +
 	"\rLoginResponse\x12\x1d\n" +
 	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\"1\n" +
-	"\x13GetUsernameResponse\x12\x1a\n" +
-	"\busername\x18\x01 \x01(\tR\busername\":\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\"[\n" +
+	"\x13GetUserDataResponse\x12\x1a\n" +
+	"\busername\x18\x01 \x01(\tR\busername\x12\x12\n" +
+	"\x04mood\x18\x02 \x01(\tR\x04mood\x12\x14\n" +
+	"\x05color\x18\x03 \x01(\tR\x05color\":\n" +
 	"\x15UpdateUsernameRequest\x12!\n" +
-	"\fnew_username\x18\x01 \x01(\tR\vnewUsername\"%\n" +
-	"\x0fGetMoodResponse\x12\x12\n" +
-	"\x04mood\x18\x01 \x01(\tR\x04mood\".\n" +
+	"\fnew_username\x18\x01 \x01(\tR\vnewUsername\".\n" +
 	"\x11UpdateMoodRequest\x12\x19\n" +
-	"\bnew_mood\x18\x01 \x01(\tR\anewMood\"\a\n" +
-	"\x05Empty2\x9f\x03\n" +
+	"\bnew_mood\x18\x01 \x01(\tR\anewMood\"1\n" +
+	"\x12UpdateColorRequest\x12\x1b\n" +
+	"\tnew_color\x18\x01 \x01(\tR\bnewColor\"\a\n" +
+	"\x05Empty2\xa6\x03\n" +
 	"\vChatService\x120\n" +
 	"\bRegister\x12\x16.proto.RegisterRequest\x1a\f.proto.Empty\x122\n" +
 	"\x05Login\x12\x13.proto.LoginRequest\x1a\x14.proto.LoginResponse\x12$\n" +
 	"\x06Logout\x12\f.proto.Empty\x1a\f.proto.Empty\x12&\n" +
 	"\bValidate\x12\f.proto.Empty\x1a\f.proto.Empty\x127\n" +
-	"\vGetUsername\x12\f.proto.Empty\x1a\x1a.proto.GetUsernameResponse\x12<\n" +
-	"\x0eUpdateUsername\x12\x1c.proto.UpdateUsernameRequest\x1a\f.proto.Empty\x12/\n" +
-	"\aGetMood\x12\f.proto.Empty\x1a\x16.proto.GetMoodResponse\x124\n" +
+	"\vGetUserData\x12\f.proto.Empty\x1a\x1a.proto.GetUserDataResponse\x12<\n" +
+	"\x0eUpdateUsername\x12\x1c.proto.UpdateUsernameRequest\x1a\f.proto.Empty\x124\n" +
 	"\n" +
-	"UpdateMood\x12\x18.proto.UpdateMoodRequest\x1a\f.proto.EmptyB\x0eZ\f/proto;protob\x06proto3"
+	"UpdateMood\x12\x18.proto.UpdateMoodRequest\x1a\f.proto.Empty\x126\n" +
+	"\vUpdateColor\x12\x19.proto.UpdateColorRequest\x1a\f.proto.EmptyB\x0eZ\f/proto;protob\x06proto3"
 
 var (
 	file_proto_api_proto_rawDescOnce sync.Once
@@ -432,10 +450,10 @@ var file_proto_api_proto_goTypes = []any{
 	(*RegisterRequest)(nil),       // 0: proto.RegisterRequest
 	(*LoginRequest)(nil),          // 1: proto.LoginRequest
 	(*LoginResponse)(nil),         // 2: proto.LoginResponse
-	(*GetUsernameResponse)(nil),   // 3: proto.GetUsernameResponse
+	(*GetUserDataResponse)(nil),   // 3: proto.GetUserDataResponse
 	(*UpdateUsernameRequest)(nil), // 4: proto.UpdateUsernameRequest
-	(*GetMoodResponse)(nil),       // 5: proto.GetMoodResponse
-	(*UpdateMoodRequest)(nil),     // 6: proto.UpdateMoodRequest
+	(*UpdateMoodRequest)(nil),     // 5: proto.UpdateMoodRequest
+	(*UpdateColorRequest)(nil),    // 6: proto.UpdateColorRequest
 	(*Empty)(nil),                 // 7: proto.Empty
 }
 var file_proto_api_proto_depIdxs = []int32{
@@ -443,18 +461,18 @@ var file_proto_api_proto_depIdxs = []int32{
 	1, // 1: proto.ChatService.Login:input_type -> proto.LoginRequest
 	7, // 2: proto.ChatService.Logout:input_type -> proto.Empty
 	7, // 3: proto.ChatService.Validate:input_type -> proto.Empty
-	7, // 4: proto.ChatService.GetUsername:input_type -> proto.Empty
+	7, // 4: proto.ChatService.GetUserData:input_type -> proto.Empty
 	4, // 5: proto.ChatService.UpdateUsername:input_type -> proto.UpdateUsernameRequest
-	7, // 6: proto.ChatService.GetMood:input_type -> proto.Empty
-	6, // 7: proto.ChatService.UpdateMood:input_type -> proto.UpdateMoodRequest
+	5, // 6: proto.ChatService.UpdateMood:input_type -> proto.UpdateMoodRequest
+	6, // 7: proto.ChatService.UpdateColor:input_type -> proto.UpdateColorRequest
 	7, // 8: proto.ChatService.Register:output_type -> proto.Empty
 	2, // 9: proto.ChatService.Login:output_type -> proto.LoginResponse
 	7, // 10: proto.ChatService.Logout:output_type -> proto.Empty
 	7, // 11: proto.ChatService.Validate:output_type -> proto.Empty
-	3, // 12: proto.ChatService.GetUsername:output_type -> proto.GetUsernameResponse
+	3, // 12: proto.ChatService.GetUserData:output_type -> proto.GetUserDataResponse
 	7, // 13: proto.ChatService.UpdateUsername:output_type -> proto.Empty
-	5, // 14: proto.ChatService.GetMood:output_type -> proto.GetMoodResponse
-	7, // 15: proto.ChatService.UpdateMood:output_type -> proto.Empty
+	7, // 14: proto.ChatService.UpdateMood:output_type -> proto.Empty
+	7, // 15: proto.ChatService.UpdateColor:output_type -> proto.Empty
 	8, // [8:16] is the sub-list for method output_type
 	0, // [0:8] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name

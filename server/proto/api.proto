@@ -9,10 +9,12 @@ service ChatService {
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc Logout (Empty) returns (Empty);
   rpc Validate (Empty) returns (Empty);
-  rpc GetUsername (Empty) returns (GetUsernameResponse);
+
+  rpc GetUserData (Empty) returns (GetUserDataResponse);
+
   rpc UpdateUsername (UpdateUsernameRequest) returns (Empty);
-  rpc GetMood (Empty) returns (GetMoodResponse);
   rpc UpdateMood (UpdateMoodRequest) returns (Empty);
+  rpc UpdateColor (UpdateColorRequest) returns (Empty);
 }
 
 message RegisterRequest {
@@ -29,19 +31,21 @@ message LoginResponse {
   string session_id = 1;
 }
 
-message GetUsernameResponse {
+message GetUserDataResponse {
   string username = 1;
+  string mood = 2;
+  string color = 3;
 }
 message UpdateUsernameRequest {
   string new_username = 1;
 }
 
-message GetMoodResponse {
-  string mood = 1;
-}
-
 message UpdateMoodRequest {
   string new_mood = 1;
+}
+
+message UpdateColorRequest {
+  string new_color = 1;
 }
 
 message Empty {}

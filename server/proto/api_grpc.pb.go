@@ -23,10 +23,10 @@ const (
 	ChatService_Login_FullMethodName          = "/proto.ChatService/Login"
 	ChatService_Logout_FullMethodName         = "/proto.ChatService/Logout"
 	ChatService_Validate_FullMethodName       = "/proto.ChatService/Validate"
-	ChatService_GetUsername_FullMethodName    = "/proto.ChatService/GetUsername"
+	ChatService_GetUserData_FullMethodName    = "/proto.ChatService/GetUserData"
 	ChatService_UpdateUsername_FullMethodName = "/proto.ChatService/UpdateUsername"
-	ChatService_GetMood_FullMethodName        = "/proto.ChatService/GetMood"
 	ChatService_UpdateMood_FullMethodName     = "/proto.ChatService/UpdateMood"
+	ChatService_UpdateColor_FullMethodName    = "/proto.ChatService/UpdateColor"
 )
 
 // ChatServiceClient is the client API for ChatService service.
@@ -37,10 +37,10 @@ type ChatServiceClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	Logout(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
 	Validate(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
-	GetUsername(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetUsernameResponse, error)
+	GetUserData(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetUserDataResponse, error)
 	UpdateUsername(ctx context.Context, in *UpdateUsernameRequest, opts ...grpc.CallOption) (*Empty, error)
-	GetMood(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetMoodResponse, error)
 	UpdateMood(ctx context.Context, in *UpdateMoodRequest, opts ...grpc.CallOption) (*Empty, error)
+	UpdateColor(ctx context.Context, in *UpdateColorRequest, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type chatServiceClient struct {
@@ -91,10 +91,10 @@ func (c *chatServiceClient) Validate(ctx context.Context, in *Empty, opts ...grp
 	return out, nil
 }
 
-func (c *chatServiceClient) GetUsername(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetUsernameResponse, error) {
+func (c *chatServiceClient) GetUserData(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetUserDataResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetUsernameResponse)
-	err := c.cc.Invoke(ctx, ChatService_GetUsername_FullMethodName, in, out, cOpts...)
+	out := new(GetUserDataResponse)
+	err := c.cc.Invoke(ctx, ChatService_GetUserData_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -111,20 +111,20 @@ func (c *chatServiceClient) UpdateUsername(ctx context.Context, in *UpdateUserna
 	return out, nil
 }
 
-func (c *chatServiceClient) GetMood(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetMoodResponse, error) {
+func (c *chatServiceClient) UpdateMood(ctx context.Context, in *UpdateMoodRequest, opts ...grpc.CallOption) (*Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetMoodResponse)
-	err := c.cc.Invoke(ctx, ChatService_GetMood_FullMethodName, in, out, cOpts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ChatService_UpdateMood_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *chatServiceClient) UpdateMood(ctx context.Context, in *UpdateMoodRequest, opts ...grpc.CallOption) (*Empty, error) {
+func (c *chatServiceClient) UpdateColor(ctx context.Context, in *UpdateColorRequest, opts ...grpc.CallOption) (*Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Empty)
-	err := c.cc.Invoke(ctx, ChatService_UpdateMood_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, ChatService_UpdateColor_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -139,10 +139,10 @@ type ChatServiceServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	Logout(context.Context, *Empty) (*Empty, error)
 	Validate(context.Context, *Empty) (*Empty, error)
-	GetUsername(context.Context, *Empty) (*GetUsernameResponse, error)
+	GetUserData(context.Context, *Empty) (*GetUserDataResponse, error)
 	UpdateUsername(context.Context, *UpdateUsernameRequest) (*Empty, error)
-	GetMood(context.Context, *Empty) (*GetMoodResponse, error)
 	UpdateMood(context.Context, *UpdateMoodRequest) (*Empty, error)
+	UpdateColor(context.Context, *UpdateColorRequest) (*Empty, error)
 	mustEmbedUnimplementedChatServiceServer()
 }
 
@@ -165,17 +165,17 @@ func (UnimplementedChatServiceServer) Logout(context.Context, *Empty) (*Empty, e
 func (UnimplementedChatServiceServer) Validate(context.Context, *Empty) (*Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method Validate not implemented")
 }
-func (UnimplementedChatServiceServer) GetUsername(context.Context, *Empty) (*GetUsernameResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetUsername not implemented")
+func (UnimplementedChatServiceServer) GetUserData(context.Context, *Empty) (*GetUserDataResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetUserData not implemented")
 }
 func (UnimplementedChatServiceServer) UpdateUsername(context.Context, *UpdateUsernameRequest) (*Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateUsername not implemented")
 }
-func (UnimplementedChatServiceServer) GetMood(context.Context, *Empty) (*GetMoodResponse, error) {
-	return nil, status.Error(codes.Unimplemented, "method GetMood not implemented")
-}
 func (UnimplementedChatServiceServer) UpdateMood(context.Context, *UpdateMoodRequest) (*Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateMood not implemented")
+}
+func (UnimplementedChatServiceServer) UpdateColor(context.Context, *UpdateColorRequest) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateColor not implemented")
 }
 func (UnimplementedChatServiceServer) mustEmbedUnimplementedChatServiceServer() {}
 func (UnimplementedChatServiceServer) testEmbeddedByValue()                     {}
@@ -270,20 +270,20 @@ func _ChatService_Validate_Handler(srv interface{}, ctx context.Context, dec fun
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ChatService_GetUsername_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _ChatService_GetUserData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(Empty)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(ChatServiceServer).GetUsername(ctx, in)
+		return srv.(ChatServiceServer).GetUserData(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: ChatService_GetUsername_FullMethodName,
+		FullMethod: ChatService_GetUserData_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceServer).GetUsername(ctx, req.(*Empty))
+		return srv.(ChatServiceServer).GetUserData(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -306,24 +306,6 @@ func _ChatService_UpdateUsername_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
-func _ChatService_GetMood_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(Empty)
-	if err := dec(in); err != nil {
-		return nil, err
-	}
-	if interceptor == nil {
-		return srv.(ChatServiceServer).GetMood(ctx, in)
-	}
-	info := &grpc.UnaryServerInfo{
-		Server:     srv,
-		FullMethod: ChatService_GetMood_FullMethodName,
-	}
-	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(ChatServiceServer).GetMood(ctx, req.(*Empty))
-	}
-	return interceptor(ctx, in, info, handler)
-}
-
 func _ChatService_UpdateMood_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateMoodRequest)
 	if err := dec(in); err != nil {
@@ -338,6 +320,24 @@ func _ChatService_UpdateMood_Handler(srv interface{}, ctx context.Context, dec f
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ChatServiceServer).UpdateMood(ctx, req.(*UpdateMoodRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_UpdateColor_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateColorRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).UpdateColor(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_UpdateColor_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).UpdateColor(ctx, req.(*UpdateColorRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -366,20 +366,20 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ChatService_Validate_Handler,
 		},
 		{
-			MethodName: "GetUsername",
-			Handler:    _ChatService_GetUsername_Handler,
+			MethodName: "GetUserData",
+			Handler:    _ChatService_GetUserData_Handler,
 		},
 		{
 			MethodName: "UpdateUsername",
 			Handler:    _ChatService_UpdateUsername_Handler,
 		},
 		{
-			MethodName: "GetMood",
-			Handler:    _ChatService_GetMood_Handler,
-		},
-		{
 			MethodName: "UpdateMood",
 			Handler:    _ChatService_UpdateMood_Handler,
+		},
+		{
+			MethodName: "UpdateColor",
+			Handler:    _ChatService_UpdateColor_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

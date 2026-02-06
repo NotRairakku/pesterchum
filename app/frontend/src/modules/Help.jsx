@@ -1,6 +1,6 @@
-import { Logout } from "../../wailsjs/go/auth/AuthService.js";
+import { Logout } from "../../wailsjs/go/auth/Service.js";
 
-export default function Help({ setStatus }) {
+export default function Help({ setStatus, user, setUser }) {
     const handleLogout = async () => {
         try {
             await Logout();

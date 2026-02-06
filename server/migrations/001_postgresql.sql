@@ -11,7 +11,8 @@ create table users (
     id bigserial primary key,
     username text not null,
     password_hash text not null,
-    mood mood_type not null default 'chummy'
+    mood mood_type not null default 'chummy',
+    color text not null
 );
 
 create unique index idx_users_username on users (username);

@@ -3,7 +3,7 @@ import close_icon from '../../../../assets/img/iu/close_icon.png'
 import minimize_icon from '../../../../assets/img/iu/minimize_icon.png'
 import { WindowMinimise, Quit } from "../../wailsjs/runtime/runtime";
 
-export default function TopBar({ setStatus }) {
+export default function TopBar({ setStatus, user }) {
 
     return (
         <div className={style.topbar}>

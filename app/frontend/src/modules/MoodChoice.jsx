@@ -8,30 +8,20 @@ import bully_mood_ico from '../../../../assets/img/mood/mood_bully.png'
 import peppy_mood_ico from '../../../../assets/img/mood/mood_peppy.png'
 import rancorous_mood_ico from '../../../../assets/img/mood/mood_rancorous.png'
 
-import {useEffect, useState} from "react";
-import { GetMood, UpdateMood } from "../../wailsjs/go/auth/AuthService.js"
+import { UpdateMood } from "../../wailsjs/go/auth/Service.js"
 
-export default function MoodChoice( { mood, setMood } ) {
-    const [prevMood, setPrevMood] = useState("");
-
-    useEffect(() => {
-        const fetchMood = async () => {
-            const mood = await GetMood();
-            setMood(mood);
-            setPrevMood(mood);
-        };
-        fetchMood();
-    }, []);
+export default function MoodChoice( { mood: propMood, setMood } ) {
+    const mood = propMood?.toLowerCase() || "chummy";
+    const currentMood = mood;
 
     const handleChange = async (e) => {
-        const newMood = e.target.value;
+        const newMood = e.target.value.toLowerCase();
         setMood(newMood);
 
         try {
             await UpdateMood(newMood);
-            setPrevMood(newMood);
         } catch {
-            setMood(prevMood);
+            setMood(currentMood);
         }
     };
 
