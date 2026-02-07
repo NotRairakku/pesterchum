@@ -74,17 +74,30 @@ Windows example with absolute path:
 ```
 
 ## Build the project
+
 ### Build gRPC server
 ```bash
   cd server/cmd/server
   ./build.ps1
 ```
+Built files will appear in `pesterchum/server/bin`
 
 ### Build Wails client
 ```bash
   cd app
   wails build
 ```
+Built files will appear in `pesterchum/app/build/bin`
+
+### Create installer
+Install NSIS from https://nsis.sourceforge.io/Download  
+Make sure `makensis.exe` is available in `PATH`
+```bash
+  cd app  
+  wails build -nsis
+```
+Installer will be created in `pesterchum/app/build/bin`
+
 Server and client should now be running and able to communicate.
 If something fails — check logs and make sure PATH and dependencies are set correctly.
 
