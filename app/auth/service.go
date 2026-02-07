@@ -68,11 +68,11 @@ func (s *Service) Logout() error {
 func (s *Service) HasSession() bool {
 	sid, err := keyring.Get(keyringService, keyringUser)
 	if err != nil {
-		log.Printf("[AuthService] HasSession: err keyring.Get: %v", err)
+		log.Printf("[Service] HasSession: err keyring.Get: %v", err)
 		return false
 	}
 	if sid == "" {
-		log.Printf("[AuthService] HasSession: sid is empty")
+		log.Printf("[Service] HasSession: sid is empty")
 		return false
 	}
 	return true
@@ -99,13 +99,13 @@ type UserData struct {
 func (s *Service) GetUserData() (*UserData, error) {
 	ctx, cancel, err := s.contextWithSession()
 	if err != nil {
-		log.Printf("[AuthService] GetUserData: context error: %v", err)
+		log.Printf("[Service] GetUserData: context error: %v", err)
 		return nil, err
 	}
 	defer cancel()
 	res, err := s.chat.GetUserData(ctx, &proto.Empty{})
 	if err != nil {
-		log.Printf("[AuthService] Error GetUserData from server: %v", err)
+		log.Printf("[Service] Error GetUserData from server: %v", err)
 		return nil, err
 	}
 	return &UserData{
@@ -123,7 +123,7 @@ func (s *Service) UpdateUsername(newUsername string) error {
 	defer cancel()
 	_, err = s.chat.UpdateUsername(ctx, &proto.UpdateUsernameRequest{NewUsername: newUsername})
 	if err != nil {
-		log.Printf("[AuthService] Error UpdateUsername: %v", err)
+		log.Printf("[Service] Error UpdateUsername: %v", err)
 	}
 	return err
 }
@@ -136,7 +136,7 @@ func (s *Service) UpdateMood(newMood string) error {
 	defer cancel()
 	_, err = s.chat.UpdateMood(ctx, &proto.UpdateMoodRequest{NewMood: newMood})
 	if err != nil {
-		log.Printf("[AuthService] Error UpdateMood: %v", err)
+		log.Printf("[Service] Error UpdateMood: %v", err)
 	}
 	return err
 }

@@ -2,7 +2,10 @@ package main
 
 import (
 	"embed"
+	"fmt"
+	"github.com/joho/godotenv"
 	"log"
+	"os"
 
 	"pesterchum/app/auth"
 	"pesterchum/server/proto"
@@ -18,7 +21,11 @@ var assets embed.FS
 
 func main() {
 	// grpc client
-	conn, err := grpc.Dial("127.0.0.1:50051", grpc.WithInsecure())
+	if err := godotenv.Load(); err != nil {
+		log.Printf("warning: could not load .env file: %v", err)
+	}
+	target := fmt.Sprintf("%s:50051", os.Getenv("SERVER_DOMAIN"))
+	conn, err := grpc.Dial(target, grpc.WithInsecure())
 	if err != nil {
 		log.Fatal(err)
 	}
