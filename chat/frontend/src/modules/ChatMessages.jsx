@@ -29,9 +29,7 @@ export const ChatMessages = ({messages}) => {
                             <div className={styles.messages__system}>
                                 <span>-- {from.full}{" "}<span style={{ color: from.color }}>[{from.short}]</span>
                                     {" "}begin pester{" "}{to.full}{" "}
-                                    <span style={{ color: to.color }}>[{to.short}]</span>
-                                    {" "}at{" "}{new Date(timestamp).toLocaleTimeString([],
-                                        {hour: "2-digit", minute: "2-digit",})} --</span>
+                                    <span style={{ color: to.color }}>[{to.short}]</span> --</span>
                             </div>
                         );
                     }

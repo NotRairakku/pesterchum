@@ -1,12 +1,8 @@
-import styles from '../../../../assets/styles/moodchoice.module.css';
-import selected_ico from '../../../../assets/img/iu/close_icon.png'
+import styles from '../../../../assets/styles/app.module.css';
 
-import chummy_mood_ico from '../../../../assets/img/mood/mood_chummy.png'
-import palsy_mood_ico from '../../../../assets/img/mood/mood_palsy.png'
-import chipper_mood_ico from '../../../../assets/img/mood/mood_chipper.png'
-import bully_mood_ico from '../../../../assets/img/mood/mood_bully.png'
-import peppy_mood_ico from '../../../../assets/img/mood/mood_peppy.png'
+import mood_ico from '../../../../assets/img/mood/mood_chummy.png'
 import rancorous_mood_ico from '../../../../assets/img/mood/mood_rancorous.png'
+import arrow_icon from '../../../../assets/img/iu/arrow_icon.svg'
 
 import { UpdateMood } from "../../wailsjs/go/auth/Service.js"
 
@@ -27,72 +23,72 @@ export default function MoodChoice( { mood: propMood, setMood } ) {
 
     return (
         <div className={styles.mood}>
-            <p className={styles.mood__title}>MOOD:</p>
+            <p className={styles.section__title}>MOOD:</p>
             <form className={styles.mood__form}>
                 <label className={styles.section__btn}>
                     <input className={styles.btn__input} type="radio" name="mood"
                            value="chummy"  checked={mood === 'chummy'} onChange={handleChange}/>
                     <div className={styles.section__btn_img}>
-                        <img className={styles.btn_img} src={chummy_mood_ico} alt="mood" />
+                        <img className={styles.btn__img} src={mood_ico} alt="mood" />
                     </div>
                     <p className={styles.btn__text}>CHUMMY</p>
                     <div className={styles.mood__selected}>
-                        <img src={selected_ico} alt="" />
+                        <img className={styles.btn__img_arrow} src={arrow_icon} alt={'&#10003;'} />
                     </div>
                 </label>
                 <label className={styles.section__btn}>
                     <input className={styles.btn__input} type="radio" name="mood"
                            value="palsy" checked={mood === 'palsy'} onChange={handleChange}/>
                     <div className={styles.section__btn_img}>
-                        <img className={styles.btn_img} src={palsy_mood_ico} alt="mood" />
+                        <img className={styles.btn__img} src={mood_ico} alt="mood" />
                     </div>
                     <p className={styles.btn__text}>PALSY</p>
                     <div className={styles.mood__selected}>
-                        <img src={selected_ico} alt="" />
+                        <img className={styles.btn__img_arrow} src={arrow_icon} alt={'&#10003;'} />
                     </div>
                 </label>
                 <label className={styles.section__btn}>
                     <input className={styles.btn__input} type="radio" name="mood"
                            value="chipper" checked={mood === 'chipper'} onChange={handleChange}/>
                     <div className={styles.section__btn_img}>
-                        <img className={styles.btn_img} src={chipper_mood_ico} alt="mood" />
+                        <img className={styles.btn__img} src={mood_ico} alt="mood" />
                     </div>
                     <p className={styles.btn__text}>CHIPPER</p>
                     <div className={styles.mood__selected}>
-                        <img src={selected_ico} alt="" />
+                        <img className={styles.btn__img_arrow} src={arrow_icon} alt={'&#10003;'} />
                     </div>
                 </label>
                 <label className={styles.section__btn}>
                     <input className={styles.btn__input} type="radio" name="mood"
                            value="bully" checked={mood === 'bully'} onChange={handleChange}/>
                     <div className={styles.section__btn_img}>
-                        <img className={styles.btn_img} src={bully_mood_ico} alt="mood" />
+                        <img className={styles.btn__img} src={mood_ico} alt="mood" />
                     </div>
                     <p className={styles.btn__text}>BULLY</p>
                     <div className={styles.mood__selected}>
-                        <img src={selected_ico} alt="" />
+                        <img className={styles.btn__img_arrow} src={arrow_icon} alt={'&#10003;'} />
                     </div>
                 </label>
                 <label className={styles.section__btn}>
                     <input className={styles.btn__input} type="radio" name="mood"
                            value="peppy" checked={mood === 'peppy'} onChange={handleChange}/>
                     <div className={styles.section__btn_img}>
-                        <img className={styles.btn_img} src={peppy_mood_ico} alt="mood" />
+                        <img className={styles.btn__img} src={mood_ico} alt="mood" />
                     </div>
                     <p className={styles.btn__text}>PEPPY</p>
                     <div className={styles.mood__selected}>
-                        <img src={selected_ico} alt="" />
+                        <img className={styles.btn__img_arrow} src={arrow_icon} alt={'&#10003;'} />
                     </div>
                 </label>
                 <label className={styles.section__btn}>
                     <input className={styles.btn__input} type="radio" name="mood"
                            value="rancorous" checked={mood === 'rancorous'} onChange={handleChange}/>
                     <div className={styles.section__btn_img}>
-                        <img className={styles.btn_img} src={rancorous_mood_ico} alt="mood" />
+                        <img className={styles.btn__img} src={rancorous_mood_ico} alt="mood" />
                     </div>
                     <p className={styles.btn__text}>RANCOROUS</p>
                     <div className={styles.mood__selected}>
-                        <img src={selected_ico} alt="" />
+                        <img className={styles.btn__img_arrow} src={arrow_icon} alt={'&#10003;'} />
                     </div>
                 </label>
             </form>

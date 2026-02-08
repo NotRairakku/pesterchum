@@ -93,8 +93,7 @@ Built files will appear in `pesterchum/app/build/bin`
 Install NSIS from https://nsis.sourceforge.io/Download  
 Make sure `makensis.exe` is available in `PATH`
 ```bash
-  cd app  
-  wails build -nsis
+  make build
 ```
 Installer will be created in `pesterchum/app/build/bin`
 

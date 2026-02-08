@@ -1,0 +1,64 @@
+.topbar {
+    width: 100%;
+    display: flex;
+    background: var(--color-app-yellow);
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    color: white;
+    user-select: none;
+    --wails-draggable: drag;
+}
+
+.topbar__container {
+    display: flex;
+    gap: var(--spacing-base);
+}
+
+.topbar__container_title {
+    display: flex;
+    gap: 14px;
+}
+
+.topbar__container_text {
+    --wails-draggable: no-drag;
+    pointer-events: auto;
+    user-select: none;
+    font-size: var(--font-size-md);
+    cursor: pointer;
+}
+
+.topbar__container_image {
+    width: auto;
+    height: 32px;
+}
+
+.topbar__container__btns {
+    display: flex;
+    gap: 14px;
+}
+
+.topbar__container_btn {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    pointer-events: auto;
+    cursor: pointer;
+    user-select: none;
+    background: var(--color-app-yellow);
+    font-size: var(--font-size-md);
+    border: 1px solid var(--color-button-border);
+    border-radius: var(--radius-button);
+    --wails-draggable: no-drag;
+}
+
+.bnt__icon {
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 14px;
+    height: 14px;
+    image-rendering: pixelated;
+}
+

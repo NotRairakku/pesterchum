@@ -6,41 +6,6 @@
     left: 0;
     background: var(--color-app-bg);
     border: var(--radius-base) solid var(--color-border-primary);
-    padding: 0 var(--spacing-base) 0;
-}
-
-.auth__topbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    border: var(--radius-base) solid var(--color-app-bg);
-    display: flex;
-    justify-content: end;
-    align-items: center;
-    user-select: none;
-    z-index: 1000;
-    --wails-draggable: drag;
-}
-
-.auth__topbar__container {
-    display: flex;
-    gap: var(--spacing-base);
-    padding: 2px  var(--spacing-base);
-}
-
-.auth__topbar__container_btn {
-    --wails-draggable: no-drag;
-    pointer-events: auto;
-    cursor: pointer;
-    user-select: none;
-    font-size: var(--font-size-md);
-}
-
-.auth__topbar__container_btn_ico {
-    width: 18px;
-    height: 18px;
-    image-rendering: pixelated;
 }
 
 .auth__container {
@@ -96,14 +61,14 @@
 }
 
 .auth__container_from_btn {
+    margin: 0 auto;
     background: var(--color-button-bg);
-    border: var(--radius-base) solid var(--color-button-border);
-    cursor: pointer;
-    align-items: center;
-    font-size: var(--font-size-md);
+    border: var(--radius-button) solid var(--color-button-border);
+    padding: 6px 28px;
     text-align: center;
-    padding: 2px;
+    cursor: pointer;
     user-select: none;
+    font-size: var(--font-size-md);
 }
 
 .auth__container_text {

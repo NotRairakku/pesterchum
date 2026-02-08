@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import TopBar from "./modules/TopBar.jsx";
 import Profile from "./modules/Profile.jsx";
-import Help from "./modules/Help.jsx";
 import Auth from "./modules/Auth.jsx";
 import Loader from "./modules/Loader.jsx";
 import Client from "./modules/Client.jsx";
@@ -57,15 +56,16 @@ export default function App() {
     const STATUS_MAP = {
         login: <Loader />,
         client: <Client user={user} setUser={setUser}/>,
-        profile: <Profile user={user} setUser={setUser}/>,
-        help: <Help setStatus={setStatus} user={user} setUser={setUser}/>,
+        profile: <Profile setStatus={setStatus} user={user} setUser={setUser}/>,
         auth: <Auth loadUser={loadUser}/>,
     }
 
     return (
         <div className={style.app}>
             <TopBar setStatus={setStatus} user={user} />
-            {STATUS_MAP[status]}
+            <div className={style.app__container}>
+                {STATUS_MAP[status]}
+            </div>
         </div>
     );
 }

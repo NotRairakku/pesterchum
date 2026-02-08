@@ -39,7 +39,7 @@ func main() {
 	err = wails.Run(&options.App{
 		Title:         "Pesterchum 6.0",
 		Width:         460,
-		Height:        760,
+		Height:        716,
 		DisableResize: true,
 		Frameless:     true,
 		AssetServer:   &assetserver.Options{Assets: assets},

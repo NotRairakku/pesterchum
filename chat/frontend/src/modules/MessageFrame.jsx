@@ -18,7 +18,6 @@ export const mockMessages = [
                 full: "tentacleTherapist",
                 color: "#bd50dd"
             },
-            timestamp: Date.now()
         }
     },
     {
@@ -40,7 +39,17 @@ export const mockMessages = [
             color: "#bd50dd"
         },
         text: "you and dave is gay... wow"
-    }
+    },
+    {
+        id: "1",
+        isSystem: false,
+        sender: {
+            short: "EB",
+            full: "ectoBiologist",
+            color: "#0715cd"
+        },
+        text: "whatever :D",
+    },
 ];
 
 export default function MessageFrame() {

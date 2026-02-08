@@ -1,10 +1,15 @@
 import { useState } from "react";
-import logo from "../../../../assets/img/pesterchum-logo.png";
-import style from "../../../../assets/styles/auth.module.css";
 import { Login, Register } from "../../wailsjs/go/auth/Service.js";
 import { Quit, WindowMinimise } from "../../wailsjs/runtime/runtime.js";
+
+import styles from "../../../../assets/styles/app.module.css";
+
+import logo from "../../../../assets/img/pesterchum-logo.png";
 import minimize_icon from "../../../../assets/img/iu/minimize_icon.png";
 import close_icon from "../../../../assets/img/iu/close_icon.png";
+import minimize_btn_icon from "../../../../assets/img/iu/minimize_btn_icon.png";
+import close_btn_icon from "../../../../assets/img/iu/close_btn_icon.png";
+import TopBar from "./TopBar.jsx";
 
 export default function Auth({ loadUser }) {
     const [authtype, setAuthtype] = useState("login");
@@ -44,37 +49,28 @@ export default function Auth({ loadUser }) {
     };
 
     return (
-        <div className={style.auth}>
-            <div className={style.auth__topbar}>
-                <div className={style.auth__topbar__container}>
-                    <div className={style.auth__topbar__container_btn} onClick={WindowMinimise}>
-                        <img className={style.auth__topbar__container_btn_ico} src={minimize_icon} alt="-" />
-                    </div>
-                    <div className={style.auth__topbar__container_btn} onClick={Quit}>
-                        <img className={style.auth__topbar__container_btn_ico} src={close_icon} alt="X" />
-                    </div>
-                </div>
-            </div>
+        <div className={styles.auth}>
+            <TopBar/>
 
-            <div className={style.auth__container}>
-                <img className={style.auth__container_image} src={logo} alt="logo" />
-                <p className={style.auth__container_title}>{authtype === "login" ? "Login to Pesterchum" : "Register to Pesterchum"}</p>
-                <form className={style.auth__container_from} onSubmit={AuthUser}>
-                    <input className={style.auth__container_from_input} placeholder="Your nickname"
+            <div className={styles.auth__container}>
+                <img className={styles.auth__container_image} src={logo} alt="logo" />
+                <p className={styles.auth__container_title}>{authtype === "login" ? "Login to Pesterchum" : "Register to Pesterchum"}</p>
+                <form className={styles.auth__container_from} onSubmit={AuthUser}>
+                    <input className={styles.auth__container_from_input} placeholder="Your cool nickname"
                            value={username} onChange={(e) =>
                         setUsername(e.target.value)} disabled={loading}/>
-                    <input className={style.auth__container_from_input} placeholder="Password"
+                    <input className={styles.auth__container_from_input} placeholder="Password"
                            type="password" value={password} onChange={(e) =>
                         setPassword(e.target.value)} disabled={loading}/>
-                    {error && <p className={style.auth__container_from_error}>{error}</p>}
-                    <button type="submit" className={style.auth__container_from_btn} disabled={loading}>
+                    {error && <p className={styles.auth__container_from_error}>{error}</p>}
+                    <button type="submit" className={styles.auth__container_from_btn} disabled={loading}>
                         {loading ? "Loading..." : (authtype === "login" ? "Login" : "Register")}</button>
                 </form>
                 {authtype === "login" ? (
-                    <p className={style.auth__container_text} onClick={() =>
+                    <p className={styles.auth__container_text} onClick={() =>
                         setAuthtype("register")}>Don't have an account? Register</p>
                 ) : (
-                    <p className={style.auth__container_text} onClick={() =>
+                    <p className={styles.auth__container_text} onClick={() =>
                         setAuthtype("login")}>Already have an account? Login</p>
                 )}
             </div>

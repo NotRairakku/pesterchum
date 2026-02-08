@@ -20,7 +20,7 @@ html, body, #root {
     flex: 1;
     min-height: 0;
     background: var(--color-text-light);
-    border: var(--radius-base) solid var(--color-app-bg-accent);
+    border: var(--radius-base) solid var(--color-app-bg-brownish);
     padding: var(--spacing-base);
 }
 

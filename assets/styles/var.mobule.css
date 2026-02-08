@@ -1,15 +1,21 @@
 :root {
     --color-app-bg: #ffb500;
-    --color-app-bg-accent: #c48a00;
+    --color-app-yellow: #fdf800;
+    --color-app-bg-brownish: #c48a00;
+    --color-app-bg-hover: #7e7c7d;
+    --spacing-app-border: 4px;
+    --spacing-app: 6px;
+
     --color-border-primary: #fdf800;
     --color-border-light: #ffffff;
     --color-block-bg: #000001;
 
-    --color-button-border: #e8ba08;
+    --color-button-border: #c48a00;
     --color-button-bg: #fdf800;
     --color-button-bg-hover: #fdf800;
     --color-button-bg-active: #fdf800;
     --color-button-danger-bg: #f60100;
+    --radius-button: 2px;
 
     --color-text-dark: #000001;
     --color-text-light: #ffffff;

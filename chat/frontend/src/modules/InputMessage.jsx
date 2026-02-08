@@ -6,6 +6,7 @@ export default function InputMessage() {
             <form className={styles.input__container_form}>
                 <input className={styles.input__container_input} type={'text'}/>
                 <button className={styles.input__container_btn} type='submit'>PESTER!</button>
+                <button className={styles.input__container_btn}>+</button>
             </form>
         </div>
     )

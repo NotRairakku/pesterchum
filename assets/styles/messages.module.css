@@ -10,4 +10,7 @@
 
 .messages__container_name {}
 
-.messages__container_text {}
+.messages__container_text {
+    font-family: var(--font-text), sans-serif;
+    font-weight: bold;
+}
