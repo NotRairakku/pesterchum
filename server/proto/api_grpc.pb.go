@@ -19,14 +19,19 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ChatService_Register_FullMethodName       = "/proto.ChatService/Register"
-	ChatService_Login_FullMethodName          = "/proto.ChatService/Login"
-	ChatService_Logout_FullMethodName         = "/proto.ChatService/Logout"
-	ChatService_Validate_FullMethodName       = "/proto.ChatService/Validate"
-	ChatService_GetUserData_FullMethodName    = "/proto.ChatService/GetUserData"
-	ChatService_UpdateUsername_FullMethodName = "/proto.ChatService/UpdateUsername"
-	ChatService_UpdateMood_FullMethodName     = "/proto.ChatService/UpdateMood"
-	ChatService_UpdateColor_FullMethodName    = "/proto.ChatService/UpdateColor"
+	ChatService_Register_FullMethodName          = "/proto.ChatService/Register"
+	ChatService_Login_FullMethodName             = "/proto.ChatService/Login"
+	ChatService_Logout_FullMethodName            = "/proto.ChatService/Logout"
+	ChatService_Validate_FullMethodName          = "/proto.ChatService/Validate"
+	ChatService_GetUserData_FullMethodName       = "/proto.ChatService/GetUserData"
+	ChatService_UpdateUsername_FullMethodName    = "/proto.ChatService/UpdateUsername"
+	ChatService_UpdatePassword_FullMethodName    = "/proto.ChatService/UpdatePassword"
+	ChatService_UpdatePhoto_FullMethodName       = "/proto.ChatService/UpdatePhoto"
+	ChatService_UpdateDescription_FullMethodName = "/proto.ChatService/UpdateDescription"
+	ChatService_UpdateMood_FullMethodName        = "/proto.ChatService/UpdateMood"
+	ChatService_UpdateColor_FullMethodName       = "/proto.ChatService/UpdateColor"
+	ChatService_UpdateBirthdate_FullMethodName   = "/proto.ChatService/UpdateBirthdate"
+	ChatService_UpdateAddress_FullMethodName     = "/proto.ChatService/UpdateAddress"
 )
 
 // ChatServiceClient is the client API for ChatService service.
@@ -39,8 +44,13 @@ type ChatServiceClient interface {
 	Validate(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
 	GetUserData(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetUserDataResponse, error)
 	UpdateUsername(ctx context.Context, in *UpdateUsernameRequest, opts ...grpc.CallOption) (*Empty, error)
+	UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*Empty, error)
+	UpdatePhoto(ctx context.Context, in *UpdatePhotoRequest, opts ...grpc.CallOption) (*Empty, error)
+	UpdateDescription(ctx context.Context, in *UpdateDescriptionRequest, opts ...grpc.CallOption) (*Empty, error)
 	UpdateMood(ctx context.Context, in *UpdateMoodRequest, opts ...grpc.CallOption) (*Empty, error)
 	UpdateColor(ctx context.Context, in *UpdateColorRequest, opts ...grpc.CallOption) (*Empty, error)
+	UpdateBirthdate(ctx context.Context, in *UpdateBirthdateRequest, opts ...grpc.CallOption) (*Empty, error)
+	UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type chatServiceClient struct {
@@ -111,6 +121,36 @@ func (c *chatServiceClient) UpdateUsername(ctx context.Context, in *UpdateUserna
 	return out, nil
 }
 
+func (c *chatServiceClient) UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ChatService_UpdatePassword_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) UpdatePhoto(ctx context.Context, in *UpdatePhotoRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ChatService_UpdatePhoto_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) UpdateDescription(ctx context.Context, in *UpdateDescriptionRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ChatService_UpdateDescription_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *chatServiceClient) UpdateMood(ctx context.Context, in *UpdateMoodRequest, opts ...grpc.CallOption) (*Empty, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(Empty)
@@ -131,6 +171,26 @@ func (c *chatServiceClient) UpdateColor(ctx context.Context, in *UpdateColorRequ
 	return out, nil
 }
 
+func (c *chatServiceClient) UpdateBirthdate(ctx context.Context, in *UpdateBirthdateRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ChatService_UpdateBirthdate_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ChatService_UpdateAddress_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChatServiceServer is the server API for ChatService service.
 // All implementations must embed UnimplementedChatServiceServer
 // for forward compatibility.
@@ -141,8 +201,13 @@ type ChatServiceServer interface {
 	Validate(context.Context, *Empty) (*Empty, error)
 	GetUserData(context.Context, *Empty) (*GetUserDataResponse, error)
 	UpdateUsername(context.Context, *UpdateUsernameRequest) (*Empty, error)
+	UpdatePassword(context.Context, *UpdatePasswordRequest) (*Empty, error)
+	UpdatePhoto(context.Context, *UpdatePhotoRequest) (*Empty, error)
+	UpdateDescription(context.Context, *UpdateDescriptionRequest) (*Empty, error)
 	UpdateMood(context.Context, *UpdateMoodRequest) (*Empty, error)
 	UpdateColor(context.Context, *UpdateColorRequest) (*Empty, error)
+	UpdateBirthdate(context.Context, *UpdateBirthdateRequest) (*Empty, error)
+	UpdateAddress(context.Context, *UpdateAddressRequest) (*Empty, error)
 	mustEmbedUnimplementedChatServiceServer()
 }
 
@@ -171,11 +236,26 @@ func (UnimplementedChatServiceServer) GetUserData(context.Context, *Empty) (*Get
 func (UnimplementedChatServiceServer) UpdateUsername(context.Context, *UpdateUsernameRequest) (*Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateUsername not implemented")
 }
+func (UnimplementedChatServiceServer) UpdatePassword(context.Context, *UpdatePasswordRequest) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdatePassword not implemented")
+}
+func (UnimplementedChatServiceServer) UpdatePhoto(context.Context, *UpdatePhotoRequest) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdatePhoto not implemented")
+}
+func (UnimplementedChatServiceServer) UpdateDescription(context.Context, *UpdateDescriptionRequest) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateDescription not implemented")
+}
 func (UnimplementedChatServiceServer) UpdateMood(context.Context, *UpdateMoodRequest) (*Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateMood not implemented")
 }
 func (UnimplementedChatServiceServer) UpdateColor(context.Context, *UpdateColorRequest) (*Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateColor not implemented")
+}
+func (UnimplementedChatServiceServer) UpdateBirthdate(context.Context, *UpdateBirthdateRequest) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateBirthdate not implemented")
+}
+func (UnimplementedChatServiceServer) UpdateAddress(context.Context, *UpdateAddressRequest) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method UpdateAddress not implemented")
 }
 func (UnimplementedChatServiceServer) mustEmbedUnimplementedChatServiceServer() {}
 func (UnimplementedChatServiceServer) testEmbeddedByValue()                     {}
@@ -306,6 +386,60 @@ func _ChatService_UpdateUsername_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChatService_UpdatePassword_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePasswordRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).UpdatePassword(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_UpdatePassword_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).UpdatePassword(ctx, req.(*UpdatePasswordRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_UpdatePhoto_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdatePhotoRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).UpdatePhoto(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_UpdatePhoto_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).UpdatePhoto(ctx, req.(*UpdatePhotoRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_UpdateDescription_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateDescriptionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).UpdateDescription(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_UpdateDescription_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).UpdateDescription(ctx, req.(*UpdateDescriptionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _ChatService_UpdateMood_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(UpdateMoodRequest)
 	if err := dec(in); err != nil {
@@ -342,6 +476,42 @@ func _ChatService_UpdateColor_Handler(srv interface{}, ctx context.Context, dec 
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChatService_UpdateBirthdate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateBirthdateRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).UpdateBirthdate(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_UpdateBirthdate_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).UpdateBirthdate(ctx, req.(*UpdateBirthdateRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_UpdateAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateAddressRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).UpdateAddress(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_UpdateAddress_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).UpdateAddress(ctx, req.(*UpdateAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ChatService_ServiceDesc is the grpc.ServiceDesc for ChatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -374,12 +544,32 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _ChatService_UpdateUsername_Handler,
 		},
 		{
+			MethodName: "UpdatePassword",
+			Handler:    _ChatService_UpdatePassword_Handler,
+		},
+		{
+			MethodName: "UpdatePhoto",
+			Handler:    _ChatService_UpdatePhoto_Handler,
+		},
+		{
+			MethodName: "UpdateDescription",
+			Handler:    _ChatService_UpdateDescription_Handler,
+		},
+		{
 			MethodName: "UpdateMood",
 			Handler:    _ChatService_UpdateMood_Handler,
 		},
 		{
 			MethodName: "UpdateColor",
 			Handler:    _ChatService_UpdateColor_Handler,
+		},
+		{
+			MethodName: "UpdateBirthdate",
+			Handler:    _ChatService_UpdateBirthdate_Handler,
+		},
+		{
+			MethodName: "UpdateAddress",
+			Handler:    _ChatService_UpdateAddress_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

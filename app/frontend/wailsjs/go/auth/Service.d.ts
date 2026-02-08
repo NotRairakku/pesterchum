@@ -12,6 +12,14 @@ export function Logout():Promise<void>;
 
 export function Register(arg1:string,arg2:string):Promise<void>;
 
+export function UpdateAddress(arg1:string):Promise<void>;
+
+export function UpdateBirthdate(arg1:string):Promise<void>;
+
+export function UpdateColor(arg1:string):Promise<void>;
+
+export function UpdateDescription(arg1:string):Promise<void>;
+
 export function UpdateMood(arg1:string):Promise<void>;
 
 export function UpdateUsername(arg1:string):Promise<void>;

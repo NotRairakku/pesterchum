@@ -7,6 +7,9 @@ import Client from "./modules/Client.jsx";
 import style from "../../../assets/styles/app.module.css";
 import {HasSession, GetUserData } from "../wailsjs/go/auth/Service.js";
 
+import default_photo from "../../../assets/dev/john.jpg";
+
+
 export default function App() {
     const [status, setStatus] = useState("loading");
     const [user, setUser] = useState(null);
@@ -18,9 +21,13 @@ export default function App() {
             const res = await GetUserData();
 
             const userData = {
-                Username: res.username.trim(),
+                Username: res.username.trim() || "",
+                Photo: res.photo || default_photo,
+                Description: res.description || "",
                 Mood: res.mood?.toLowerCase() || "chummy",
                 Color: res.color || "#ffffff",
+                Birthdate: res.birthdate || "",
+                Address: res.address || "",
             };
 
             console.log("[App] User loaded:", userData);

@@ -13,8 +13,13 @@ service ChatService {
   rpc GetUserData (Empty) returns (GetUserDataResponse);
 
   rpc UpdateUsername (UpdateUsernameRequest) returns (Empty);
+  rpc UpdatePassword (UpdatePasswordRequest) returns (Empty);
+  rpc UpdatePhoto (UpdatePhotoRequest) returns (Empty);
+  rpc UpdateDescription (UpdateDescriptionRequest) returns (Empty);
   rpc UpdateMood (UpdateMoodRequest) returns (Empty);
   rpc UpdateColor (UpdateColorRequest) returns (Empty);
+  rpc UpdateBirthdate (UpdateBirthdateRequest) returns (Empty);
+  rpc UpdateAddress (UpdateAddressRequest) returns (Empty);
 }
 
 message RegisterRequest {
@@ -33,11 +38,27 @@ message LoginResponse {
 
 message GetUserDataResponse {
   string username = 1;
-  string mood = 2;
-  string color = 3;
+  string photo = 2;
+  string description = 3;
+  string mood = 4;
+  string color = 5;
+  string birthdate = 6;
+  string address = 7;
 }
 message UpdateUsernameRequest {
   string new_username = 1;
+}
+
+message UpdatePasswordRequest {
+  string new_password = 1;
+}
+
+message UpdatePhotoRequest {
+  string new_photo = 1;
+}
+
+message UpdateDescriptionRequest {
+  string new_description = 1;
 }
 
 message UpdateMoodRequest {
@@ -47,5 +68,14 @@ message UpdateMoodRequest {
 message UpdateColorRequest {
   string new_color = 1;
 }
+
+message UpdateBirthdateRequest {
+  string new_birthdate = 1;
+}
+
+message UpdateAddressRequest {
+  string new_address = 1;
+}
+
 
 message Empty {}

@@ -22,6 +22,22 @@ export function Register(arg1, arg2) {
   return window['go']['auth']['Service']['Register'](arg1, arg2);
 }
 
+export function UpdateAddress(arg1) {
+  return window['go']['auth']['Service']['UpdateAddress'](arg1);
+}
+
+export function UpdateBirthdate(arg1) {
+  return window['go']['auth']['Service']['UpdateBirthdate'](arg1);
+}
+
+export function UpdateColor(arg1) {
+  return window['go']['auth']['Service']['UpdateColor'](arg1);
+}
+
+export function UpdateDescription(arg1) {
+  return window['go']['auth']['Service']['UpdateDescription'](arg1);
+}
+
 export function UpdateMood(arg1) {
   return window['go']['auth']['Service']['UpdateMood'](arg1);
 }

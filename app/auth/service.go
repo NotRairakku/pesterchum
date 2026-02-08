@@ -91,9 +91,13 @@ func (s *Service) contextWithSession() (context.Context, context.CancelFunc, err
 }
 
 type UserData struct {
-	Username string `json:"username"`
-	Mood     string `json:"mood"`
-	Color    string `json:"color"`
+	Username    string `json:"username"`
+	Photo       string `json:"photo"`
+	Description string `json:"description"`
+	Mood        string `json:"mood"`
+	Color       string `json:"color"`
+	Birthdate   string `json:"birthdate"`
+	Address     string `json:"address"`
 }
 
 func (s *Service) GetUserData() (*UserData, error) {
@@ -109,9 +113,13 @@ func (s *Service) GetUserData() (*UserData, error) {
 		return nil, err
 	}
 	return &UserData{
-		Username: res.Username,
-		Mood:     res.Mood,
-		Color:    res.Color,
+		Username:    res.Username,
+		Photo:       res.Photo,
+		Description: res.Description,
+		Mood:        res.Mood,
+		Color:       res.Color,
+		Birthdate:   res.Birthdate,
+		Address:     res.Address,
 	}, nil
 }
 
@@ -128,6 +136,21 @@ func (s *Service) UpdateUsername(newUsername string) error {
 	return err
 }
 
+//func (s *Service) UpdatePhoto(newPhoto string) error  {}
+
+func (s *Service) UpdateDescription(newDescription string) error {
+	ctx, cancel, err := s.contextWithSession()
+	if err != nil {
+		return err
+	}
+	defer cancel()
+	_, err = s.chat.UpdateDescription(ctx, &proto.UpdateDescriptionRequest{NewDescription: newDescription})
+	if err != nil {
+		log.Printf("[Service] Error UpdateDescription: %v", err)
+	}
+	return err
+}
+
 func (s *Service) UpdateMood(newMood string) error {
 	ctx, cancel, err := s.contextWithSession()
 	if err != nil {
@@ -137,6 +160,45 @@ func (s *Service) UpdateMood(newMood string) error {
 	_, err = s.chat.UpdateMood(ctx, &proto.UpdateMoodRequest{NewMood: newMood})
 	if err != nil {
 		log.Printf("[Service] Error UpdateMood: %v", err)
+	}
+	return err
+}
+
+func (s *Service) UpdateColor(newColor string) error {
+	ctx, cancel, err := s.contextWithSession()
+	if err != nil {
+		return err
+	}
+	defer cancel()
+	_, err = s.chat.UpdateColor(ctx, &proto.UpdateColorRequest{NewColor: newColor})
+	if err != nil {
+		log.Printf("[Service] Error UpdateColor: %v", err)
+	}
+	return err
+}
+
+func (s *Service) UpdateBirthdate(newBirthdate string) error {
+	ctx, cancel, err := s.contextWithSession()
+	if err != nil {
+		return err
+	}
+	defer cancel()
+	_, err = s.chat.UpdateBirthdate(ctx, &proto.UpdateBirthdateRequest{NewBirthdate: newBirthdate})
+	if err != nil {
+		log.Printf("[Service] Error UpdateBirthdate: %v", err)
+	}
+	return err
+}
+
+func (s *Service) UpdateAddress(newAddress string) error {
+	ctx, cancel, err := s.contextWithSession()
+	if err != nil {
+		return err
+	}
+	defer cancel()
+	_, err = s.chat.UpdateAddress(ctx, &proto.UpdateAddressRequest{NewAddress: newAddress})
+	if err != nil {
+		log.Printf("[Service] Error UpdateAddress: %v", err)
 	}
 	return err
 }

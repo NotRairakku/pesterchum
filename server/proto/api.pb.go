@@ -172,8 +172,12 @@ func (x *LoginResponse) GetSessionId() string {
 type GetUserDataResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
-	Mood          string                 `protobuf:"bytes,2,opt,name=mood,proto3" json:"mood,omitempty"`
-	Color         string                 `protobuf:"bytes,3,opt,name=color,proto3" json:"color,omitempty"`
+	Photo         string                 `protobuf:"bytes,2,opt,name=photo,proto3" json:"photo,omitempty"`
+	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
+	Mood          string                 `protobuf:"bytes,4,opt,name=mood,proto3" json:"mood,omitempty"`
+	Color         string                 `protobuf:"bytes,5,opt,name=color,proto3" json:"color,omitempty"`
+	Birthdate     string                 `protobuf:"bytes,6,opt,name=birthdate,proto3" json:"birthdate,omitempty"`
+	Address       string                 `protobuf:"bytes,7,opt,name=address,proto3" json:"address,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -215,6 +219,20 @@ func (x *GetUserDataResponse) GetUsername() string {
 	return ""
 }
 
+func (x *GetUserDataResponse) GetPhoto() string {
+	if x != nil {
+		return x.Photo
+	}
+	return ""
+}
+
+func (x *GetUserDataResponse) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
 func (x *GetUserDataResponse) GetMood() string {
 	if x != nil {
 		return x.Mood
@@ -225,6 +243,20 @@ func (x *GetUserDataResponse) GetMood() string {
 func (x *GetUserDataResponse) GetColor() string {
 	if x != nil {
 		return x.Color
+	}
+	return ""
+}
+
+func (x *GetUserDataResponse) GetBirthdate() string {
+	if x != nil {
+		return x.Birthdate
+	}
+	return ""
+}
+
+func (x *GetUserDataResponse) GetAddress() string {
+	if x != nil {
+		return x.Address
 	}
 	return ""
 }
@@ -273,6 +305,138 @@ func (x *UpdateUsernameRequest) GetNewUsername() string {
 	return ""
 }
 
+type UpdatePasswordRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	NewPassword   string                 `protobuf:"bytes,1,opt,name=new_password,json=newPassword,proto3" json:"new_password,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdatePasswordRequest) Reset() {
+	*x = UpdatePasswordRequest{}
+	mi := &file_proto_api_proto_msgTypes[5]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdatePasswordRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdatePasswordRequest) ProtoMessage() {}
+
+func (x *UpdatePasswordRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_api_proto_msgTypes[5]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdatePasswordRequest.ProtoReflect.Descriptor instead.
+func (*UpdatePasswordRequest) Descriptor() ([]byte, []int) {
+	return file_proto_api_proto_rawDescGZIP(), []int{5}
+}
+
+func (x *UpdatePasswordRequest) GetNewPassword() string {
+	if x != nil {
+		return x.NewPassword
+	}
+	return ""
+}
+
+type UpdatePhotoRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	NewPhoto      string                 `protobuf:"bytes,1,opt,name=new_photo,json=newPhoto,proto3" json:"new_photo,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdatePhotoRequest) Reset() {
+	*x = UpdatePhotoRequest{}
+	mi := &file_proto_api_proto_msgTypes[6]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdatePhotoRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdatePhotoRequest) ProtoMessage() {}
+
+func (x *UpdatePhotoRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_api_proto_msgTypes[6]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdatePhotoRequest.ProtoReflect.Descriptor instead.
+func (*UpdatePhotoRequest) Descriptor() ([]byte, []int) {
+	return file_proto_api_proto_rawDescGZIP(), []int{6}
+}
+
+func (x *UpdatePhotoRequest) GetNewPhoto() string {
+	if x != nil {
+		return x.NewPhoto
+	}
+	return ""
+}
+
+type UpdateDescriptionRequest struct {
+	state          protoimpl.MessageState `protogen:"open.v1"`
+	NewDescription string                 `protobuf:"bytes,1,opt,name=new_description,json=newDescription,proto3" json:"new_description,omitempty"`
+	unknownFields  protoimpl.UnknownFields
+	sizeCache      protoimpl.SizeCache
+}
+
+func (x *UpdateDescriptionRequest) Reset() {
+	*x = UpdateDescriptionRequest{}
+	mi := &file_proto_api_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateDescriptionRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateDescriptionRequest) ProtoMessage() {}
+
+func (x *UpdateDescriptionRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_api_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateDescriptionRequest.ProtoReflect.Descriptor instead.
+func (*UpdateDescriptionRequest) Descriptor() ([]byte, []int) {
+	return file_proto_api_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *UpdateDescriptionRequest) GetNewDescription() string {
+	if x != nil {
+		return x.NewDescription
+	}
+	return ""
+}
+
 type UpdateMoodRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	NewMood       string                 `protobuf:"bytes,1,opt,name=new_mood,json=newMood,proto3" json:"new_mood,omitempty"`
@@ -282,7 +446,7 @@ type UpdateMoodRequest struct {
 
 func (x *UpdateMoodRequest) Reset() {
 	*x = UpdateMoodRequest{}
-	mi := &file_proto_api_proto_msgTypes[5]
+	mi := &file_proto_api_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -294,7 +458,7 @@ func (x *UpdateMoodRequest) String() string {
 func (*UpdateMoodRequest) ProtoMessage() {}
 
 func (x *UpdateMoodRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_api_proto_msgTypes[5]
+	mi := &file_proto_api_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -307,7 +471,7 @@ func (x *UpdateMoodRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateMoodRequest.ProtoReflect.Descriptor instead.
 func (*UpdateMoodRequest) Descriptor() ([]byte, []int) {
-	return file_proto_api_proto_rawDescGZIP(), []int{5}
+	return file_proto_api_proto_rawDescGZIP(), []int{8}
 }
 
 func (x *UpdateMoodRequest) GetNewMood() string {
@@ -326,7 +490,7 @@ type UpdateColorRequest struct {
 
 func (x *UpdateColorRequest) Reset() {
 	*x = UpdateColorRequest{}
-	mi := &file_proto_api_proto_msgTypes[6]
+	mi := &file_proto_api_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -338,7 +502,7 @@ func (x *UpdateColorRequest) String() string {
 func (*UpdateColorRequest) ProtoMessage() {}
 
 func (x *UpdateColorRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_api_proto_msgTypes[6]
+	mi := &file_proto_api_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -351,12 +515,100 @@ func (x *UpdateColorRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateColorRequest.ProtoReflect.Descriptor instead.
 func (*UpdateColorRequest) Descriptor() ([]byte, []int) {
-	return file_proto_api_proto_rawDescGZIP(), []int{6}
+	return file_proto_api_proto_rawDescGZIP(), []int{9}
 }
 
 func (x *UpdateColorRequest) GetNewColor() string {
 	if x != nil {
 		return x.NewColor
+	}
+	return ""
+}
+
+type UpdateBirthdateRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	NewBirthdate  string                 `protobuf:"bytes,1,opt,name=new_birthdate,json=newBirthdate,proto3" json:"new_birthdate,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateBirthdateRequest) Reset() {
+	*x = UpdateBirthdateRequest{}
+	mi := &file_proto_api_proto_msgTypes[10]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateBirthdateRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateBirthdateRequest) ProtoMessage() {}
+
+func (x *UpdateBirthdateRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_api_proto_msgTypes[10]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateBirthdateRequest.ProtoReflect.Descriptor instead.
+func (*UpdateBirthdateRequest) Descriptor() ([]byte, []int) {
+	return file_proto_api_proto_rawDescGZIP(), []int{10}
+}
+
+func (x *UpdateBirthdateRequest) GetNewBirthdate() string {
+	if x != nil {
+		return x.NewBirthdate
+	}
+	return ""
+}
+
+type UpdateAddressRequest struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	NewAddress    string                 `protobuf:"bytes,1,opt,name=new_address,json=newAddress,proto3" json:"new_address,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *UpdateAddressRequest) Reset() {
+	*x = UpdateAddressRequest{}
+	mi := &file_proto_api_proto_msgTypes[11]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *UpdateAddressRequest) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*UpdateAddressRequest) ProtoMessage() {}
+
+func (x *UpdateAddressRequest) ProtoReflect() protoreflect.Message {
+	mi := &file_proto_api_proto_msgTypes[11]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use UpdateAddressRequest.ProtoReflect.Descriptor instead.
+func (*UpdateAddressRequest) Descriptor() ([]byte, []int) {
+	return file_proto_api_proto_rawDescGZIP(), []int{11}
+}
+
+func (x *UpdateAddressRequest) GetNewAddress() string {
+	if x != nil {
+		return x.NewAddress
 	}
 	return ""
 }
@@ -369,7 +621,7 @@ type Empty struct {
 
 func (x *Empty) Reset() {
 	*x = Empty{}
-	mi := &file_proto_api_proto_msgTypes[7]
+	mi := &file_proto_api_proto_msgTypes[12]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -381,7 +633,7 @@ func (x *Empty) String() string {
 func (*Empty) ProtoMessage() {}
 
 func (x *Empty) ProtoReflect() protoreflect.Message {
-	mi := &file_proto_api_proto_msgTypes[7]
+	mi := &file_proto_api_proto_msgTypes[12]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -394,7 +646,7 @@ func (x *Empty) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Empty.ProtoReflect.Descriptor instead.
 func (*Empty) Descriptor() ([]byte, []int) {
-	return file_proto_api_proto_rawDescGZIP(), []int{7}
+	return file_proto_api_proto_rawDescGZIP(), []int{12}
 }
 
 var File_proto_api_proto protoreflect.FileDescriptor
@@ -410,28 +662,48 @@ const file_proto_api_proto_rawDesc = "" +
 	"\bpassword\x18\x02 \x01(\tR\bpassword\".\n" +
 	"\rLoginResponse\x12\x1d\n" +
 	"\n" +
-	"session_id\x18\x01 \x01(\tR\tsessionId\"[\n" +
+	"session_id\x18\x01 \x01(\tR\tsessionId\"\xcb\x01\n" +
 	"\x13GetUserDataResponse\x12\x1a\n" +
-	"\busername\x18\x01 \x01(\tR\busername\x12\x12\n" +
-	"\x04mood\x18\x02 \x01(\tR\x04mood\x12\x14\n" +
-	"\x05color\x18\x03 \x01(\tR\x05color\":\n" +
+	"\busername\x18\x01 \x01(\tR\busername\x12\x14\n" +
+	"\x05photo\x18\x02 \x01(\tR\x05photo\x12 \n" +
+	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x12\n" +
+	"\x04mood\x18\x04 \x01(\tR\x04mood\x12\x14\n" +
+	"\x05color\x18\x05 \x01(\tR\x05color\x12\x1c\n" +
+	"\tbirthdate\x18\x06 \x01(\tR\tbirthdate\x12\x18\n" +
+	"\aaddress\x18\a \x01(\tR\aaddress\":\n" +
 	"\x15UpdateUsernameRequest\x12!\n" +
-	"\fnew_username\x18\x01 \x01(\tR\vnewUsername\".\n" +
+	"\fnew_username\x18\x01 \x01(\tR\vnewUsername\":\n" +
+	"\x15UpdatePasswordRequest\x12!\n" +
+	"\fnew_password\x18\x01 \x01(\tR\vnewPassword\"1\n" +
+	"\x12UpdatePhotoRequest\x12\x1b\n" +
+	"\tnew_photo\x18\x01 \x01(\tR\bnewPhoto\"C\n" +
+	"\x18UpdateDescriptionRequest\x12'\n" +
+	"\x0fnew_description\x18\x01 \x01(\tR\x0enewDescription\".\n" +
 	"\x11UpdateMoodRequest\x12\x19\n" +
 	"\bnew_mood\x18\x01 \x01(\tR\anewMood\"1\n" +
 	"\x12UpdateColorRequest\x12\x1b\n" +
-	"\tnew_color\x18\x01 \x01(\tR\bnewColor\"\a\n" +
-	"\x05Empty2\xa6\x03\n" +
+	"\tnew_color\x18\x01 \x01(\tR\bnewColor\"=\n" +
+	"\x16UpdateBirthdateRequest\x12#\n" +
+	"\rnew_birthdate\x18\x01 \x01(\tR\fnewBirthdate\"7\n" +
+	"\x14UpdateAddressRequest\x12\x1f\n" +
+	"\vnew_address\x18\x01 \x01(\tR\n" +
+	"newAddress\"\a\n" +
+	"\x05Empty2\xdc\x05\n" +
 	"\vChatService\x120\n" +
 	"\bRegister\x12\x16.proto.RegisterRequest\x1a\f.proto.Empty\x122\n" +
 	"\x05Login\x12\x13.proto.LoginRequest\x1a\x14.proto.LoginResponse\x12$\n" +
 	"\x06Logout\x12\f.proto.Empty\x1a\f.proto.Empty\x12&\n" +
 	"\bValidate\x12\f.proto.Empty\x1a\f.proto.Empty\x127\n" +
 	"\vGetUserData\x12\f.proto.Empty\x1a\x1a.proto.GetUserDataResponse\x12<\n" +
-	"\x0eUpdateUsername\x12\x1c.proto.UpdateUsernameRequest\x1a\f.proto.Empty\x124\n" +
+	"\x0eUpdateUsername\x12\x1c.proto.UpdateUsernameRequest\x1a\f.proto.Empty\x12<\n" +
+	"\x0eUpdatePassword\x12\x1c.proto.UpdatePasswordRequest\x1a\f.proto.Empty\x126\n" +
+	"\vUpdatePhoto\x12\x19.proto.UpdatePhotoRequest\x1a\f.proto.Empty\x12B\n" +
+	"\x11UpdateDescription\x12\x1f.proto.UpdateDescriptionRequest\x1a\f.proto.Empty\x124\n" +
 	"\n" +
 	"UpdateMood\x12\x18.proto.UpdateMoodRequest\x1a\f.proto.Empty\x126\n" +
-	"\vUpdateColor\x12\x19.proto.UpdateColorRequest\x1a\f.proto.EmptyB\x0eZ\f/proto;protob\x06proto3"
+	"\vUpdateColor\x12\x19.proto.UpdateColorRequest\x1a\f.proto.Empty\x12>\n" +
+	"\x0fUpdateBirthdate\x12\x1d.proto.UpdateBirthdateRequest\x1a\f.proto.Empty\x12:\n" +
+	"\rUpdateAddress\x12\x1b.proto.UpdateAddressRequest\x1a\f.proto.EmptyB\x0eZ\f/proto;protob\x06proto3"
 
 var (
 	file_proto_api_proto_rawDescOnce sync.Once
@@ -445,39 +717,54 @@ func file_proto_api_proto_rawDescGZIP() []byte {
 	return file_proto_api_proto_rawDescData
 }
 
-var file_proto_api_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_proto_api_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
 var file_proto_api_proto_goTypes = []any{
-	(*RegisterRequest)(nil),       // 0: proto.RegisterRequest
-	(*LoginRequest)(nil),          // 1: proto.LoginRequest
-	(*LoginResponse)(nil),         // 2: proto.LoginResponse
-	(*GetUserDataResponse)(nil),   // 3: proto.GetUserDataResponse
-	(*UpdateUsernameRequest)(nil), // 4: proto.UpdateUsernameRequest
-	(*UpdateMoodRequest)(nil),     // 5: proto.UpdateMoodRequest
-	(*UpdateColorRequest)(nil),    // 6: proto.UpdateColorRequest
-	(*Empty)(nil),                 // 7: proto.Empty
+	(*RegisterRequest)(nil),          // 0: proto.RegisterRequest
+	(*LoginRequest)(nil),             // 1: proto.LoginRequest
+	(*LoginResponse)(nil),            // 2: proto.LoginResponse
+	(*GetUserDataResponse)(nil),      // 3: proto.GetUserDataResponse
+	(*UpdateUsernameRequest)(nil),    // 4: proto.UpdateUsernameRequest
+	(*UpdatePasswordRequest)(nil),    // 5: proto.UpdatePasswordRequest
+	(*UpdatePhotoRequest)(nil),       // 6: proto.UpdatePhotoRequest
+	(*UpdateDescriptionRequest)(nil), // 7: proto.UpdateDescriptionRequest
+	(*UpdateMoodRequest)(nil),        // 8: proto.UpdateMoodRequest
+	(*UpdateColorRequest)(nil),       // 9: proto.UpdateColorRequest
+	(*UpdateBirthdateRequest)(nil),   // 10: proto.UpdateBirthdateRequest
+	(*UpdateAddressRequest)(nil),     // 11: proto.UpdateAddressRequest
+	(*Empty)(nil),                    // 12: proto.Empty
 }
 var file_proto_api_proto_depIdxs = []int32{
-	0, // 0: proto.ChatService.Register:input_type -> proto.RegisterRequest
-	1, // 1: proto.ChatService.Login:input_type -> proto.LoginRequest
-	7, // 2: proto.ChatService.Logout:input_type -> proto.Empty
-	7, // 3: proto.ChatService.Validate:input_type -> proto.Empty
-	7, // 4: proto.ChatService.GetUserData:input_type -> proto.Empty
-	4, // 5: proto.ChatService.UpdateUsername:input_type -> proto.UpdateUsernameRequest
-	5, // 6: proto.ChatService.UpdateMood:input_type -> proto.UpdateMoodRequest
-	6, // 7: proto.ChatService.UpdateColor:input_type -> proto.UpdateColorRequest
-	7, // 8: proto.ChatService.Register:output_type -> proto.Empty
-	2, // 9: proto.ChatService.Login:output_type -> proto.LoginResponse
-	7, // 10: proto.ChatService.Logout:output_type -> proto.Empty
-	7, // 11: proto.ChatService.Validate:output_type -> proto.Empty
-	3, // 12: proto.ChatService.GetUserData:output_type -> proto.GetUserDataResponse
-	7, // 13: proto.ChatService.UpdateUsername:output_type -> proto.Empty
-	7, // 14: proto.ChatService.UpdateMood:output_type -> proto.Empty
-	7, // 15: proto.ChatService.UpdateColor:output_type -> proto.Empty
-	8, // [8:16] is the sub-list for method output_type
-	0, // [0:8] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: proto.ChatService.Register:input_type -> proto.RegisterRequest
+	1,  // 1: proto.ChatService.Login:input_type -> proto.LoginRequest
+	12, // 2: proto.ChatService.Logout:input_type -> proto.Empty
+	12, // 3: proto.ChatService.Validate:input_type -> proto.Empty
+	12, // 4: proto.ChatService.GetUserData:input_type -> proto.Empty
+	4,  // 5: proto.ChatService.UpdateUsername:input_type -> proto.UpdateUsernameRequest
+	5,  // 6: proto.ChatService.UpdatePassword:input_type -> proto.UpdatePasswordRequest
+	6,  // 7: proto.ChatService.UpdatePhoto:input_type -> proto.UpdatePhotoRequest
+	7,  // 8: proto.ChatService.UpdateDescription:input_type -> proto.UpdateDescriptionRequest
+	8,  // 9: proto.ChatService.UpdateMood:input_type -> proto.UpdateMoodRequest
+	9,  // 10: proto.ChatService.UpdateColor:input_type -> proto.UpdateColorRequest
+	10, // 11: proto.ChatService.UpdateBirthdate:input_type -> proto.UpdateBirthdateRequest
+	11, // 12: proto.ChatService.UpdateAddress:input_type -> proto.UpdateAddressRequest
+	12, // 13: proto.ChatService.Register:output_type -> proto.Empty
+	2,  // 14: proto.ChatService.Login:output_type -> proto.LoginResponse
+	12, // 15: proto.ChatService.Logout:output_type -> proto.Empty
+	12, // 16: proto.ChatService.Validate:output_type -> proto.Empty
+	3,  // 17: proto.ChatService.GetUserData:output_type -> proto.GetUserDataResponse
+	12, // 18: proto.ChatService.UpdateUsername:output_type -> proto.Empty
+	12, // 19: proto.ChatService.UpdatePassword:output_type -> proto.Empty
+	12, // 20: proto.ChatService.UpdatePhoto:output_type -> proto.Empty
+	12, // 21: proto.ChatService.UpdateDescription:output_type -> proto.Empty
+	12, // 22: proto.ChatService.UpdateMood:output_type -> proto.Empty
+	12, // 23: proto.ChatService.UpdateColor:output_type -> proto.Empty
+	12, // 24: proto.ChatService.UpdateBirthdate:output_type -> proto.Empty
+	12, // 25: proto.ChatService.UpdateAddress:output_type -> proto.Empty
+	13, // [13:26] is the sub-list for method output_type
+	0,  // [0:13] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_proto_api_proto_init() }
@@ -491,7 +778,7 @@ func file_proto_api_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_proto_api_proto_rawDesc), len(file_proto_api_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   8,
+			NumMessages:   13,
 			NumExtensions: 0,
 			NumServices:   1,
 		},
