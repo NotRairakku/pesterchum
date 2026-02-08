@@ -28,7 +28,8 @@ func (s *Service) Register(ctx context.Context, r *proto.RegisterRequest) (*prot
 	if err != nil {
 		return nil, err
 	}
-	if err := s.repo.CreateUser(ctx, r.Username, hash, color); err != nil {
+	uid := uuid.New().String()
+	if err := s.repo.CreateUser(ctx, uid, r.Username, hash, color); err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
 			return nil, status.Error(codes.AlreadyExists, "username already taken")

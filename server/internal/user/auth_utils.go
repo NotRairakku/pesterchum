@@ -8,22 +8,22 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func (r *Repo) CreateUser(ctx context.Context, u, h, c string) error {
+func (r *Repo) CreateUser(ctx context.Context, uid, u, h, c string) error {
 	_, err := r.db.Exec(ctx,
-		"INSERT INTO users(username, password_hash, color) VALUES ($1, $2, $3)",
-		u, h, c,
+		"INSERT INTO users(user_id, username, password_hash, color, created_at, updated_at) VALUES ($1, $2, $3, $4, now(), now())",
+		uid, u, h, c,
 	)
 	return err
 }
 
-func (r *Repo) GetUser(ctx context.Context, u string) (int64, string, error) {
-	var id int64
+func (r *Repo) GetUser(ctx context.Context, u string) (string, string, error) {
+	var uid string
 	var hash string
 	err := r.db.QueryRow(ctx,
-		"SELECT id, password_hash FROM users WHERE username = $1",
+		"SELECT user_id, password_hash FROM users WHERE username = $1",
 		u,
-	).Scan(&id, &hash)
-	return id, hash, err
+	).Scan(&uid, &hash)
+	return uid, hash, err
 }
 
 func HashPassword(pw string) (string, error) {

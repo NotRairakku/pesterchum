@@ -5,9 +5,9 @@ import (
 	"errors"
 )
 
-func (r *Repo) CreateSession(ctx context.Context, sid string, uid int64) error {
+func (r *Repo) CreateSession(ctx context.Context, sid string, uid string) error {
 	_, err := r.db.Exec(ctx,
-		"INSERT INTO sessions(id, user_id, expires_at) VALUES ($1, $2, now()+interval '7 days') ",
+		"INSERT INTO sessions(session_id, user_id, expires_at) VALUES ($1, $2, now()+interval '7 days') ",
 		sid, uid,
 	)
 	return err
@@ -16,7 +16,7 @@ func (r *Repo) CreateSession(ctx context.Context, sid string, uid int64) error {
 func (r *Repo) CheckSession(ctx context.Context, sid string) error {
 	var exists bool
 	err := r.db.QueryRow(ctx,
-		"SELECT EXISTS (SELECT 1 FROM sessions WHERE id = $1 AND expires_at > now())",
+		"SELECT EXISTS (SELECT 1 FROM sessions WHERE session_id = $1 AND expires_at > now())",
 		sid,
 	).Scan(&exists)
 
@@ -28,20 +28,20 @@ func (r *Repo) CheckSession(ctx context.Context, sid string) error {
 
 func (r *Repo) DeleteSession(ctx context.Context, sid string) error {
 	_, err := r.db.Exec(ctx,
-		"DELETE FROM sessions WHERE id = $1",
+		"DELETE FROM sessions WHERE session_id = $1",
 		sid,
 	)
 	return err
 }
 
-func (r *Repo) GetUserIDBySession(ctx context.Context, sid string) (int64, error) {
-	var uid int64
+func (r *Repo) GetUserIDBySession(ctx context.Context, sid string) (string, error) {
+	var uid string
 	err := r.db.QueryRow(ctx,
-		"SELECT user_id FROM sessions WHERE id = $1 AND expires_at > now()",
+		"SELECT user_id FROM sessions WHERE session_id = $1 AND expires_at > now()",
 		sid,
 	).Scan(&uid)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 	return uid, nil
 }

@@ -5,6 +5,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"log"
 	"pesterchum/server/internal/session"
 	"pesterchum/server/proto"
 	"sync"
@@ -48,26 +49,23 @@ func sessionFromCtx(ctx context.Context) (string, error) {
 }
 
 func (s *Service) GetUserData(ctx context.Context, _ *proto.Empty) (*proto.GetUserDataResponse, error) {
-	md, ok := metadata.FromIncomingContext(ctx)
+	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
-		return nil, status.Error(codes.Unauthenticated, "no metadata")
+		return nil, status.Error(codes.Unauthenticated, "no user id")
 	}
-	sids := md.Get("session-id")
-	if len(sids) == 0 {
-		return nil, status.Error(codes.Unauthenticated, "no session")
-	}
-	uid, err := s.repo.GetUserIDBySession(ctx, sids[0])
-	if err != nil {
-		return nil, status.Error(codes.Unauthenticated, "invalid session")
-	}
+
 	var username, photo, description, mood, color, birthdate, address string
-	err = s.repo.db.QueryRow(ctx,
-		"SELECT username, photo, description, mood, color, birthdate, address FROM users WHERE id = $1",
+	err := s.repo.db.QueryRow(ctx,
+		`SELECT username, photo, description, mood, color, birthdate, address
+         FROM users WHERE user_id = $1`,
 		uid,
 	).Scan(&username, &photo, &description, &mood, &color, &birthdate, &address)
+
 	if err != nil {
+		log.Printf("GetUserData db error: %v", err)
 		return nil, status.Error(codes.Internal, "failed to get user data")
 	}
+
 	return &proto.GetUserDataResponse{
 		Username:    username,
 		Photo:       photo,
@@ -80,7 +78,7 @@ func (s *Service) GetUserData(ctx context.Context, _ *proto.Empty) (*proto.GetUs
 }
 
 func (s *Service) UpdateUsername(ctx context.Context, req *proto.UpdateUsernameRequest) (*proto.Empty, error) {
-	uid, ok := ctx.Value(session.UserIDKey).(int64)
+	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
 	}
@@ -89,7 +87,7 @@ func (s *Service) UpdateUsername(ctx context.Context, req *proto.UpdateUsernameR
 	}
 	var exists bool
 	err := s.repo.db.QueryRow(ctx,
-		"SELECT EXISTS(SELECT 1 FROM users WHERE username = $1 AND id != $2)",
+		"SELECT EXISTS(SELECT 1 FROM users WHERE username = $1 AND user_id != $2)",
 		req.NewUsername, uid,
 	).Scan(&exists)
 	if err != nil {
@@ -98,7 +96,7 @@ func (s *Service) UpdateUsername(ctx context.Context, req *proto.UpdateUsernameR
 	if exists {
 		return nil, status.Error(codes.AlreadyExists, "username taken")
 	}
-	_, err = s.repo.db.Exec(ctx, "UPDATE users SET username = $1 WHERE id = $2",
+	_, err = s.repo.db.Exec(ctx, "UPDATE users SET username = $1 WHERE user_id = $2",
 		req.NewUsername, uid,
 	)
 	if err != nil {
@@ -114,7 +112,7 @@ func (s *Service) UpdateUsername(ctx context.Context, req *proto.UpdateUsernameR
 //}
 
 func (s *Service) UpdateDescription(ctx context.Context, req *proto.UpdateDescriptionRequest) (*proto.Empty, error) {
-	uid, ok := ctx.Value(session.UserIDKey).(int64)
+	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
 	}
@@ -122,7 +120,7 @@ func (s *Service) UpdateDescription(ctx context.Context, req *proto.UpdateDescri
 	//	return nil, status.Error(codes.InvalidArgument, "empty description")
 	//}
 	_, err := s.repo.db.Exec(ctx,
-		"UPDATE users SET description = $1 WHERE id = $2",
+		"UPDATE users SET description = $1 WHERE user_id = $2",
 		req.NewDescription, uid,
 	)
 	if err != nil {
@@ -132,7 +130,7 @@ func (s *Service) UpdateDescription(ctx context.Context, req *proto.UpdateDescri
 }
 
 func (s *Service) UpdateMood(ctx context.Context, req *proto.UpdateMoodRequest) (*proto.Empty, error) {
-	uid, ok := ctx.Value(session.UserIDKey).(int64)
+	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
 	}
@@ -140,7 +138,7 @@ func (s *Service) UpdateMood(ctx context.Context, req *proto.UpdateMoodRequest) 
 		return nil, status.Error(codes.InvalidArgument, "empty mood")
 	}
 	_, err := s.repo.db.Exec(ctx,
-		"UPDATE users SET mood = $1 WHERE id = $2",
+		"UPDATE users SET mood = $1 WHERE user_id = $2",
 		req.NewMood, uid,
 	)
 	if err != nil {
@@ -150,7 +148,7 @@ func (s *Service) UpdateMood(ctx context.Context, req *proto.UpdateMoodRequest) 
 }
 
 func (s *Service) UpdateColor(ctx context.Context, req *proto.UpdateColorRequest) (*proto.Empty, error) {
-	uid, ok := ctx.Value(session.UserIDKey).(int64)
+	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
 	}
@@ -158,7 +156,7 @@ func (s *Service) UpdateColor(ctx context.Context, req *proto.UpdateColorRequest
 		return nil, status.Error(codes.InvalidArgument, "empty color")
 	}
 	_, err := s.repo.db.Exec(ctx,
-		"UPDATE users SET color = $1 WHERE id = $2",
+		"UPDATE users SET color = $1 WHERE user_id = $2",
 		req.NewColor, uid,
 	)
 	if err != nil {
@@ -168,7 +166,7 @@ func (s *Service) UpdateColor(ctx context.Context, req *proto.UpdateColorRequest
 }
 
 func (s *Service) UpdateBirthdate(ctx context.Context, req *proto.UpdateBirthdateRequest) (*proto.Empty, error) {
-	uid, ok := ctx.Value(session.UserIDKey).(int64)
+	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
 	}
@@ -176,7 +174,7 @@ func (s *Service) UpdateBirthdate(ctx context.Context, req *proto.UpdateBirthdat
 	//	return nil, status.Error(codes.InvalidArgument, "empty birthdate")
 	//}
 	_, err := s.repo.db.Exec(ctx,
-		"UPDATE users SET birthdate = $1 WHERE id = $2",
+		"UPDATE users SET birthdate = $1 WHERE user_id = $2",
 		req.NewBirthdate, uid,
 	)
 	if err != nil {
@@ -186,7 +184,7 @@ func (s *Service) UpdateBirthdate(ctx context.Context, req *proto.UpdateBirthdat
 }
 
 func (s *Service) UpdateAddress(ctx context.Context, req *proto.UpdateAddressRequest) (*proto.Empty, error) {
-	uid, ok := ctx.Value(session.UserIDKey).(int64)
+	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
 	}
@@ -194,7 +192,7 @@ func (s *Service) UpdateAddress(ctx context.Context, req *proto.UpdateAddressReq
 	//	return nil, status.Error(codes.InvalidArgument, "empty address")
 	//}
 	_, err := s.repo.db.Exec(ctx,
-		"UPDATE users SET address = $1 WHERE id = $2",
+		"UPDATE users SET address = $1 WHERE user_id = $2",
 		req.NewAddress, uid,
 	)
 	if err != nil {
