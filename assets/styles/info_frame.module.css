@@ -1,0 +1,49 @@
+.info {
+    background-color: var(--color-app-bg);
+    padding: 7px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+.info__container {
+    display: flex;
+    flex-direction: row;
+}
+
+.info__container_text {
+    width: 100%;
+    display: flex;
+    background: #4e4eb1;
+    color: var(--color-text-dark);
+    font-size: var(--font-size-md);
+    justify-content: center;
+    margin: 0 auto;
+    font-family: var(--font-text), sans-serif;
+    font-weight: bold;
+    padding: 4px 0;
+}
+
+.info__container_photo {}
+
+.photo__img {
+    width: 160px;
+    height: 160px;
+    border: var(--radius-base) solid var(--color-border-primary);
+}
+
+.info__container_menu {}
+
+.menu__message {}
+
+.menu__message_text {}
+
+.menu__container {}
+
+.menu__container_bio {}
+
+.bio__container {}
+
+.bio__container_img {}
+
+.bio__container_text {}
