@@ -1,7 +1,7 @@
 .topbar {
     width: 100%;
     display: flex;
-    background: var(--color-app-yellow);
+    background: var(--color-topbar-bg);
     justify-content: space-between;
     align-items: center;
     padding: 8px 12px;
@@ -12,7 +12,7 @@
 
 .topbar__container {
     display: flex;
-    gap: var(--spacing-base);
+    gap: var(--spacing-app-base);
 }
 
 .topbar__container_title {
@@ -45,11 +45,20 @@
     pointer-events: auto;
     cursor: pointer;
     user-select: none;
-    background: var(--color-app-yellow);
+    background: var(--colot-topbar-button);
     font-size: var(--font-size-md);
-    border: 1px solid var(--color-button-border);
     border-radius: var(--radius-button);
+    box-shadow: 1px 1px 1px 1px rgba(196, 138, 0, 0.5);
+    transition: all 0.5s ease;
     --wails-draggable: no-drag;
+}
+
+.topbar__container_btn:hover {
+    background: var(--color-topbar-button-hover);
+}
+
+.topbar__container_btn:active {
+    background: var(--color-topbar-button-active);
 }
 
 .bnt__icon {

@@ -4,7 +4,7 @@ import minimize_btn_icon from '../../../../assets/img/iu/minimize_btn_icon.png'
 import pesterchum_logo from '../../../../assets/img/pesterchum-logo.png'
 import { WindowMinimise, Quit } from "../../wailsjs/runtime/runtime";
 
-export default function TopBar({ setStatus, user }) {
+export default function TopBar({ setAppStatus, user }) {
 
     return (
         <div className={styles.topbar}>
@@ -12,7 +12,7 @@ export default function TopBar({ setStatus, user }) {
                 <div className={styles.topbar__container_title}>
                     <img className={styles.topbar__container_image} src={pesterchum_logo}/>
                     {user && <p className={styles.topbar__container_text} onClick={() =>
-                        setStatus(prev => prev === "profile" ? "client" : "profile")}>
+                        setAppStatus(prev => prev === "profile" ? "client" : "profile")}>
                         PESTERCHUM</p>}
                 </div>
             </div>

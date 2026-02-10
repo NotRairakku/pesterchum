@@ -1,20 +1,16 @@
-import { useState } from "react";
+ import { useState } from "react";
 import { Login, Register } from "../../wailsjs/go/auth/Service.js";
-import { Quit, WindowMinimise } from "../../wailsjs/runtime/runtime.js";
 
 import styles from "../../../../assets/styles/app.module.css";
-
 import logo from "../../../../assets/img/pesterchum-logo.png";
-import minimize_icon from "../../../../assets/img/iu/minimize_icon.png";
-import close_icon from "../../../../assets/img/iu/close_icon.png";
-import minimize_btn_icon from "../../../../assets/img/iu/minimize_btn_icon.png";
-import close_btn_icon from "../../../../assets/img/iu/close_btn_icon.png";
-import TopBar from "./TopBar.jsx";
+import random_name_ico from "../../../../assets/img/mood/mood_chipper.png";
+import hide_password from "../../../../assets/img/mood/mood_chipper.png";
 
 export default function Auth({ loadUser }) {
     const [authtype, setAuthtype] = useState("login");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [inpytType, setInpytType] = useState('password');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -32,7 +28,7 @@ export default function Auth({ loadUser }) {
         try {
             if (authtype === "login") {
                 await Login(username, password);
-                console.log("[Auth] Login successful → loading user");
+                console.log("[Auth] Login successful to loading user");
                 await loadUser();
             } else {
                 await Register(username, password);
@@ -48,23 +44,37 @@ export default function Auth({ loadUser }) {
         }
     };
 
+    const GenRandomName = () => {
+        console.log('ok')
+    }
+
     return (
         <div className={styles.auth}>
-            <TopBar/>
-
             <div className={styles.auth__container}>
                 <img className={styles.auth__container_image} src={logo} alt="logo" />
-                <p className={styles.auth__container_title}>{authtype === "login" ? "Login to Pesterchum" : "Register to Pesterchum"}</p>
+                <p className={styles.auth__container_title}>{authtype === "login" ? "LOGIN to PESTERCHUM" : "REGISTER to PESTERCHUM"}</p>
                 <form className={styles.auth__container_from} onSubmit={AuthUser}>
-                    <input className={styles.auth__container_from_input} placeholder="Your cool nickname"
-                           value={username} onChange={(e) =>
-                        setUsername(e.target.value)} disabled={loading}/>
-                    <input className={styles.auth__container_from_input} placeholder="Password"
-                           type="password" value={password} onChange={(e) =>
-                        setPassword(e.target.value)} disabled={loading}/>
+                    <div className={styles.container_from}>
+                        <input className={styles.container_from_input} placeholder="Your cool nickname"
+                               value={username} onChange={(e) =>
+                            setUsername(e.target.value)} disabled={loading}/>
+                        <div className={styles.container_from_content}>
+                            <img className={styles.content__img} src={random_name_ico} onClick={GenRandomName}/>
+                        </div>
+                    </div>
+                    <div className={styles.container_from}>
+                        <input className={styles.container_from_input} placeholder="Password"
+                               type={inpytType} value={password} onChange={(e) =>
+                            setPassword(e.target.value)} disabled={loading}/>
+                        <div className={styles.container_from_content}>
+                            <img className={styles.content__img} src={hide_password} onClick={() => {
+                                setInpytType(prev => (prev === 'password' ? 'text' : 'password'))
+                            }}/>
+                        </div>
+                    </div>
                     {error && <p className={styles.auth__container_from_error}>{error}</p>}
                     <button type="submit" className={styles.auth__container_from_btn} disabled={loading}>
-                        {loading ? "Loading..." : (authtype === "login" ? "Login" : "Register")}</button>
+                        {loading ? "Loading..." : (authtype === "login" ? "LOGIN!" : "REGISTER!")}</button>
                 </form>
                 {authtype === "login" ? (
                     <p className={styles.auth__container_text} onClick={() =>

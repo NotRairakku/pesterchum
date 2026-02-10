@@ -15,7 +15,7 @@
     width: 100%;
     display: flex;
     background: #4e4eb1;
-    color: var(--color-text-dark);
+    color: var(--color-text-black);
     font-size: var(--font-size-md);
     justify-content: center;
     margin: 0 auto;
@@ -29,7 +29,7 @@
 .photo__img {
     width: 160px;
     height: 160px;
-    border: var(--radius-base) solid var(--color-border-primary);
+    border: var(--radius-app-base) solid var(--color-border-primary);
 }
 
 .info__container_menu {}

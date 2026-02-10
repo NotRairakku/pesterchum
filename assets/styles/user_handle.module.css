@@ -2,8 +2,8 @@
 
 .handle__container {
     display: flex;
-    background: var(--color-block-bg);
-    border: var(--radius-base) solid var(--color-border-primary);
+    background: var(--color-menu-bg);
+    border: var(--radius-app-base) solid var(--color-app-border);
     align-items: center;
 }
 
@@ -22,9 +22,9 @@
     flex: 1 1 auto;
     min-width: 0;
     height: 40px;
-    background: var(--color-block-bg);
+    background: var(--color-menu-bg);
     padding: 1px 4px 1px 4px;
-    color: var(--color-text-light);
+    color: var(--color-text-white);
     border: none;
     font-size: var(--font-size-md);
     font-family: var(--font-text), sans-serif;

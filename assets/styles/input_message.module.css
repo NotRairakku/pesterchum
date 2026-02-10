@@ -1,5 +1,5 @@
 .input__container {
-    padding: 0 var(--spacing-base) var(--spacing-base);
+    padding: 0 var(--spacing-app-base) var(--spacing-app-base);
 }
 
 .input__container_form {
@@ -10,16 +10,16 @@
 
 .input__container_input {
     width: 100%;
-    border: var(--radius-base) solid var(--color-app-bg-brownish);
+    border: var(--radius-app-base) solid var(--color-app-bg-border-brown);
     outline: none;
     background: var(--color-border-light);
-    color: var(--color-text-dark);
-    padding: 0 var(--spacing-base);
+    color: var(--color-text-black);
+    padding: 0 var(--spacing-app-base);
 }
 
 .input__container_btn {
     background: var(--color-border-primary);
-    border: var(--radius-base) solid var(--color-app-bg-brownish);
+    border: var(--radius-app-base) solid var(--color-app-bg-border-brown);
     font-size: var(--font-size-sm);
     padding: 0 8px;
     cursor: pointer;

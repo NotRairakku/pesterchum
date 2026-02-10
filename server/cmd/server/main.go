@@ -31,7 +31,7 @@ func main() {
 		log.Fatalf("[server] failed to load %s: %v", envFile, err)
 	}
 
-	pool := db.NewPostgres()
+	pool := db.NewDB()
 
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {

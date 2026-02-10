@@ -11,22 +11,24 @@
 @import "./user_handle.module.css";
 @import "./info_frame.module.css";
 @import "./profile.module.css";
+@import "./profile_field.module.css";
+@import "./profile_requests.module.css";
+@import "./profile_settings.module.css";
 
 .app {
     width: 460px !important;
-    height: auto !important;
+    height: 716px !important;
     background: var(--color-app-bg);
 }
 
 .app__container {
-    border-right: var(--spacing-app-border) solid var(--color-border-primary);
-    border-left: var(--spacing-app-border) solid var(--color-border-primary);
-    border-bottom: var(--spacing-app-border) solid var(--color-border-primary);
+    border: var(--spacing-app-border) solid var(--color-app-border);
     padding: 0 14px 14px;
     display: flex;
     flex-direction: column;
     gap: var(--spacing-app);
-
+    width: 100%;
+    height: calc(100% - 48px);
 }
 
 .section__title {

@@ -8,7 +8,7 @@ import (
 	"time"
 )
 
-func NewPostgres() *pgxpool.Pool {
+func NewDB() *pgxpool.Pool {
 	dsn := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s",
 		os.Getenv("DB_USER"),

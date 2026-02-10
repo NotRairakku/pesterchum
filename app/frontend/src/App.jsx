@@ -11,7 +11,7 @@ import default_photo from "../../../assets/dev/john.jpg";
 
 
 export default function App() {
-    const [status, setStatus] = useState("loading");
+    const [appStatus, setAppAppStatus] = useState("loading");
     const [user, setUser] = useState(null);
     const [initDone, setInitDone] = useState(false);
 
@@ -32,11 +32,11 @@ export default function App() {
 
             console.log("[App] User loaded:", userData);
             setUser(userData);
-            setStatus("client");
+            setAppAppStatus("client");
         } catch (err) {
             console.error("[App] loadUser error → user", err);
             setUser(null);
-            setStatus("auth");
+            setAppAppStatus("auth");
         }
     };
 
@@ -50,12 +50,12 @@ export default function App() {
                 const ok = await HasSession();
                 console.log("[App] HasSession:", ok);
                 if (!ok) {
-                    setStatus("auth");
+                    setAppAppStatus("auth");
                     return;
                 }
                 await loadUser();
             } catch {
-                setStatus("auth");
+                setAppAppStatus("auth");
             }
         })();
     }, []);
@@ -63,15 +63,15 @@ export default function App() {
     const STATUS_MAP = {
         login: <Loader />,
         client: <Client user={user} setUser={setUser}/>,
-        profile: <Profile setStatus={setStatus} user={user} setUser={setUser}/>,
+        profile: <Profile setAppStatus={setAppAppStatus} user={user} setUser={setUser}/>,
         auth: <Auth loadUser={loadUser}/>,
     }
 
     return (
         <div className={style.app}>
-            <TopBar setStatus={setStatus} user={user} />
+            <TopBar setAppStatus={setAppAppStatus} user={user} />
             <div className={style.app__container}>
-                {STATUS_MAP[status]}
+                {STATUS_MAP[appStatus]}
             </div>
         </div>
     );
