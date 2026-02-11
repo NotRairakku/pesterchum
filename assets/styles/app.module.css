@@ -1,6 +1,38 @@
+@import "./auth.module.css";
+@import "./banner.module.css";
+@import "./chat.module.css";
+@import "./input_message.module.css";
+@import "./user_list.module.css";
+@import "./loader.module.css";
+@import "./message_frame.module.css";
+@import "./messages.module.css";
+@import "./mood_choice.module.css";
+@import "./top_bar.module.css";
+@import "./user_handle.module.css";
+@import "./info_frame.module.css";
+@import "./profile.module.css";
+@import "./profile_field.module.css";
+@import "./profile_requests.module.css";
+@import "./profile_settings.module.css";
+
 .app {
     width: 460px !important;
-    height: auto !important;
+    height: 716px !important;
     background: var(--color-app-bg);
-    border: var(--radius-base) solid var(--color-border-primary);
+}
+
+.app__container {
+    border: var(--spacing-app-border) solid var(--color-app-border);
+    padding: 0 14px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-app);
+    width: 100%;
+    height: calc(100% - 48px);
+}
+
+.section__title {
+    user-select: none;
+    font-size: var(--font-size-md);
+    margin-bottom: 4px;
 }

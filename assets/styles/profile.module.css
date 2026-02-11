@@ -1,0 +1,66 @@
+.profile {
+    flex: 1 1 auto;
+    width: 100%;
+    padding-top: 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.profile > .profile__section {
+    flex: 0 0 auto;
+}
+
+.profile__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-app-base);
+}
+
+.profile__container_user {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: var(--spacing-app-base);
+}
+
+.user__photo {
+    width: 160px;
+    height: 160px;
+    border: var(--radius-app-base) solid var(--color-app-border);
+}
+
+.user__container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-app-base);
+}
+
+.user__container_name {
+    font-size: var(--font-size-md);
+}
+
+.user__container_input {}
+
+.user__container_color {}
+
+.container_color_status {}
+
+.container_color_input {}
+
+
+.profile__container_menu {
+    display: flex;
+    flex-direction: row;
+    gap: var(--spacing-app-base);
+}
+
+.menu__button {
+    cursor: pointer;
+}
+
+.menu__button_text {}
+
+.profile__section {
+    flex: 1 1 auto;
+    width: 100%;
+}

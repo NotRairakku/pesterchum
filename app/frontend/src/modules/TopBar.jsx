@@ -1,26 +1,28 @@
-import style from '../../../../assets/styles/topbar.module.css';
-import close_icon from '../../../../assets/img/close_icon.png'
-import minimize_icon from '../../../../assets/img/minimize_icon.png'
+import styles from '../../../../assets/styles/app.module.css'
+import close_btn_icon from '../../../../assets/img/iu/close_btn_icon.png'
+import minimize_btn_icon from '../../../../assets/img/iu/minimize_btn_icon.png'
+import pesterchum_logo from '../../../../assets/img/pesterchum-logo.png'
 import { WindowMinimise, Quit } from "../../wailsjs/runtime/runtime";
 
-export default function TopBar({ setStatus }) {
+export default function TopBar({ setAppStatus, user }) {
 
     return (
-        <div className={style.topbar}>
-            <div className={style.topbar__container}>
-                <div className={style.topbar__container__btns}>
-                    <p className={style.topbar__container_btn} onClick={() => setStatus("client")}>CLIENT</p>
-                    <p className={style.topbar__container_btn} onClick={() => setStatus("profile")}>PROFILE</p>
-                    <p className={style.topbar__container_btn} onClick={() => setStatus("help")}>HELP</p>
+        <div className={styles.topbar}>
+            <div className={styles.topbar__container}>
+                <div className={styles.topbar__container_title}>
+                    <img className={styles.topbar__container_image} src={pesterchum_logo}/>
+                    {user && <p className={styles.topbar__container_text} onClick={() =>
+                        setAppStatus(prev => prev === "profile" ? "client" : "profile")}>
+                        PESTERCHUM</p>}
                 </div>
             </div>
 
-            <div className={style.topbar__container}>
-                <div className={style.topbar__container_btn}  onClick={WindowMinimise}>
-                    <img className={style.bnt__icon} src={minimize_icon} alt={'-'}/>
+            <div className={styles.topbar__container}>
+                <div className={styles.topbar__container_btn}  onClick={WindowMinimise}>
+                    <img className={styles.bnt__icon} src={minimize_btn_icon} alt={'-'}/>
                 </div>
-                <div className={style.topbar__container_btn}  onClick={Quit}>
-                    <img className={style.bnt__icon} src={close_icon} alt={'X'}/>
+                <div className={styles.topbar__container_btn}  onClick={Quit}>
+                    <img className={styles.bnt__icon} src={close_btn_icon} alt={'X'}/>
                 </div>
             </div>
         </div>

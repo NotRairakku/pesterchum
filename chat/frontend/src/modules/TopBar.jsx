@@ -1,27 +1,25 @@
-import style from '../../../../assets/styles/topbar.module.css';
-import close_icon from '../../../../assets/img/close_icon.png'
-import minimize_icon from '../../../../assets/img/minimize_icon.png'
+import styles from '../../../../assets/styles/app.module.css';
+
+import close_btn_icon from '../../../../assets/img/iu/close_btn_icon.png'
+import minimize_btn_icon from '../../../../assets/img/iu/minimize_btn_icon.png'
 import mood_icon from '../../../../assets/img/mood/mood_chipper.png'
 
-import {
-    WindowMinimise,
-    Quit
-} from "../../wailsjs/runtime/runtime";
+import { WindowMinimise, Quit } from "../../wailsjs/runtime/runtime";
 
-export default function TopBar({DisplayUserName}) {
+export default function TopBar() {
 
     return (
-        <div className={style.topbar}>
-            <div className={style.topbar__container_title}>
+        <div className={styles.topbar}>
+            <div className={styles.topbar__container_title}>
                 <img src={mood_icon} alt={'mood'}/>
-                <p className={style.topbar__container_text}>{DisplayUserName}</p>
+                <p className={styles.topbar__container_text}>PESTERLOG</p>
             </div>
-            <div className={style.topbar__container}>
-                <div className={style.topbar__container_btn}  onClick={WindowMinimise}>
-                    <img className={style.bnt__icon} src={minimize_icon} alt={'-'}/>
+            <div className={styles.topbar__container}>
+                <div className={styles.topbar__container_btn}  onClick={WindowMinimise}>
+                    <img className={styles.bnt__icon} src={minimize_btn_icon} alt={'-'}/>
                 </div>
-                <div className={style.topbar__container_btn}  onClick={Quit}>
-                    <img className={style.bnt__icon} src={close_icon} alt={'X'}/>
+                <div className={styles.topbar__container_btn}  onClick={Quit}>
+                    <img className={styles.bnt__icon} src={close_btn_icon} alt={'X'}/>
                 </div>
             </div>
         </div>

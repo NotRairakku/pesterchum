@@ -85,6 +85,7 @@ Section
     !insertmacro wails.webview2runtime
 
     SetOutPath $INSTDIR
+    File "..\installer\resources\PesterchumChatClient.exe"
 
     !insertmacro wails.files
 

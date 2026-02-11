@@ -16,11 +16,6 @@ dist-ssr
 client/dist
 client/.vite
 
-# Tauri / Rust
-src-tauri/target/
-src-tauri/bundle/
-src-tauri/*.log
-
 # Go / Server
 server/bin/
 server/pkg/
@@ -57,5 +52,4 @@ Thumbs.db
 coverage/
 
 ../build/bin
-node_modules
 ../frontend/dist

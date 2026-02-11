@@ -1,6 +1,0 @@
-.app {
-    width: 460px !important;
-    height: auto !important;
-    background: var(--color-app-bg);
-    border: var(--radius-base) solid var(--color-border-primary);
-}

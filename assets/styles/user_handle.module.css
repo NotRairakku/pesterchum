@@ -1,0 +1,35 @@
+.handle {}
+
+.handle__container {
+    display: flex;
+    background: var(--color-menu-bg);
+    border: var(--radius-app-base) solid var(--color-app-border);
+    align-items: center;
+}
+
+.handle__container_image {
+    display: flex;
+    padding: 8px 14px;
+}
+
+.handle__mood_img {
+    width: 28px;
+    height: 28px;
+    image-rendering: pixelated;
+}
+
+.handle__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    height: 40px;
+    background: var(--color-menu-bg);
+    padding: 1px 4px 1px 4px;
+    color: var(--color-text-white);
+    border: none;
+    font-size: var(--font-size-md);
+    font-family: var(--font-text), sans-serif;
+}
+
+.handle__input:focus-visible {
+    outline: none;
+}

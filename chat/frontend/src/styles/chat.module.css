@@ -1,8 +1,0 @@
-.chat {
-    width: 100% !important;
-    height: 100% !important;
-    background: var(--color-app-bg);
-    border: var(--radius-base) solid var(--color-border-primary);
-}
-
-

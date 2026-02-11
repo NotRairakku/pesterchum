@@ -19,7 +19,7 @@ func main() {
 	err := wails.Run(&options.App{
 		Title:     "chat",
 		Width:     900,
-		Height:    770,
+		Height:    716,
 		MinWidth:  460,
 		MinHeight: 460,
 		Frameless: true,

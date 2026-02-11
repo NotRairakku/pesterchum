@@ -40,11 +40,11 @@ func Unary(db *pgxpool.Pool) grpc.UnaryServerInterceptor {
 			return nil, status.Error(codes.Unauthenticated, "missing session")
 		}
 
-		var uid int64
+		var uid string
 		var exp time.Time
 
 		err := db.QueryRow(ctx,
-			"select user_id, expires_at from sessions where id=$1",
+			"select user_id, expires_at from sessions where session_id = $1",
 			sid[0],
 		).Scan(&uid, &exp)
 
@@ -54,7 +54,7 @@ func Unary(db *pgxpool.Pool) grpc.UnaryServerInterceptor {
 
 		// refresh session
 		_, _ = db.Exec(ctx,
-			"update sessions set expires_at = now() + interval '15 minutes' where id=$1",
+			"update sessions set expires_at = now() + interval '15 minutes' where session_id=$1",
 			sid[0],
 		)
 

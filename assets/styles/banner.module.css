@@ -1,15 +1,9 @@
-.banner {
-    min-height: 100%;
-    max-height: 100%;
-    background: var(--color-app-bg);
-    box-sizing: border-box;
-    padding: 0 14px 0;
-}
+.banner {}
 
 .banner__container {}
 
 .banner__container_title {
-    color: var(--color-text-light);
+    color: var(--color-text-white);
     font-size: 50px;
     white-space: nowrap;
     text-align: center;
@@ -19,11 +13,11 @@
 .banner__banner {
     display: flex;
     align-items: center;
-    background: var(--color-block-bg);
-    color: var(--color-text-light);
+    background: var(--color-menu-bg);
+    color: var(--color-text-white);
     padding: 10px 14px 4px 14px;
-    margin: var(--spacing-base) 0 var(--spacing-base) 0;
-    border: var(--radius-base) var(--color-border-primary) solid;
+    box-sizing: border-box;
+    border: var(--radius-app-base) var(--color-app-border) solid;
     image-rendering: pixelated;
 }
 
