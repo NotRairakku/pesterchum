@@ -19,19 +19,23 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	ChatService_Register_FullMethodName          = "/proto.ChatService/Register"
-	ChatService_Login_FullMethodName             = "/proto.ChatService/Login"
-	ChatService_Logout_FullMethodName            = "/proto.ChatService/Logout"
-	ChatService_Validate_FullMethodName          = "/proto.ChatService/Validate"
-	ChatService_GetUserData_FullMethodName       = "/proto.ChatService/GetUserData"
-	ChatService_UpdateUsername_FullMethodName    = "/proto.ChatService/UpdateUsername"
-	ChatService_UpdatePassword_FullMethodName    = "/proto.ChatService/UpdatePassword"
-	ChatService_UpdatePhoto_FullMethodName       = "/proto.ChatService/UpdatePhoto"
-	ChatService_UpdateDescription_FullMethodName = "/proto.ChatService/UpdateDescription"
-	ChatService_UpdateMood_FullMethodName        = "/proto.ChatService/UpdateMood"
-	ChatService_UpdateColor_FullMethodName       = "/proto.ChatService/UpdateColor"
-	ChatService_UpdateBirthdate_FullMethodName   = "/proto.ChatService/UpdateBirthdate"
-	ChatService_UpdateAddress_FullMethodName     = "/proto.ChatService/UpdateAddress"
+	ChatService_Register_FullMethodName                = "/proto.ChatService/Register"
+	ChatService_Login_FullMethodName                   = "/proto.ChatService/Login"
+	ChatService_Logout_FullMethodName                  = "/proto.ChatService/Logout"
+	ChatService_Validate_FullMethodName                = "/proto.ChatService/Validate"
+	ChatService_GetUserData_FullMethodName             = "/proto.ChatService/GetUserData"
+	ChatService_GetUserFriends_FullMethodName          = "/proto.ChatService/GetUserFriends"
+	ChatService_GetFriendsRequests_FullMethodName      = "/proto.ChatService/GetFriendsRequests"
+	ChatService_UpdateUsername_FullMethodName          = "/proto.ChatService/UpdateUsername"
+	ChatService_UpdatePassword_FullMethodName          = "/proto.ChatService/UpdatePassword"
+	ChatService_UpdatePhoto_FullMethodName             = "/proto.ChatService/UpdatePhoto"
+	ChatService_UpdateDescription_FullMethodName       = "/proto.ChatService/UpdateDescription"
+	ChatService_UpdateMood_FullMethodName              = "/proto.ChatService/UpdateMood"
+	ChatService_UpdateColor_FullMethodName             = "/proto.ChatService/UpdateColor"
+	ChatService_UpdateBirthdate_FullMethodName         = "/proto.ChatService/UpdateBirthdate"
+	ChatService_UpdateAddress_FullMethodName           = "/proto.ChatService/UpdateAddress"
+	ChatService_CreateRequestFriendship_FullMethodName = "/proto.ChatService/CreateRequestFriendship"
+	ChatService_AnswerRequestFriendship_FullMethodName = "/proto.ChatService/AnswerRequestFriendship"
 )
 
 // ChatServiceClient is the client API for ChatService service.
@@ -43,6 +47,8 @@ type ChatServiceClient interface {
 	Logout(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
 	Validate(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*Empty, error)
 	GetUserData(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetUserDataResponse, error)
+	GetUserFriends(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetUserFriendsResponse, error)
+	GetFriendsRequests(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetFriendsRequestsList, error)
 	UpdateUsername(ctx context.Context, in *UpdateUsernameRequest, opts ...grpc.CallOption) (*Empty, error)
 	UpdatePassword(ctx context.Context, in *UpdatePasswordRequest, opts ...grpc.CallOption) (*Empty, error)
 	UpdatePhoto(ctx context.Context, in *UpdatePhotoRequest, opts ...grpc.CallOption) (*Empty, error)
@@ -51,6 +57,8 @@ type ChatServiceClient interface {
 	UpdateColor(ctx context.Context, in *UpdateColorRequest, opts ...grpc.CallOption) (*Empty, error)
 	UpdateBirthdate(ctx context.Context, in *UpdateBirthdateRequest, opts ...grpc.CallOption) (*Empty, error)
 	UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...grpc.CallOption) (*Empty, error)
+	CreateRequestFriendship(ctx context.Context, in *CreateRequestFriendshipRequest, opts ...grpc.CallOption) (*Empty, error)
+	AnswerRequestFriendship(ctx context.Context, in *AnswerRequestFriendshipRequest, opts ...grpc.CallOption) (*Empty, error)
 }
 
 type chatServiceClient struct {
@@ -105,6 +113,26 @@ func (c *chatServiceClient) GetUserData(ctx context.Context, in *Empty, opts ...
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetUserDataResponse)
 	err := c.cc.Invoke(ctx, ChatService_GetUserData_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) GetUserFriends(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetUserFriendsResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetUserFriendsResponse)
+	err := c.cc.Invoke(ctx, ChatService_GetUserFriends_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) GetFriendsRequests(ctx context.Context, in *Empty, opts ...grpc.CallOption) (*GetFriendsRequestsList, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetFriendsRequestsList)
+	err := c.cc.Invoke(ctx, ChatService_GetFriendsRequests_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -191,6 +219,26 @@ func (c *chatServiceClient) UpdateAddress(ctx context.Context, in *UpdateAddress
 	return out, nil
 }
 
+func (c *chatServiceClient) CreateRequestFriendship(ctx context.Context, in *CreateRequestFriendshipRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ChatService_CreateRequestFriendship_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) AnswerRequestFriendship(ctx context.Context, in *AnswerRequestFriendshipRequest, opts ...grpc.CallOption) (*Empty, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(Empty)
+	err := c.cc.Invoke(ctx, ChatService_AnswerRequestFriendship_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChatServiceServer is the server API for ChatService service.
 // All implementations must embed UnimplementedChatServiceServer
 // for forward compatibility.
@@ -200,6 +248,8 @@ type ChatServiceServer interface {
 	Logout(context.Context, *Empty) (*Empty, error)
 	Validate(context.Context, *Empty) (*Empty, error)
 	GetUserData(context.Context, *Empty) (*GetUserDataResponse, error)
+	GetUserFriends(context.Context, *Empty) (*GetUserFriendsResponse, error)
+	GetFriendsRequests(context.Context, *Empty) (*GetFriendsRequestsList, error)
 	UpdateUsername(context.Context, *UpdateUsernameRequest) (*Empty, error)
 	UpdatePassword(context.Context, *UpdatePasswordRequest) (*Empty, error)
 	UpdatePhoto(context.Context, *UpdatePhotoRequest) (*Empty, error)
@@ -208,6 +258,8 @@ type ChatServiceServer interface {
 	UpdateColor(context.Context, *UpdateColorRequest) (*Empty, error)
 	UpdateBirthdate(context.Context, *UpdateBirthdateRequest) (*Empty, error)
 	UpdateAddress(context.Context, *UpdateAddressRequest) (*Empty, error)
+	CreateRequestFriendship(context.Context, *CreateRequestFriendshipRequest) (*Empty, error)
+	AnswerRequestFriendship(context.Context, *AnswerRequestFriendshipRequest) (*Empty, error)
 	mustEmbedUnimplementedChatServiceServer()
 }
 
@@ -233,6 +285,12 @@ func (UnimplementedChatServiceServer) Validate(context.Context, *Empty) (*Empty,
 func (UnimplementedChatServiceServer) GetUserData(context.Context, *Empty) (*GetUserDataResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetUserData not implemented")
 }
+func (UnimplementedChatServiceServer) GetUserFriends(context.Context, *Empty) (*GetUserFriendsResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetUserFriends not implemented")
+}
+func (UnimplementedChatServiceServer) GetFriendsRequests(context.Context, *Empty) (*GetFriendsRequestsList, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetFriendsRequests not implemented")
+}
 func (UnimplementedChatServiceServer) UpdateUsername(context.Context, *UpdateUsernameRequest) (*Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateUsername not implemented")
 }
@@ -256,6 +314,12 @@ func (UnimplementedChatServiceServer) UpdateBirthdate(context.Context, *UpdateBi
 }
 func (UnimplementedChatServiceServer) UpdateAddress(context.Context, *UpdateAddressRequest) (*Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method UpdateAddress not implemented")
+}
+func (UnimplementedChatServiceServer) CreateRequestFriendship(context.Context, *CreateRequestFriendshipRequest) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method CreateRequestFriendship not implemented")
+}
+func (UnimplementedChatServiceServer) AnswerRequestFriendship(context.Context, *AnswerRequestFriendshipRequest) (*Empty, error) {
+	return nil, status.Error(codes.Unimplemented, "method AnswerRequestFriendship not implemented")
 }
 func (UnimplementedChatServiceServer) mustEmbedUnimplementedChatServiceServer() {}
 func (UnimplementedChatServiceServer) testEmbeddedByValue()                     {}
@@ -364,6 +428,42 @@ func _ChatService_GetUserData_Handler(srv interface{}, ctx context.Context, dec 
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(ChatServiceServer).GetUserData(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_GetUserFriends_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).GetUserFriends(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_GetUserFriends_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).GetUserFriends(ctx, req.(*Empty))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_GetFriendsRequests_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Empty)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).GetFriendsRequests(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_GetFriendsRequests_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).GetFriendsRequests(ctx, req.(*Empty))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -512,6 +612,42 @@ func _ChatService_UpdateAddress_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChatService_CreateRequestFriendship_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateRequestFriendshipRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).CreateRequestFriendship(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_CreateRequestFriendship_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).CreateRequestFriendship(ctx, req.(*CreateRequestFriendshipRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_AnswerRequestFriendship_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AnswerRequestFriendshipRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).AnswerRequestFriendship(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_AnswerRequestFriendship_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).AnswerRequestFriendship(ctx, req.(*AnswerRequestFriendshipRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ChatService_ServiceDesc is the grpc.ServiceDesc for ChatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -538,6 +674,14 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUserData",
 			Handler:    _ChatService_GetUserData_Handler,
+		},
+		{
+			MethodName: "GetUserFriends",
+			Handler:    _ChatService_GetUserFriends_Handler,
+		},
+		{
+			MethodName: "GetFriendsRequests",
+			Handler:    _ChatService_GetFriendsRequests_Handler,
 		},
 		{
 			MethodName: "UpdateUsername",
@@ -570,6 +714,14 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "UpdateAddress",
 			Handler:    _ChatService_UpdateAddress_Handler,
+		},
+		{
+			MethodName: "CreateRequestFriendship",
+			Handler:    _ChatService_CreateRequestFriendship_Handler,
+		},
+		{
+			MethodName: "AnswerRequestFriendship",
+			Handler:    _ChatService_AnswerRequestFriendship_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

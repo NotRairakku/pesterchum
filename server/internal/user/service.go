@@ -2,6 +2,7 @@ package user
 
 import (
 	"context"
+	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
@@ -102,6 +103,167 @@ func (s *Service) UpdateUsername(ctx context.Context, req *proto.UpdateUsernameR
 	if err != nil {
 		return nil, status.Error(codes.Unauthenticated, "update failed")
 	}
+	return &proto.Empty{}, nil
+}
+
+func (s *Service) GetUserFriends(ctx context.Context, _ *proto.Empty) (*proto.GetUserFriendsResponse, error) {
+	uid, ok := ctx.Value(session.UserIDKey).(string)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user id")
+	}
+
+	rows, err := s.repo.db.Query(ctx, `
+		SELECT u.user_id, u.username, u.mood
+		FROM friends f
+		JOIN users u ON u.user_id = f.friend_id
+		WHERE f.user_id = $1
+	`, uid)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "query failed")
+	}
+	defer rows.Close()
+
+	var friends []*proto.Friend
+	for rows.Next() {
+		var f proto.Friend
+		if err := rows.Scan(&f.FriendId, &f.FriendName, &f.FriendMood); err != nil {
+			return nil, status.Error(codes.Internal, "scan failed")
+		}
+		friends = append(friends, &f)
+	}
+
+	return &proto.GetUserFriendsResponse{Friends: friends}, nil
+}
+
+func (s *Service) GetFriendsRequests(ctx context.Context, _ *proto.Empty) (*proto.GetFriendsRequestsList, error) {
+	uid, ok := ctx.Value(session.UserIDKey).(string)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user id")
+	}
+
+	rows, err := s.repo.db.Query(ctx, `
+		SELECT u.user_id, u.username
+		FROM requests_friends rf
+		JOIN users u ON u.user_id = rf.user_id
+		WHERE rf.friend_id = $1
+	`, uid)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "query failed")
+	}
+	defer rows.Close()
+
+	var requests []*proto.GetFriendsRequestsResponse
+	for rows.Next() {
+		var r proto.GetFriendsRequestsResponse
+		if err := rows.Scan(&r.UserId, &r.UserName); err != nil {
+			return nil, status.Error(codes.Internal, "scan failed")
+		}
+		requests = append(requests, &r)
+	}
+
+	return &proto.GetFriendsRequestsList{Requests: requests}, nil
+}
+
+func (s *Service) CreateRequestFriendship(ctx context.Context, req *proto.CreateRequestFriendshipRequest) (*proto.Empty, error) {
+	uid, ok := ctx.Value(session.UserIDKey).(string)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user id")
+	}
+
+	if req.RequestFriendName == "" {
+		return nil, status.Error(codes.InvalidArgument, "empty username")
+	}
+
+	var fid string
+	err := s.repo.db.QueryRow(ctx, `SELECT user_id FROM users WHERE username = $1`, req.RequestFriendName).Scan(&fid)
+	if err != nil {
+		return nil, status.Error(codes.NotFound, "user not found")
+	}
+	if fid == uid {
+		return nil, status.Error(codes.InvalidArgument, "cannot add self")
+	}
+
+	// checking friendships or request
+	var exists bool
+	_ = s.repo.db.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM friends WHERE user_id=$1 AND friend_id=$2)`, uid, fid).Scan(&exists)
+	if exists {
+		return nil, status.Error(codes.AlreadyExists, "already friends")
+	}
+	_ = s.repo.db.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM requests_friends WHERE user_id=$1 AND friend_id=$2)`, uid, fid).Scan(&exists)
+	if exists {
+		return nil, status.Error(codes.AlreadyExists, "request already exists")
+	}
+
+	_, err = s.repo.db.Exec(ctx, `INSERT INTO requests_friends(request_id, user_id, friend_id, created_at, updated_at) VALUES ($1, $2, $3, now(), now())`,
+		uuid.New().String(), uid, fid)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "insert request failed")
+	}
+
+	return &proto.Empty{}, nil
+}
+func (s *Service) AnswerRequestFriendship(ctx context.Context, req *proto.AnswerRequestFriendshipRequest) (*proto.Empty, error) {
+	uid, ok := ctx.Value(session.UserIDKey).(string)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user id")
+	}
+	if req.UserId == "" {
+		return nil, status.Error(codes.InvalidArgument, "empty user id")
+	}
+
+	tx, err := s.repo.db.Begin(ctx)
+	if err != nil {
+		return nil, status.Error(codes.Internal, "begin tx failed")
+	}
+	defer func() {
+		if err != nil {
+			_ = tx.Rollback(ctx)
+		} else {
+			_ = tx.Commit(ctx)
+		}
+	}()
+
+	// checking that the request exists
+	var exists bool
+	err = tx.QueryRow(ctx, `SELECT EXISTS(SELECT 1 FROM requests_friends WHERE user_id=$1 AND friend_id=$2)`, req.UserId, uid).Scan(&exists)
+	if err != nil || !exists {
+		return nil, status.Error(codes.NotFound, "request not found")
+	}
+
+	if req.Accept {
+		// delete all request between these two
+		_, err = tx.Exec(ctx, `
+			DELETE FROM requests_friends
+			WHERE (user_id=$1 AND friend_id=$2) OR (user_id=$2 AND friend_id=$1)
+		`, req.UserId, uid)
+		if err != nil {
+			return nil, status.Error(codes.Internal, "delete requests failed")
+		}
+
+		// insert friendship on both sides
+		_, err = tx.Exec(ctx, `
+			INSERT INTO friends(user_id, friend_id, created_at, updated_at)
+			VALUES ($1,$2,now(),now())
+			ON CONFLICT DO NOTHING
+		`, uid, req.UserId)
+		if err != nil {
+			return nil, status.Error(codes.Internal, "insert friend failed")
+		}
+		_, err = tx.Exec(ctx, `
+			INSERT INTO friends(user_id, friend_id, created_at, updated_at)
+			VALUES ($1,$2,now(),now())
+			ON CONFLICT DO NOTHING
+		`, req.UserId, uid)
+		if err != nil {
+			return nil, status.Error(codes.Internal, "insert friend failed")
+		}
+	} else {
+		_, err = tx.Exec(ctx, `DELETE FROM requests_friends WHERE user_id=$1 AND friend_id=$2`, req.UserId, uid)
+		if err != nil {
+			return nil, status.Error(codes.Internal, "delete request failed")
+		}
+	}
+
 	return &proto.Empty{}, nil
 }
 

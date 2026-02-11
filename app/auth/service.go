@@ -23,6 +23,27 @@ func New(chat proto.ChatServiceClient) *Service {
 	return &Service{chat: chat}
 }
 
+type Friend struct {
+	ID   string
+	Name string
+	Mood string
+}
+
+type FriendRequest struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
+type UserData struct {
+	Username    string `json:"username"`
+	Photo       string `json:"photo"`
+	Description string `json:"description"`
+	Mood        string `json:"mood"`
+	Color       string `json:"color"`
+	Birthdate   string `json:"birthdate"`
+	Address     string `json:"address"`
+}
+
 // Login via grpc
 func (s *Service) Login(username, password string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
@@ -90,16 +111,6 @@ func (s *Service) contextWithSession() (context.Context, context.CancelFunc, err
 	return ctx, cancel, nil
 }
 
-type UserData struct {
-	Username    string `json:"username"`
-	Photo       string `json:"photo"`
-	Description string `json:"description"`
-	Mood        string `json:"mood"`
-	Color       string `json:"color"`
-	Birthdate   string `json:"birthdate"`
-	Address     string `json:"address"`
-}
-
 func (s *Service) GetUserData() (*UserData, error) {
 	ctx, cancel, err := s.contextWithSession()
 	if err != nil {
@@ -121,6 +132,80 @@ func (s *Service) GetUserData() (*UserData, error) {
 		Birthdate:   res.Birthdate,
 		Address:     res.Address,
 	}, nil
+}
+
+func (s *Service) GetUserFriends() ([]Friend, error) {
+	ctx, cancel, err := s.contextWithSession()
+	if err != nil {
+		return nil, err
+	}
+	defer cancel()
+
+	res, err := s.chat.GetUserFriends(ctx, &proto.Empty{})
+	if err != nil {
+		return nil, err
+	}
+
+	friends := make([]Friend, 0, len(res.Friends))
+	for _, f := range res.Friends {
+		friends = append(friends, Friend{
+			ID:   f.FriendId,
+			Name: f.FriendName,
+			Mood: f.FriendMood,
+		})
+	}
+	return friends, nil
+}
+
+func (s *Service) GetFriendsRequests() ([]FriendRequest, error) {
+	ctx, cancel, err := s.contextWithSession()
+	if err != nil {
+		return nil, err
+	}
+	defer cancel()
+
+	res, err := s.chat.GetFriendsRequests(ctx, &proto.Empty{})
+	if err != nil {
+		return nil, err
+	}
+
+	list := make([]FriendRequest, 0)
+
+	for _, r := range res.Requests {
+		list = append(list, FriendRequest{
+			ID:   r.UserId,
+			Name: r.UserName,
+		})
+	}
+
+	return list, nil
+}
+
+func (s *Service) CreateFriendRequest(username string) error {
+	ctx, cancel, err := s.contextWithSession()
+	if err != nil {
+		return err
+	}
+	defer cancel()
+
+	_, err = s.chat.CreateRequestFriendship(ctx, &proto.CreateRequestFriendshipRequest{
+		RequestFriendName: username,
+	})
+	return err
+}
+
+func (s *Service) AnswerFriendRequest(userID string, accept bool) error {
+	ctx, cancel, err := s.contextWithSession()
+	if err != nil {
+		return err
+	}
+	defer cancel()
+
+	_, err = s.chat.AnswerRequestFriendship(ctx, &proto.AnswerRequestFriendshipRequest{
+		UserId: userID,
+		Accept: accept,
+	})
+	return err
 }
 
 func (s *Service) UpdateUsername(newUsername string) error {

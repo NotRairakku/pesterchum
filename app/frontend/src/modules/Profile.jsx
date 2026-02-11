@@ -1,4 +1,4 @@
-import {Logout, UpdateAddress, UpdateBirthdate, UpdateColor, UpdateDescription} from "../../wailsjs/go/auth/Service.js";
+import { UpdateColor } from "../../wailsjs/go/auth/Service.js";
 import {useEffect, useState} from "react";
 import {useMask} from "@react-input/mask";
 
@@ -9,7 +9,7 @@ import ProfileField from "./ProfileField.jsx";
 import ProfileSettings from "./ProfileSettings.jsx";
 import ProfileRequests from "./ProfileRequests.jsx";
 
-export default function Profile({setAppStatus, user, setUser }) {
+export default function Profile({ setAppStatus, user, setUser, friends, setFriends, friendsRequests, setFriendsRequests }) {
     const [profileState, setProfileState] = useState('filed')
     const [photo, setPhoto] = useState(null);
     const [prevPhoto, setPrevPhoto] = useState(null);
@@ -54,10 +54,6 @@ export default function Profile({setAppStatus, user, setUser }) {
         }
     };
 
-
-
-
-
     const handleColorUpdate = async () => {
         if (color === prevColor || !/^#[0-9a-fA-F]{6}$/.test(color)) {
             setColor(prevColor);
@@ -83,9 +79,18 @@ export default function Profile({setAppStatus, user, setUser }) {
     });
 
     const PROFILE_MAP = {
-        filed: <ProfileField user={user} setUser={setUser}/>,
-        requests: <ProfileRequests user={user} setUser={setUser}/>,
-        settings: <ProfileSettings user={user} setUser={setUser}/>,
+        filed: <ProfileField
+            user={user}
+            setUser={setUser}/>,
+        requests: <ProfileRequests
+            friendsRequests={friendsRequests}
+            setFriendsRequests={setFriendsRequests}
+            friends={friends}
+            setFriends={setFriends}
+        />,
+        settings: <ProfileSettings
+            setAppStatus={setAppStatus}
+            setUser={setUser}/>,
     }
 
     return (

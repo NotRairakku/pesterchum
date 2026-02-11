@@ -5,15 +5,16 @@ import Auth from "./modules/Auth.jsx";
 import Loader from "./modules/Loader.jsx";
 import Client from "./modules/Client.jsx";
 import style from "../../../assets/styles/app.module.css";
-import {HasSession, GetUserData } from "../wailsjs/go/auth/Service.js";
+import {HasSession, GetUserData, GetUserFriends, GetFriendsRequests} from "../wailsjs/go/auth/Service.js";
 
 import default_photo from "../../../assets/dev/john.jpg";
 
 
 export default function App() {
-    const [appStatus, setAppAppStatus] = useState("loading");
+    const [appStatus, setAppStatus] = useState("loading");
     const [user, setUser] = useState(null);
-    const [initDone, setInitDone] = useState(false);
+    const [friends, setFriends] = useState([]);
+    const [friendsRequests, setFriendsRequests] = useState([]);
 
     const loadUser = async () => {
         console.log("[App] loadUser start");
@@ -21,7 +22,7 @@ export default function App() {
             const res = await GetUserData();
 
             const userData = {
-                Username: res.username.trim() || "",
+                Username: res.username?.trim() || "",
                 Photo: res.photo || default_photo,
                 Description: res.description || "",
                 Mood: res.mood?.toLowerCase() || "chummy",
@@ -30,46 +31,87 @@ export default function App() {
                 Address: res.address || "",
             };
 
+            await loadUserFriends();
+            await loadFriendsRequests();
+
             console.log("[App] User loaded:", userData);
             setUser(userData);
-            setAppAppStatus("client");
+            setAppStatus("client");
         } catch (err) {
-            console.error("[App] loadUser error → user", err);
+            console.error("[App] loadUser error user", err);
             setUser(null);
-            setAppAppStatus("auth");
+            setAppStatus("auth");
+        }
+    };
+
+    const loadUserFriends = async () => {
+        try {
+            const res = await GetUserFriends();
+            console.log("GetUserFriends:", res);
+            const friendsData = (res || []).map(f => ({
+                id: f.ID || f.FriendId,
+                username: f.Name || f.FriendName,
+                mood: (f.Mood || f.FriendMood || "chummy").toLowerCase(),
+            }));
+            setFriends(friendsData);
+        } catch (e) {
+            console.error("loadUserFriends error", e);
+            setFriends([]);
+        }
+    };
+
+    const loadFriendsRequests = async () => {
+        try {
+            const res = await GetFriendsRequests();
+            console.log("GetUserFriends:", res);
+            setFriendsRequests(res || []);
+        } catch (e) {
+            console.error("loadFriendsRequests error", e);
+            setFriendsRequests([]);
         }
     };
 
     useEffect(() => {
-        if (initDone) return;
-        setInitDone(true);
-
-        (async () => {
-            console.log("[App] Initial check");
+        const init = async () => {
             try {
                 const ok = await HasSession();
-                console.log("[App] HasSession:", ok);
                 if (!ok) {
-                    setAppAppStatus("auth");
+                    setAppStatus("auth");
                     return;
                 }
                 await loadUser();
+
             } catch {
-                setAppAppStatus("auth");
+                setAppStatus("auth");
             }
-        })();
+        };
+
+        init();
     }, []);
 
     const STATUS_MAP = {
         login: <Loader />,
-        client: <Client user={user} setUser={setUser}/>,
-        profile: <Profile setAppStatus={setAppAppStatus} user={user} setUser={setUser}/>,
-        auth: <Auth loadUser={loadUser}/>,
+        client: <Client
+            user={user}
+            setUser={setUser}
+            friends={friends} />,
+        profile: <Profile
+            setAppStatus={setAppStatus}
+            user={user}
+            setUser={setUser}
+            friends={friends}
+            setFriends={setFriends}
+            friendsRequests={friendsRequests}
+            setFriendsRequests={setFriendsRequests}/>,
+        auth: <Auth
+            loadUser={loadUser}/>,
     }
 
     return (
         <div className={style.app}>
-            <TopBar setAppStatus={setAppAppStatus} user={user} />
+            <TopBar
+                setAppStatus={setAppStatus}
+                user={user} />
             <div className={style.app__container}>
                 {STATUS_MAP[appStatus]}
             </div>

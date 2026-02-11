@@ -11,6 +11,8 @@ service ChatService {
   rpc Validate (Empty) returns (Empty);
 
   rpc GetUserData (Empty) returns (GetUserDataResponse);
+  rpc GetUserFriends (Empty) returns (GetUserFriendsResponse);
+  rpc GetFriendsRequests (Empty) returns (GetFriendsRequestsList);
 
   rpc UpdateUsername (UpdateUsernameRequest) returns (Empty);
   rpc UpdatePassword (UpdatePasswordRequest) returns (Empty);
@@ -20,6 +22,43 @@ service ChatService {
   rpc UpdateColor (UpdateColorRequest) returns (Empty);
   rpc UpdateBirthdate (UpdateBirthdateRequest) returns (Empty);
   rpc UpdateAddress (UpdateAddressRequest) returns (Empty);
+
+  rpc CreateRequestFriendship (CreateRequestFriendshipRequest) returns (Empty);
+  rpc AnswerRequestFriendship (AnswerRequestFriendshipRequest) returns (Empty);
+}
+
+message GetUserDataResponse {
+  string username = 1;
+  string photo = 2;
+  string description = 3;
+  string mood = 4;
+  string color = 5;
+  string birthdate = 6;
+  string address = 7;
+}
+
+message GetUserFriendsResponse {
+  repeated Friend friends = 1;
+}
+
+message Friend {
+  string friend_id = 1;
+  string friend_name = 2;
+  string friend_mood = 3;
+}
+
+message GetFriendsRequestsResponse {
+  string user_id = 1;
+  string user_name = 2;
+}
+
+message GetFriendsRequestsList {
+  repeated GetFriendsRequestsResponse requests = 1;
+}
+
+message FriendRequest {
+  string user_id = 1;
+  string user_name = 2;
 }
 
 message RegisterRequest {
@@ -36,15 +75,15 @@ message LoginResponse {
   string session_id = 1;
 }
 
-message GetUserDataResponse {
-  string username = 1;
-  string photo = 2;
-  string description = 3;
-  string mood = 4;
-  string color = 5;
-  string birthdate = 6;
-  string address = 7;
+message CreateRequestFriendshipRequest {
+  string request_friend_name = 1;
 }
+
+message AnswerRequestFriendshipRequest {
+  string user_id = 1;
+  bool accept = 2;
+}
+
 message UpdateUsernameRequest {
   string new_username = 1;
 }
@@ -76,6 +115,5 @@ message UpdateBirthdateRequest {
 message UpdateAddressRequest {
   string new_address = 1;
 }
-
 
 message Empty {}

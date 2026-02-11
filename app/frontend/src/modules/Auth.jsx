@@ -1,4 +1,4 @@
- import { useState } from "react";
+import { useState } from "react";
 import { Login, Register } from "../../wailsjs/go/auth/Service.js";
 
 import styles from "../../../../assets/styles/app.module.css";
