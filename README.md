@@ -6,6 +6,7 @@ The project is intended for educational and non-commercial purposes.
 ## Intellectual Property Notice
 Homestuck and Pesterchum are creations of Andrew Hussie. All original characters, names, visual styles, and concepts related to Homestuck and Pesterchum are the intellectual property of their respective owner (Andrew Hussie).  
 This project is not affiliated with, endorsed by, or associated with Andrew Hussie or the official Homestuck works in any way.
+
 ---
 ## Development setup
 Install Wails:
