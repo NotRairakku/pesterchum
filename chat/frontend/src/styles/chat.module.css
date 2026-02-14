@@ -1,3 +1,10 @@
+@import "../../../../assets/index.css";
+@import "./top_bar.module.css";
+@import "./input_message.module.css";
+@import "./message_frame.module.css";
+@import "./messages.module.css";
+
+
 .chat {
     width: 100%;
     height: 100%;

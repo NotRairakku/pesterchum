@@ -1,4 +1,4 @@
-import styles from '../../../../assets/styles/app.module.css'
+import styles from '../styles/app.module.css';
 import mood_ico from '../../../../assets/img/mood/mood_chummy.png'
 
 export default function UsersList( { friends } ) {

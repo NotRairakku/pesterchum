@@ -1,6 +1,7 @@
-import styles from "../../../../assets/styles/app.module.css";
-
 import {Logout} from "../../wailsjs/go/auth/Service.js";
+
+import styles from '../styles/app.module.css';
+
 
 export default function ProfileSettings({setAppStatus, setUser }) {
 

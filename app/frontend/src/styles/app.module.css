@@ -1,11 +1,8 @@
+@import "../../../../assets/index.css";
 @import "./auth.module.css";
 @import "./banner.module.css";
-@import "./chat.module.css";
-@import "./input_message.module.css";
 @import "./user_list.module.css";
 @import "./loader.module.css";
-@import "./message_frame.module.css";
-@import "./messages.module.css";
 @import "./mood_choice.module.css";
 @import "./top_bar.module.css";
 @import "./user_handle.module.css";

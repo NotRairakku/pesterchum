@@ -1,9 +1,9 @@
-import styles from "../../../../assets/styles/app.module.css";
-import success_ico from "../../../../assets/img/iu/success_icon.png";
-import error_ico from "../../../../assets/img/iu/error_icon.png";
-
 import {useEffect, useState} from "react";
 import {UpdateAddress, UpdateBirthdate, UpdateDescription} from "../../wailsjs/go/auth/Service.js";
+
+import styles from '../styles/app.module.css';
+import success_ico from "../../../../assets/img/iu/success_icon.png";
+import error_ico from "../../../../assets/img/iu/error_icon.png";
 
 export default function ProfileField({ user, setUser }) {
     const [description, setDescription] = useState("");

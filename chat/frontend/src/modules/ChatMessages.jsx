@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Virtuoso } from "react-virtuoso";
-import styles from "../../../../assets/styles/messages.module.css";
+
+import styles from "../styles/messages.module.css";
 
 export const ChatMessages = ({messages}) => {
     const virtuosoRef = useRef(null);

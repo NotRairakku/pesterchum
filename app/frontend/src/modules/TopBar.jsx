@@ -1,8 +1,9 @@
-import styles from '../../../../assets/styles/app.module.css'
+import { WindowMinimise, Quit } from "../../wailsjs/runtime/runtime";
+
+import styles from '../styles/app.module.css';
 import close_btn_icon from '../../../../assets/img/iu/close_btn_icon.png'
 import minimize_btn_icon from '../../../../assets/img/iu/minimize_btn_icon.png'
 import pesterchum_logo from '../../../../assets/img/pesterchum-logo.png'
-import { WindowMinimise, Quit } from "../../wailsjs/runtime/runtime";
 
 export default function TopBar({ setAppStatus, user }) {
 

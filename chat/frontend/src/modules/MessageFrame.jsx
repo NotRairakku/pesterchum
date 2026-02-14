@@ -1,6 +1,6 @@
-import style from "../../../../assets/styles/message_frame.module.css";
 import { ChatMessages } from "./ChatMessages.jsx";
-import { useMemo } from "react";
+
+import style from "../styles/message_frame.module.css";
 
 export const mockMessages = [
     {

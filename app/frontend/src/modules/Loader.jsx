@@ -1,5 +1,5 @@
 import logo from "../../../../assets/img/pesterchum-logo.png";
-import styles from "../../../../assets/styles/loader.module.css";
+import styles from '../styles/app.module.css';
 
 export default function Loader() {
     return (
