@@ -1,4 +1,4 @@
-import style from "../../../../assets/styles/chat.module.css"
+import style from "../styles/chat.module.css"
 import MessageFrame from "./MessageFrame.jsx";
 import InputMessage from "./InputMessage.jsx";
 

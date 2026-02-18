@@ -10,7 +10,7 @@
 
 .input__container_input {
     width: 100%;
-    border: var(--radius-app-base) solid var(--color-app-bg-border-brown);
+    border: var(--radius-app-base) solid var(--color-button-border);
     outline: none;
     background: var(--color-border-light);
     color: var(--color-text-black);
@@ -19,7 +19,7 @@
 
 .input__container_btn {
     background: var(--color-border-primary);
-    border: var(--radius-app-base) solid var(--color-app-bg-border-brown);
+    border: var(--radius-app-base) solid var(--color-button-border);
     font-size: var(--font-size-sm);
     padding: 0 8px;
     cursor: pointer;

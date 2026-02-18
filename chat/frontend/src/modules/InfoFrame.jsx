@@ -1,5 +1,4 @@
-import styles from '../../../../assets/styles/app.module.css';
-
+import styles from '../styles/chat.module.css';
 import photo from '../../../../assets/dev/john.jpg';
 
 export default function InfoFrame() {

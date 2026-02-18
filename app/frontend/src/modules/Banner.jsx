@@ -1,4 +1,4 @@
-import styles from "../../../../assets/styles/app.module.css";
+import styles from '../styles/app.module.css';
 import banner from "../../../../assets/img/pesterchum-logo.png";
 
 export default function Banner() {

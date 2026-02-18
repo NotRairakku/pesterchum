@@ -1,6 +1,8 @@
-import styles from "../../../../assets/styles/app.module.css";
 import { AnswerFriendRequest, CreateFriendRequest } from "../../wailsjs/go/auth/Service.js";
 import { useState } from "react";
+
+import styles from '../styles/app.module.css';
+
 
 export default function ProfileRequests({ setFriends, friendsRequests, setFriendsRequests }) {
     const [friendName, setFriendName] = useState("");

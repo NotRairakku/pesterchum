@@ -68,6 +68,7 @@ func (s *Service) GetUserData(ctx context.Context, _ *proto.Empty) (*proto.GetUs
 	}
 
 	return &proto.GetUserDataResponse{
+		UserId:      uid,
 		Username:    username,
 		Photo:       photo,
 		Description: description,

@@ -1,0 +1,26 @@
+@import "../../../../assets/index.css";
+@import "./top_bar.module.css";
+@import "./info_frame.module.css";
+@import "./input_message.module.css";
+@import "./message_frame.module.css";
+@import "./messages.module.css";
+
+
+.chat {
+    height: 100vh;
+    width: 100% !important;
+    display: flex;
+    flex-direction: column;
+    background: var(--color-app-bg);
+    border: var(--radius-app-base) solid var(--color-border-primary);
+}
+
+.chat__container {
+    width: 100%;
+    flex: 1 1 auto;
+    display: flex;
+    background: var(--color-border-primary);
+    flex-direction: column;
+    gap: 14px;
+}
+

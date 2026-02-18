@@ -31,6 +31,7 @@
 .topbar__container_image {
     width: auto;
     height: 32px;
+    image-rendering: pixelated;
 }
 
 .topbar__container__btns {

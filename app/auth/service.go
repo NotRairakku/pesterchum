@@ -35,6 +35,7 @@ type FriendRequest struct {
 }
 
 type UserData struct {
+	UserID      string `json:"user_id"`
 	Username    string `json:"username"`
 	Photo       string `json:"photo"`
 	Description string `json:"description"`
@@ -124,6 +125,7 @@ func (s *Service) GetUserData() (*UserData, error) {
 		return nil, err
 	}
 	return &UserData{
+		UserID:      res.UserId,
 		Username:    res.Username,
 		Photo:       res.Photo,
 		Description: res.Description,

@@ -1,4 +1,4 @@
-import styles from "../../../../assets/styles/input_message.module.css"
+import styles from "../styles/input_message.module.css"
 
 export default function InputMessage() {
     return (

@@ -28,13 +28,14 @@ service ChatService {
 }
 
 message GetUserDataResponse {
-  string username = 1;
-  string photo = 2;
-  string description = 3;
-  string mood = 4;
-  string color = 5;
-  string birthdate = 6;
-  string address = 7;
+  string user_id = 1;
+  string username = 2;
+  string photo = 3;
+  string description = 4;
+  string mood = 5;
+  string color = 6;
+  string birthdate = 7;
+  string address = 8;
 }
 
 message GetUserFriendsResponse {

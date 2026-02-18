@@ -1,13 +1,13 @@
 import { UpdateColor } from "../../wailsjs/go/auth/Service.js";
 import {useEffect, useState} from "react";
 import {useMask} from "@react-input/mask";
-
-import styles from "../../../../assets/styles/app.module.css";
-import success_ico from "../../../../assets/img/iu/success_icon.png";
-import error_ico from "../../../../assets/img/iu/error_icon.png";
 import ProfileField from "./ProfileField.jsx";
 import ProfileSettings from "./ProfileSettings.jsx";
 import ProfileRequests from "./ProfileRequests.jsx";
+
+import styles from '../styles/app.module.css';
+import success_ico from "../../../../assets/img/iu/success_icon.png";
+import error_ico from "../../../../assets/img/iu/error_icon.png";
 
 export default function Profile({ setAppStatus, user, setUser, friends, setFriends, friendsRequests, setFriendsRequests }) {
     const [profileState, setProfileState] = useState('filed')

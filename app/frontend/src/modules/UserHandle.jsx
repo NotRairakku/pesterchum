@@ -1,5 +1,7 @@
-import styles from '../../../../assets/styles/app.module.css';
+import { useEffect, useState } from "react";
+import { UpdateUsername } from "../../wailsjs/go/auth/Service.js";
 
+import styles from '../styles/app.module.css';
 import success_ico from '../../../../assets/img/iu/success_icon.png';
 import error_ico from '../../../../assets/img/iu/error_icon.png';
 import chummy_mood_ico from '../../../../assets/img/mood/mood_chummy.png'
@@ -8,9 +10,6 @@ import chipper_mood_ico from '../../../../assets/img/mood/mood_chipper.png'
 import bully_mood_ico from '../../../../assets/img/mood/mood_bully.png'
 import peppy_mood_ico from '../../../../assets/img/mood/mood_peppy.png'
 import rancorous_mood_ico from '../../../../assets/img/mood/mood_rancorous.png'
-
-import { useEffect, useState } from "react";
-import { UpdateUsername } from "../../wailsjs/go/auth/Service.js";
 
 const moodIcons = {
     chummy: chummy_mood_ico,

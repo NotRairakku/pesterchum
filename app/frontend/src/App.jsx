@@ -4,7 +4,7 @@ import Profile from "./modules/Profile.jsx";
 import Auth from "./modules/Auth.jsx";
 import Loader from "./modules/Loader.jsx";
 import Client from "./modules/Client.jsx";
-import style from "../../../assets/styles/app.module.css";
+import styles from './styles/app.module.css';
 import {HasSession, GetUserData, GetUserFriends, GetFriendsRequests} from "../wailsjs/go/auth/Service.js";
 
 import default_photo from "../../../assets/dev/john.jpg";
@@ -20,8 +20,9 @@ export default function App() {
         console.log("[App] loadUser start");
         try {
             const res = await GetUserData();
-
+            
             const userData = {
+                UserID: res.user_id || '',
                 Username: res.username?.trim() || "",
                 Photo: res.photo || default_photo,
                 Description: res.description || "",
@@ -108,11 +109,11 @@ export default function App() {
     }
 
     return (
-        <div className={style.app}>
+        <div className={styles.app}>
             <TopBar
                 setAppStatus={setAppStatus}
                 user={user} />
-            <div className={style.app__container}>
+            <div className={styles.app__container}>
                 {STATUS_MAP[appStatus]}
             </div>
         </div>

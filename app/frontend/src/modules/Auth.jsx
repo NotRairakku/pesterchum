@@ -1,16 +1,18 @@
 import { useState } from "react";
 import { Login, Register } from "../../wailsjs/go/auth/Service.js";
 
-import styles from "../../../../assets/styles/app.module.css";
+import styles from "../styles/app.module.css";
+import words from "../../../../assets/words.json"
 import logo from "../../../../assets/img/pesterchum-logo.png";
-import random_name_ico from "../../../../assets/img/mood/mood_chipper.png";
-import hide_password from "../../../../assets/img/mood/mood_chipper.png";
+import random_name_ico from "../../../../assets/img/iu/randomize_ico.png";
+import password_ico from "../../../../assets/img/iu/password_ico.png";
+import password_show_ico from "../../../../assets/img/iu/password_show_ico.png";
 
 export default function Auth({ loadUser }) {
     const [authtype, setAuthtype] = useState("login");
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
-    const [inpytType, setInpytType] = useState('password');
+    const [inputType, setInputType] = useState('password');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
@@ -45,8 +47,22 @@ export default function Auth({ loadUser }) {
     };
 
     const GenRandomName = () => {
-        console.log('ok')
-    }
+        if (!words.list.length) return '';
+        const firstPart = words.list[Math.floor(Math.random() * words.list.length)];
+        let second = Math.floor(Math.random() * words.list.length);
+        while (
+            second < words.list.length && words.list[second] === firstPart && words.list.length > 1) {
+            second = Math.floor(Math.random() * words.list.length);
+        }
+        const secondPart = words.list[second][0].toUpperCase() + words.list[second].slice(1);
+        return firstPart + secondPart;  //percentage of name receipt ectoBiologist = 0,01% :D
+    };
+
+    const currentIcon = inputType === 'password' ? password_ico : password_show_ico;
+
+    const togglePasswordVisibility = () => {
+        setInputType(prev => (prev === 'password' ? 'text' : 'password'));
+    };
 
     return (
         <div className={styles.auth}>
@@ -59,17 +75,17 @@ export default function Auth({ loadUser }) {
                                value={username} onChange={(e) =>
                             setUsername(e.target.value)} disabled={loading}/>
                         <div className={styles.container_from_content}>
-                            <img className={styles.content__img} src={random_name_ico} onClick={GenRandomName}/>
+                            {authtype === "login" ? null : (
+                                <img className={styles.content__img} src={random_name_ico} onClick={() => setUsername(GenRandomName())}/>
+                            )}
                         </div>
                     </div>
                     <div className={styles.container_from}>
                         <input className={styles.container_from_input} placeholder="Password"
-                               type={inpytType} value={password} onChange={(e) =>
+                               type={inputType} value={password} onChange={(e) =>
                             setPassword(e.target.value)} disabled={loading}/>
                         <div className={styles.container_from_content}>
-                            <img className={styles.content__img} src={hide_password} onClick={() => {
-                                setInpytType(prev => (prev === 'password' ? 'text' : 'password'))
-                            }}/>
+                            <img className={styles.content__img} src={currentIcon} onClick={() => {togglePasswordVisibility()}}/>
                         </div>
                     </div>
                     {error && <p className={styles.auth__container_from_error}>{error}</p>}

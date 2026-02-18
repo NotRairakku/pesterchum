@@ -8,7 +8,8 @@ export default function Client({ user, setUser, friends }) {
         <>
             <Banner />
             <UsersList
-                friends={friends} />
+                friends={friends}
+                user={user}/>
             <UserHandle
                 user={user}
                 setUser={setUser} />
