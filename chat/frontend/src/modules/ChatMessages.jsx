@@ -5,7 +5,6 @@ import styles from "../styles/messages.module.css";
 
 export const ChatMessages = ({messages}) => {
     const virtuosoRef = useRef(null);
-    // каждый раз при новом сообщении — скроллим вниз
     useEffect(() => {
         if (!messages?.length) return;
 

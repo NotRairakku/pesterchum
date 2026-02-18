@@ -20,8 +20,9 @@ export default function App() {
         console.log("[App] loadUser start");
         try {
             const res = await GetUserData();
-
+            
             const userData = {
+                UserID: res.user_id || '',
                 Username: res.username?.trim() || "",
                 Photo: res.photo || default_photo,
                 Description: res.description || "",

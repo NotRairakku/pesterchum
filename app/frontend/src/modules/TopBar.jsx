@@ -1,4 +1,4 @@
-import { WindowMinimise, Quit } from "../../wailsjs/runtime/runtime";
+import { WindowMinimise, WindowHide } from "../../wailsjs/runtime/runtime";
 
 import styles from '../styles/app.module.css';
 import close_btn_icon from '../../../../assets/img/iu/close_btn_icon.png'
@@ -22,7 +22,7 @@ export default function TopBar({ setAppStatus, user }) {
                 <div className={styles.topbar__container_btn}  onClick={WindowMinimise}>
                     <img className={styles.bnt__icon} src={minimize_btn_icon} alt={'-'}/>
                 </div>
-                <div className={styles.topbar__container_btn}  onClick={Quit}>
+                <div className={styles.topbar__container_btn}  onClick={WindowHide}>
                     <img className={styles.bnt__icon} src={close_btn_icon} alt={'X'}/>
                 </div>
             </div>

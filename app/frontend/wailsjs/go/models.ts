@@ -31,6 +31,7 @@ export namespace auth {
 	    }
 	}
 	export class UserData {
+	    user_id: string;
 	    username: string;
 	    photo: string;
 	    description: string;
@@ -45,6 +46,7 @@ export namespace auth {
 	
 	    constructor(source: any = {}) {
 	        if ('string' === typeof source) source = JSON.parse(source);
+	        this.user_id = source["user_id"];
 	        this.username = source["username"];
 	        this.photo = source["photo"];
 	        this.description = source["description"];

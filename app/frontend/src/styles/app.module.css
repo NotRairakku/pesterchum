@@ -6,7 +6,7 @@
 @import "./mood_choice.module.css";
 @import "./top_bar.module.css";
 @import "./user_handle.module.css";
-@import "./info_frame.module.css";
+@import "../../../../chat/frontend/src/styles/info_frame.module.css";
 @import "./profile.module.css";
 @import "./profile_field.module.css";
 @import "./profile_requests.module.css";

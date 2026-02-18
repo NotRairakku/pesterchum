@@ -23,13 +23,14 @@ const (
 
 type GetUserDataResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Username      string                 `protobuf:"bytes,1,opt,name=username,proto3" json:"username,omitempty"`
-	Photo         string                 `protobuf:"bytes,2,opt,name=photo,proto3" json:"photo,omitempty"`
-	Description   string                 `protobuf:"bytes,3,opt,name=description,proto3" json:"description,omitempty"`
-	Mood          string                 `protobuf:"bytes,4,opt,name=mood,proto3" json:"mood,omitempty"`
-	Color         string                 `protobuf:"bytes,5,opt,name=color,proto3" json:"color,omitempty"`
-	Birthdate     string                 `protobuf:"bytes,6,opt,name=birthdate,proto3" json:"birthdate,omitempty"`
-	Address       string                 `protobuf:"bytes,7,opt,name=address,proto3" json:"address,omitempty"`
+	UserId        string                 `protobuf:"bytes,1,opt,name=user_id,json=userId,proto3" json:"user_id,omitempty"`
+	Username      string                 `protobuf:"bytes,2,opt,name=username,proto3" json:"username,omitempty"`
+	Photo         string                 `protobuf:"bytes,3,opt,name=photo,proto3" json:"photo,omitempty"`
+	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	Mood          string                 `protobuf:"bytes,5,opt,name=mood,proto3" json:"mood,omitempty"`
+	Color         string                 `protobuf:"bytes,6,opt,name=color,proto3" json:"color,omitempty"`
+	Birthdate     string                 `protobuf:"bytes,7,opt,name=birthdate,proto3" json:"birthdate,omitempty"`
+	Address       string                 `protobuf:"bytes,8,opt,name=address,proto3" json:"address,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -62,6 +63,13 @@ func (x *GetUserDataResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use GetUserDataResponse.ProtoReflect.Descriptor instead.
 func (*GetUserDataResponse) Descriptor() ([]byte, []int) {
 	return file_proto_api_proto_rawDescGZIP(), []int{0}
+}
+
+func (x *GetUserDataResponse) GetUserId() string {
+	if x != nil {
+		return x.UserId
+	}
+	return ""
 }
 
 func (x *GetUserDataResponse) GetUsername() string {
@@ -1001,15 +1009,16 @@ var File_proto_api_proto protoreflect.FileDescriptor
 
 const file_proto_api_proto_rawDesc = "" +
 	"\n" +
-	"\x0fproto/api.proto\x12\x05proto\"\xcb\x01\n" +
-	"\x13GetUserDataResponse\x12\x1a\n" +
-	"\busername\x18\x01 \x01(\tR\busername\x12\x14\n" +
-	"\x05photo\x18\x02 \x01(\tR\x05photo\x12 \n" +
-	"\vdescription\x18\x03 \x01(\tR\vdescription\x12\x12\n" +
-	"\x04mood\x18\x04 \x01(\tR\x04mood\x12\x14\n" +
-	"\x05color\x18\x05 \x01(\tR\x05color\x12\x1c\n" +
-	"\tbirthdate\x18\x06 \x01(\tR\tbirthdate\x12\x18\n" +
-	"\aaddress\x18\a \x01(\tR\aaddress\"A\n" +
+	"\x0fproto/api.proto\x12\x05proto\"\xe4\x01\n" +
+	"\x13GetUserDataResponse\x12\x17\n" +
+	"\auser_id\x18\x01 \x01(\tR\x06userId\x12\x1a\n" +
+	"\busername\x18\x02 \x01(\tR\busername\x12\x14\n" +
+	"\x05photo\x18\x03 \x01(\tR\x05photo\x12 \n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x12\n" +
+	"\x04mood\x18\x05 \x01(\tR\x04mood\x12\x14\n" +
+	"\x05color\x18\x06 \x01(\tR\x05color\x12\x1c\n" +
+	"\tbirthdate\x18\a \x01(\tR\tbirthdate\x12\x18\n" +
+	"\aaddress\x18\b \x01(\tR\aaddress\"A\n" +
 	"\x16GetUserFriendsResponse\x12'\n" +
 	"\afriends\x18\x01 \x03(\v2\r.proto.FriendR\afriends\"g\n" +
 	"\x06Friend\x12\x1b\n" +

@@ -43,7 +43,7 @@
     align-items: center;
 }
 
-.list__container_tile:hover {
+.list__container_tile_selected {
     background: var(--color-menu-bg-hover);
 }
 
