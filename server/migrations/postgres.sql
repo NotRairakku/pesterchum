@@ -56,7 +56,7 @@ CREATE INDEX idx_requests_friends_user_id ON requests_friends(user_id);
 CREATE INDEX idx_requests_friends_friend_id ON requests_friends(friend_id);
 
 CREATE TABLE messages (
-    message_id UUID PRIMARY KEY,
+    message_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     sender_id UUID NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     recipient_id UUID NOT NULL REFERENCES users(user_id) ON DELETE CASCADE,
     message TEXT NULL,

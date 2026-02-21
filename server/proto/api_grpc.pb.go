@@ -36,6 +36,10 @@ const (
 	ChatService_UpdateAddress_FullMethodName           = "/proto.ChatService/UpdateAddress"
 	ChatService_CreateRequestFriendship_FullMethodName = "/proto.ChatService/CreateRequestFriendship"
 	ChatService_AnswerRequestFriendship_FullMethodName = "/proto.ChatService/AnswerRequestFriendship"
+	ChatService_GetChatHistory_FullMethodName          = "/proto.ChatService/GetChatHistory"
+	ChatService_SendMessage_FullMethodName             = "/proto.ChatService/SendMessage"
+	ChatService_SubscribeChat_FullMethodName           = "/proto.ChatService/SubscribeChat"
+	ChatService_GetPublicUserData_FullMethodName       = "/proto.ChatService/GetPublicUserData"
 )
 
 // ChatServiceClient is the client API for ChatService service.
@@ -59,6 +63,10 @@ type ChatServiceClient interface {
 	UpdateAddress(ctx context.Context, in *UpdateAddressRequest, opts ...grpc.CallOption) (*Empty, error)
 	CreateRequestFriendship(ctx context.Context, in *CreateRequestFriendshipRequest, opts ...grpc.CallOption) (*Empty, error)
 	AnswerRequestFriendship(ctx context.Context, in *AnswerRequestFriendshipRequest, opts ...grpc.CallOption) (*Empty, error)
+	GetChatHistory(ctx context.Context, in *GetChatHistoryRequest, opts ...grpc.CallOption) (*GetChatHistoryResponse, error)
+	SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error)
+	SubscribeChat(ctx context.Context, in *SubscribeChatRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ChatEvent], error)
+	GetPublicUserData(ctx context.Context, in *GetPublicUserDataRequest, opts ...grpc.CallOption) (*GetPublicUserDataResponse, error)
 }
 
 type chatServiceClient struct {
@@ -239,6 +247,55 @@ func (c *chatServiceClient) AnswerRequestFriendship(ctx context.Context, in *Ans
 	return out, nil
 }
 
+func (c *chatServiceClient) GetChatHistory(ctx context.Context, in *GetChatHistoryRequest, opts ...grpc.CallOption) (*GetChatHistoryResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetChatHistoryResponse)
+	err := c.cc.Invoke(ctx, ChatService_GetChatHistory_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) SendMessage(ctx context.Context, in *SendMessageRequest, opts ...grpc.CallOption) (*SendMessageResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(SendMessageResponse)
+	err := c.cc.Invoke(ctx, ChatService_SendMessage_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *chatServiceClient) SubscribeChat(ctx context.Context, in *SubscribeChatRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[ChatEvent], error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	stream, err := c.cc.NewStream(ctx, &ChatService_ServiceDesc.Streams[0], ChatService_SubscribeChat_FullMethodName, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &grpc.GenericClientStream[SubscribeChatRequest, ChatEvent]{ClientStream: stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type ChatService_SubscribeChatClient = grpc.ServerStreamingClient[ChatEvent]
+
+func (c *chatServiceClient) GetPublicUserData(ctx context.Context, in *GetPublicUserDataRequest, opts ...grpc.CallOption) (*GetPublicUserDataResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetPublicUserDataResponse)
+	err := c.cc.Invoke(ctx, ChatService_GetPublicUserData_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // ChatServiceServer is the server API for ChatService service.
 // All implementations must embed UnimplementedChatServiceServer
 // for forward compatibility.
@@ -260,6 +317,10 @@ type ChatServiceServer interface {
 	UpdateAddress(context.Context, *UpdateAddressRequest) (*Empty, error)
 	CreateRequestFriendship(context.Context, *CreateRequestFriendshipRequest) (*Empty, error)
 	AnswerRequestFriendship(context.Context, *AnswerRequestFriendshipRequest) (*Empty, error)
+	GetChatHistory(context.Context, *GetChatHistoryRequest) (*GetChatHistoryResponse, error)
+	SendMessage(context.Context, *SendMessageRequest) (*SendMessageResponse, error)
+	SubscribeChat(*SubscribeChatRequest, grpc.ServerStreamingServer[ChatEvent]) error
+	GetPublicUserData(context.Context, *GetPublicUserDataRequest) (*GetPublicUserDataResponse, error)
 	mustEmbedUnimplementedChatServiceServer()
 }
 
@@ -320,6 +381,18 @@ func (UnimplementedChatServiceServer) CreateRequestFriendship(context.Context, *
 }
 func (UnimplementedChatServiceServer) AnswerRequestFriendship(context.Context, *AnswerRequestFriendshipRequest) (*Empty, error) {
 	return nil, status.Error(codes.Unimplemented, "method AnswerRequestFriendship not implemented")
+}
+func (UnimplementedChatServiceServer) GetChatHistory(context.Context, *GetChatHistoryRequest) (*GetChatHistoryResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetChatHistory not implemented")
+}
+func (UnimplementedChatServiceServer) SendMessage(context.Context, *SendMessageRequest) (*SendMessageResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method SendMessage not implemented")
+}
+func (UnimplementedChatServiceServer) SubscribeChat(*SubscribeChatRequest, grpc.ServerStreamingServer[ChatEvent]) error {
+	return status.Error(codes.Unimplemented, "method SubscribeChat not implemented")
+}
+func (UnimplementedChatServiceServer) GetPublicUserData(context.Context, *GetPublicUserDataRequest) (*GetPublicUserDataResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetPublicUserData not implemented")
 }
 func (UnimplementedChatServiceServer) mustEmbedUnimplementedChatServiceServer() {}
 func (UnimplementedChatServiceServer) testEmbeddedByValue()                     {}
@@ -648,6 +721,71 @@ func _ChatService_AnswerRequestFriendship_Handler(srv interface{}, ctx context.C
 	return interceptor(ctx, in, info, handler)
 }
 
+func _ChatService_GetChatHistory_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetChatHistoryRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).GetChatHistory(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_GetChatHistory_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).GetChatHistory(ctx, req.(*GetChatHistoryRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_SendMessage_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(SendMessageRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).SendMessage(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_SendMessage_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).SendMessage(ctx, req.(*SendMessageRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _ChatService_SubscribeChat_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(SubscribeChatRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(ChatServiceServer).SubscribeChat(m, &grpc.GenericServerStream[SubscribeChatRequest, ChatEvent]{ServerStream: stream})
+}
+
+// This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
+type ChatService_SubscribeChatServer = grpc.ServerStreamingServer[ChatEvent]
+
+func _ChatService_GetPublicUserData_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPublicUserDataRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(ChatServiceServer).GetPublicUserData(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: ChatService_GetPublicUserData_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(ChatServiceServer).GetPublicUserData(ctx, req.(*GetPublicUserDataRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // ChatService_ServiceDesc is the grpc.ServiceDesc for ChatService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -723,7 +861,25 @@ var ChatService_ServiceDesc = grpc.ServiceDesc{
 			MethodName: "AnswerRequestFriendship",
 			Handler:    _ChatService_AnswerRequestFriendship_Handler,
 		},
+		{
+			MethodName: "GetChatHistory",
+			Handler:    _ChatService_GetChatHistory_Handler,
+		},
+		{
+			MethodName: "SendMessage",
+			Handler:    _ChatService_SendMessage_Handler,
+		},
+		{
+			MethodName: "GetPublicUserData",
+			Handler:    _ChatService_GetPublicUserData_Handler,
+		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "SubscribeChat",
+			Handler:       _ChatService_SubscribeChat_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "proto/api.proto",
 }

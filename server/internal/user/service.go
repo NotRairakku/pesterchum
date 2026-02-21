@@ -10,6 +10,7 @@ import (
 	"pesterchum/server/internal/session"
 	"pesterchum/server/proto"
 	"sync"
+	"time"
 )
 
 var (
@@ -362,4 +363,95 @@ func (s *Service) UpdateAddress(ctx context.Context, req *proto.UpdateAddressReq
 		return nil, status.Error(codes.Internal, "update failed")
 	}
 	return &proto.Empty{}, nil
+}
+
+func (s *Service) GetChatHistory(ctx context.Context, req *proto.GetChatHistoryRequest) (*proto.GetChatHistoryResponse, error) {
+	uid, ok := ctx.Value(session.UserIDKey).(string)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user id")
+	}
+
+	// Receiving messages between people
+	rows, err := s.repo.db.Query(ctx, `
+        SELECT message_id, sender_id, recipient_id, message, created_at 
+        FROM messages 
+        WHERE (sender_id = $1 AND recipient_id = $2) 
+           OR (sender_id = $2 AND recipient_id = $1)
+        ORDER BY created_at DESC 
+        LIMIT $3
+    `, uid, req.FriendId, req.Limit)
+	if err != nil {
+		log.Printf("GetChatHistory query error: %v", err)
+		return nil, status.Error(codes.Internal, "db error")
+	}
+	defer rows.Close()
+
+	var messages []*proto.ChatMessage
+	for rows.Next() {
+		var m proto.ChatMessage
+		var createdAt time.Time
+		err := rows.Scan(&m.MessageId, &m.SenderId, &m.RecipientId, &m.Text, &createdAt)
+		if err != nil {
+			continue
+		}
+		m.CreatedAt = createdAt.Format(time.RFC3339)
+		messages = append(messages, &m)
+	}
+
+	// old messages on top
+	for i, j := 0, len(messages)-1; i < j; i, j = i+1, j-1 {
+		messages[i], messages[j] = messages[j], messages[i]
+	}
+
+	return &proto.GetChatHistoryResponse{Messages: messages}, nil
+}
+
+func (s *Service) SendMessage(ctx context.Context, req *proto.SendMessageRequest) (*proto.SendMessageResponse, error) {
+	uid, ok := ctx.Value(session.UserIDKey).(string)
+	if !ok {
+		return nil, status.Error(codes.Unauthenticated, "no user id")
+	}
+
+	msgID := uuid.New().String()
+	var createdAt time.Time
+
+	err := s.repo.db.QueryRow(ctx, `
+        INSERT INTO messages (message_id, sender_id, recipient_id, message)
+        VALUES ($1, $2, $3, $4)
+        RETURNING created_at
+    `, msgID, uid, req.RecipientId, req.Text).Scan(&createdAt)
+
+	if err != nil {
+		log.Printf("SendMessage error: %v", err)
+		return nil, status.Error(codes.Internal, "failed to save message")
+	}
+
+	return &proto.SendMessageResponse{
+		MessageId: msgID,
+		CreatedAt: createdAt.Format(time.RFC3339),
+	}, nil
+}
+
+func (s *Service) SubscribeChat(req *proto.SubscribeChatRequest, stream proto.ChatService_SubscribeChatServer) error {
+	<-stream.Context().Done()
+	return nil
+}
+
+func (s *Service) GetPublicUserData(ctx context.Context, req *proto.GetPublicUserDataRequest) (*proto.GetPublicUserDataResponse, error) {
+	var username, color string
+	err := s.repo.db.QueryRow(ctx, `
+        SELECT username, color 
+        FROM users 
+        WHERE user_id = $1
+    `, req.UserId).Scan(&username, &color)
+
+	if err != nil {
+		log.Printf("GetPublicUserData error: %v", err)
+		return nil, status.Error(codes.Internal, "user not found")
+	}
+
+	return &proto.GetPublicUserDataResponse{
+		Username: username,
+		Color:    color,
+	}, nil
 }

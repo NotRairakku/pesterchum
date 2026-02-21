@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"context"
 	"encoding/json"
 	"fmt"
@@ -22,10 +21,9 @@ const (
 )
 
 type ChatInstance struct {
-	cmd    *exec.Cmd
-	stdin  io.WriteCloser
-	stdout *bufio.Scanner
-	mu     sync.Mutex
+	cmd   *exec.Cmd
+	stdin io.WriteCloser
+	mu    sync.Mutex
 }
 
 type App struct {
@@ -47,23 +45,18 @@ func (a *App) startup(ctx context.Context) {
 
 func (a *App) shutdown(ctx context.Context) {
 	log.Println("shutdown: close all chats")
-
 	a.chatsMu.Lock()
 	defer a.chatsMu.Unlock()
-
 	for key, inst := range a.chats {
 		log.Printf("close chat %s (PID: %d)", key, inst.cmd.Process.Pid)
-
 		if inst.cmd != nil && inst.cmd.Process != nil {
 			if err := inst.cmd.Process.Kill(); err != nil {
 				log.Printf("error kill chat %s: %v", key, err)
 			}
-			// wait completion (3s)
 			done := make(chan error, 1)
 			go func() {
 				done <- inst.cmd.Wait()
 			}()
-
 			select {
 			case <-done:
 				log.Printf("chat %s completion", key)
@@ -71,12 +64,10 @@ func (a *App) shutdown(ctx context.Context) {
 				log.Printf("chat completion timeout %s", key)
 			}
 		}
-
 		if inst.stdin != nil {
 			inst.stdin.Close()
 		}
 	}
-
 	a.chats = make(map[string]*ChatInstance)
 	log.Println("all chats closed")
 }
@@ -115,34 +106,27 @@ func (a *App) OpenChat(userID, friendID string) error {
 	if err != nil {
 		return err
 	}
-	stdout, err := cmd.StdoutPipe()
-	if err != nil {
-		return err
-	}
-
 	if err := cmd.Start(); err != nil {
 		return err
 	}
 
 	instance := &ChatInstance{
-		cmd:    cmd,
-		stdin:  stdin,
-		stdout: bufio.NewScanner(stdout),
+		cmd:   cmd,
+		stdin: stdin,
 	}
 
 	a.chatsMu.Lock()
 	a.chats[chatKey] = instance
 	a.chatsMu.Unlock()
 
+	// graceful shutdown
 	go func(key string, inst *ChatInstance) {
 		if inst.cmd.Process != nil {
 			inst.cmd.Wait()
 		}
-
 		a.chatsMu.Lock()
 		delete(a.chats, key)
 		a.chatsMu.Unlock()
-
 		if inst.stdin != nil {
 			inst.stdin.Close()
 		}
@@ -162,11 +146,9 @@ func (a *App) OpenChat(userID, friendID string) error {
 		"friend_id":     friendID,
 		"session_token": sessionToken,
 	}
+
 	if err := a.sendToChat(chatKey, "init", initData); err != nil {
-		err := cmd.Process.Kill()
-		if err != nil {
-			return err
-		}
+		cmd.Process.Kill()
 		a.chatsMu.Lock()
 		delete(a.chats, chatKey)
 		a.chatsMu.Unlock()
