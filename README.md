@@ -40,11 +40,7 @@ go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 Generate gRPC code
 If `protoc` is in `PATH`:
 ```sh
-protoc --go_out=. --go-grpc_out=. server/proto/api.proto
-```
-Windows example with absolute path:
-```sh
-C:\protoc\bin\protoc.exe --go_out=. --go-grpc_out=. server/proto/api.proto
+protoc --go_out=. --go-grpc_out=. proto/pesterchum.proto
 ```
 
 ## To do

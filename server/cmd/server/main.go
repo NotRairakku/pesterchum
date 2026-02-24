@@ -6,13 +6,13 @@ import (
 	"log"
 	"net"
 	"os"
+	"pesterchum/proto"
 
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"pesterchum/server/internal/db"
 	"pesterchum/server/internal/session"
 	"pesterchum/server/internal/user"
-	"pesterchum/server/proto"
 )
 
 const envFile = ".env"
@@ -43,7 +43,7 @@ func main() {
 	)
 
 	repo := user.NewRepo(pool)
-	proto.RegisterChatServiceServer(grpcServer, user.NewService(repo))
+	proto.RegisterPesterServiceServer(grpcServer, user.NewService(repo))
 
 	log.Println("[server] server is running")
 	log.Println("[server] gRPC server listening on port: 50051")

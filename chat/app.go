@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"pesterchum/proto"
 	"strconv"
 	"strings"
 	"time"
@@ -17,8 +18,6 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	"google.golang.org/grpc/metadata"
-
-	pb "pesterchum/server/proto"
 )
 
 type App struct {
@@ -35,8 +34,8 @@ type App struct {
 	lastMessageTime time.Time
 	cooldown        time.Duration
 
-	grpcClient pb.ChatServiceClient
-	stream     pb.ChatService_SubscribeChatClient
+	grpcClient proto.PesterServiceClient
+	stream     proto.PesterService_SubscribeChatClient
 }
 
 func NewApp() *App {
@@ -91,7 +90,7 @@ func (a *App) connectAndListen() {
 	}
 	defer conn.Close()
 
-	a.grpcClient = pb.NewChatServiceClient(conn)
+	a.grpcClient = proto.NewPesterServiceClient(conn)
 
 	// wait init
 	for a.friendID == "" {
@@ -103,7 +102,7 @@ func (a *App) connectAndListen() {
 
 	a.loadUserData()
 
-	histResp, err := a.grpcClient.GetChatHistory(a.withAuth(a.ctx), &pb.GetChatHistoryRequest{
+	histResp, err := a.grpcClient.GetChatHistory(a.withAuth(a.ctx), &proto.GetChatHistoryRequest{
 		FriendId: a.friendID,
 		Limit:    60,
 	})
@@ -123,7 +122,7 @@ func (a *App) connectAndListen() {
 		runtime.EventsEmit(a.ctx, "history", map[string]any{"messages": msgs})
 	}
 
-	stream, err := a.grpcClient.SubscribeChat(a.withAuth(a.ctx), &pb.SubscribeChatRequest{FriendId: a.friendID})
+	stream, err := a.grpcClient.SubscribeChat(a.withAuth(a.ctx), &proto.SubscribeChatRequest{FriendId: a.friendID})
 	if err != nil {
 		runtime.EventsEmit(a.ctx, "error", map[string]any{"message": "subscribe failed: " + err.Error()})
 		return
@@ -142,7 +141,7 @@ func (a *App) connectAndListen() {
 }
 
 func (a *App) loadUserData() {
-	me, err := a.grpcClient.GetUserData(a.withAuth(a.ctx), &pb.Empty{})
+	me, err := a.grpcClient.GetUserData(a.withAuth(a.ctx), &proto.Empty{})
 	if err == nil {
 		a.myUsername = me.Username
 		a.myColor = me.Color
@@ -150,7 +149,7 @@ func (a *App) loadUserData() {
 		log.Printf("Failed to load my data: %v", err)
 	}
 
-	friend, err := a.grpcClient.GetPublicUserData(a.withAuth(a.ctx), &pb.GetPublicUserDataRequest{UserId: a.friendID})
+	friend, err := a.grpcClient.GetPublicUserData(a.withAuth(a.ctx), &proto.GetPublicUserDataRequest{UserId: a.friendID})
 	if err == nil {
 		a.friendUsername = friend.Username
 		a.friendColor = friend.Color
@@ -159,7 +158,7 @@ func (a *App) loadUserData() {
 	}
 }
 
-func (a *App) handleNewMessage(pbMsg *pb.ChatMessage) {
+func (a *App) handleNewMessage(pbMsg *proto.ChatMessage) {
 	frontendMsg := convertOneMessage(pbMsg, a.userID, a.myUsername, a.myColor, a.friendUsername, a.friendColor)
 	a.addMessageToUI(frontendMsg)
 
@@ -212,7 +211,7 @@ func (a *App) handleSendMessage(text string) {
 		return
 	}
 
-	resp, err := a.grpcClient.SendMessage(a.withAuth(a.ctx), &pb.SendMessageRequest{
+	resp, err := a.grpcClient.SendMessage(a.withAuth(a.ctx), &proto.SendMessageRequest{
 		RecipientId: a.friendID,
 		Text:        text,
 	})
@@ -221,7 +220,7 @@ func (a *App) handleSendMessage(text string) {
 		return
 	}
 
-	frontendMsg := convertOneMessage(&pb.ChatMessage{
+	frontendMsg := convertOneMessage(&proto.ChatMessage{
 		MessageId:   resp.MessageId,
 		SenderId:    a.userID,
 		RecipientId: a.friendID,
@@ -250,7 +249,7 @@ func generateShort(username string) string {
 	return first + first
 }
 
-func convertOneMessage(m *pb.ChatMessage, myUserID, myName, myCol, friendName, friendCol string) map[string]interface{} {
+func convertOneMessage(m *proto.ChatMessage, myUserID, myName, myCol, friendName, friendCol string) map[string]interface{} {
 	isMine := m.SenderId == myUserID
 
 	short := "??"
@@ -281,7 +280,7 @@ func convertOneMessage(m *pb.ChatMessage, myUserID, myName, myCol, friendName, f
 	}
 }
 
-func convertMessagesToFrontend(pbMsgs []*pb.ChatMessage, myUserID, myName, myCol, friendName, friendCol string) []map[string]interface{} {
+func convertMessagesToFrontend(pbMsgs []*proto.ChatMessage, myUserID, myName, myCol, friendName, friendCol string) []map[string]interface{} {
 	var out []map[string]interface{}
 	for _, m := range pbMsgs {
 		out = append(out, convertOneMessage(m, myUserID, myName, myCol, friendName, friendCol))

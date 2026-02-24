@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"pesterchum/proto"
 
 	"github.com/energye/systray"
 	"github.com/joho/godotenv"
@@ -18,7 +19,6 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
 	"pesterchum/app/auth"
-	"pesterchum/server/proto"
 )
 
 //go:embed all:frontend/dist
@@ -44,7 +44,7 @@ func main() {
 	}
 	defer conn.Close()
 
-	chatClient := proto.NewChatServiceClient(conn)
+	chatClient := proto.NewPesterServiceClient(conn)
 	authService := auth.New(chatClient)
 
 	app := NewApp()

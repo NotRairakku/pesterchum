@@ -7,8 +7,8 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 	"log"
+	proto2 "pesterchum/proto"
 	"pesterchum/server/internal/session"
-	"pesterchum/server/proto"
 	"sync"
 	"time"
 )
@@ -19,7 +19,7 @@ var (
 )
 
 type Service struct {
-	proto.UnimplementedChatServiceServer
+	proto2.UnimplementedPesterServiceServer
 	repo *Repo
 }
 
@@ -27,7 +27,7 @@ func NewService(r *Repo) *Service {
 	return &Service{repo: r}
 }
 
-func (s *Service) Validate(ctx context.Context, _ *proto.Empty) (*proto.Empty, error) {
+func (s *Service) Validate(ctx context.Context, _ *proto2.Empty) (*proto2.Empty, error) {
 	sid, err := sessionFromCtx(ctx)
 	if err != nil {
 		return nil, err
@@ -35,7 +35,7 @@ func (s *Service) Validate(ctx context.Context, _ *proto.Empty) (*proto.Empty, e
 	if err := s.repo.CheckSession(ctx, sid); err != nil {
 		return nil, status.Error(codes.Unauthenticated, "invalid session")
 	}
-	return &proto.Empty{}, nil
+	return &proto2.Empty{}, nil
 }
 
 func sessionFromCtx(ctx context.Context) (string, error) {
@@ -50,7 +50,7 @@ func sessionFromCtx(ctx context.Context) (string, error) {
 	return sid[0], nil
 }
 
-func (s *Service) GetUserData(ctx context.Context, _ *proto.Empty) (*proto.GetUserDataResponse, error) {
+func (s *Service) GetUserData(ctx context.Context, _ *proto2.Empty) (*proto2.GetUserDataResponse, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -68,7 +68,7 @@ func (s *Service) GetUserData(ctx context.Context, _ *proto.Empty) (*proto.GetUs
 		return nil, status.Error(codes.Internal, "failed to get user data")
 	}
 
-	return &proto.GetUserDataResponse{
+	return &proto2.GetUserDataResponse{
 		UserId:      uid,
 		Username:    username,
 		Photo:       photo,
@@ -80,7 +80,7 @@ func (s *Service) GetUserData(ctx context.Context, _ *proto.Empty) (*proto.GetUs
 	}, nil
 }
 
-func (s *Service) UpdateUsername(ctx context.Context, req *proto.UpdateUsernameRequest) (*proto.Empty, error) {
+func (s *Service) UpdateUsername(ctx context.Context, req *proto2.UpdateUsernameRequest) (*proto2.Empty, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -105,10 +105,10 @@ func (s *Service) UpdateUsername(ctx context.Context, req *proto.UpdateUsernameR
 	if err != nil {
 		return nil, status.Error(codes.Unauthenticated, "update failed")
 	}
-	return &proto.Empty{}, nil
+	return &proto2.Empty{}, nil
 }
 
-func (s *Service) GetUserFriends(ctx context.Context, _ *proto.Empty) (*proto.GetUserFriendsResponse, error) {
+func (s *Service) GetUserFriends(ctx context.Context, _ *proto2.Empty) (*proto2.GetUserFriendsResponse, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -125,19 +125,19 @@ func (s *Service) GetUserFriends(ctx context.Context, _ *proto.Empty) (*proto.Ge
 	}
 	defer rows.Close()
 
-	var friends []*proto.Friend
+	var friends []*proto2.Friend
 	for rows.Next() {
-		var f proto.Friend
+		var f proto2.Friend
 		if err := rows.Scan(&f.FriendId, &f.FriendName, &f.FriendMood); err != nil {
 			return nil, status.Error(codes.Internal, "scan failed")
 		}
 		friends = append(friends, &f)
 	}
 
-	return &proto.GetUserFriendsResponse{Friends: friends}, nil
+	return &proto2.GetUserFriendsResponse{Friends: friends}, nil
 }
 
-func (s *Service) GetFriendsRequests(ctx context.Context, _ *proto.Empty) (*proto.GetFriendsRequestsList, error) {
+func (s *Service) GetFriendsRequests(ctx context.Context, _ *proto2.Empty) (*proto2.GetFriendsRequestsList, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -154,19 +154,19 @@ func (s *Service) GetFriendsRequests(ctx context.Context, _ *proto.Empty) (*prot
 	}
 	defer rows.Close()
 
-	var requests []*proto.GetFriendsRequestsResponse
+	var requests []*proto2.GetFriendsRequestsResponse
 	for rows.Next() {
-		var r proto.GetFriendsRequestsResponse
+		var r proto2.GetFriendsRequestsResponse
 		if err := rows.Scan(&r.UserId, &r.UserName); err != nil {
 			return nil, status.Error(codes.Internal, "scan failed")
 		}
 		requests = append(requests, &r)
 	}
 
-	return &proto.GetFriendsRequestsList{Requests: requests}, nil
+	return &proto2.GetFriendsRequestsList{Requests: requests}, nil
 }
 
-func (s *Service) CreateRequestFriendship(ctx context.Context, req *proto.CreateRequestFriendshipRequest) (*proto.Empty, error) {
+func (s *Service) CreateRequestFriendship(ctx context.Context, req *proto2.CreateRequestFriendshipRequest) (*proto2.Empty, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -202,9 +202,9 @@ func (s *Service) CreateRequestFriendship(ctx context.Context, req *proto.Create
 		return nil, status.Error(codes.Internal, "insert request failed")
 	}
 
-	return &proto.Empty{}, nil
+	return &proto2.Empty{}, nil
 }
-func (s *Service) AnswerRequestFriendship(ctx context.Context, req *proto.AnswerRequestFriendshipRequest) (*proto.Empty, error) {
+func (s *Service) AnswerRequestFriendship(ctx context.Context, req *proto2.AnswerRequestFriendshipRequest) (*proto2.Empty, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -266,7 +266,7 @@ func (s *Service) AnswerRequestFriendship(ctx context.Context, req *proto.Answer
 		}
 	}
 
-	return &proto.Empty{}, nil
+	return &proto2.Empty{}, nil
 }
 
 //func (s *Service) UpdatePassword(ctx context.Context, req *proto.UpdatePasswordRequest) (*proto.Empty, error) {
@@ -275,7 +275,7 @@ func (s *Service) AnswerRequestFriendship(ctx context.Context, req *proto.Answer
 //func (s *Service) UpdatePhoto(ctx context.Context, req *proto.UpdatePhotoRequest) (*proto.Empty, error) {
 //}
 
-func (s *Service) UpdateDescription(ctx context.Context, req *proto.UpdateDescriptionRequest) (*proto.Empty, error) {
+func (s *Service) UpdateDescription(ctx context.Context, req *proto2.UpdateDescriptionRequest) (*proto2.Empty, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -290,10 +290,10 @@ func (s *Service) UpdateDescription(ctx context.Context, req *proto.UpdateDescri
 	if err != nil {
 		return nil, status.Error(codes.Internal, "update failed")
 	}
-	return &proto.Empty{}, nil
+	return &proto2.Empty{}, nil
 }
 
-func (s *Service) UpdateMood(ctx context.Context, req *proto.UpdateMoodRequest) (*proto.Empty, error) {
+func (s *Service) UpdateMood(ctx context.Context, req *proto2.UpdateMoodRequest) (*proto2.Empty, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -308,10 +308,10 @@ func (s *Service) UpdateMood(ctx context.Context, req *proto.UpdateMoodRequest) 
 	if err != nil {
 		return nil, status.Error(codes.Internal, "update failed")
 	}
-	return &proto.Empty{}, nil
+	return &proto2.Empty{}, nil
 }
 
-func (s *Service) UpdateColor(ctx context.Context, req *proto.UpdateColorRequest) (*proto.Empty, error) {
+func (s *Service) UpdateColor(ctx context.Context, req *proto2.UpdateColorRequest) (*proto2.Empty, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -326,10 +326,10 @@ func (s *Service) UpdateColor(ctx context.Context, req *proto.UpdateColorRequest
 	if err != nil {
 		return nil, status.Error(codes.Internal, "update failed")
 	}
-	return &proto.Empty{}, nil
+	return &proto2.Empty{}, nil
 }
 
-func (s *Service) UpdateBirthdate(ctx context.Context, req *proto.UpdateBirthdateRequest) (*proto.Empty, error) {
+func (s *Service) UpdateBirthdate(ctx context.Context, req *proto2.UpdateBirthdateRequest) (*proto2.Empty, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -344,10 +344,10 @@ func (s *Service) UpdateBirthdate(ctx context.Context, req *proto.UpdateBirthdat
 	if err != nil {
 		return nil, status.Error(codes.Internal, "update failed")
 	}
-	return &proto.Empty{}, nil
+	return &proto2.Empty{}, nil
 }
 
-func (s *Service) UpdateAddress(ctx context.Context, req *proto.UpdateAddressRequest) (*proto.Empty, error) {
+func (s *Service) UpdateAddress(ctx context.Context, req *proto2.UpdateAddressRequest) (*proto2.Empty, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -362,10 +362,10 @@ func (s *Service) UpdateAddress(ctx context.Context, req *proto.UpdateAddressReq
 	if err != nil {
 		return nil, status.Error(codes.Internal, "update failed")
 	}
-	return &proto.Empty{}, nil
+	return &proto2.Empty{}, nil
 }
 
-func (s *Service) GetChatHistory(ctx context.Context, req *proto.GetChatHistoryRequest) (*proto.GetChatHistoryResponse, error) {
+func (s *Service) GetChatHistory(ctx context.Context, req *proto2.GetChatHistoryRequest) (*proto2.GetChatHistoryResponse, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -386,9 +386,9 @@ func (s *Service) GetChatHistory(ctx context.Context, req *proto.GetChatHistoryR
 	}
 	defer rows.Close()
 
-	var messages []*proto.ChatMessage
+	var messages []*proto2.ChatMessage
 	for rows.Next() {
-		var m proto.ChatMessage
+		var m proto2.ChatMessage
 		var createdAt time.Time
 		err := rows.Scan(&m.MessageId, &m.SenderId, &m.RecipientId, &m.Text, &createdAt)
 		if err != nil {
@@ -403,10 +403,10 @@ func (s *Service) GetChatHistory(ctx context.Context, req *proto.GetChatHistoryR
 		messages[i], messages[j] = messages[j], messages[i]
 	}
 
-	return &proto.GetChatHistoryResponse{Messages: messages}, nil
+	return &proto2.GetChatHistoryResponse{Messages: messages}, nil
 }
 
-func (s *Service) SendMessage(ctx context.Context, req *proto.SendMessageRequest) (*proto.SendMessageResponse, error) {
+func (s *Service) SendMessage(ctx context.Context, req *proto2.SendMessageRequest) (*proto2.SendMessageResponse, error) {
 	uid, ok := ctx.Value(session.UserIDKey).(string)
 	if !ok {
 		return nil, status.Error(codes.Unauthenticated, "no user id")
@@ -426,18 +426,18 @@ func (s *Service) SendMessage(ctx context.Context, req *proto.SendMessageRequest
 		return nil, status.Error(codes.Internal, "failed to save message")
 	}
 
-	return &proto.SendMessageResponse{
+	return &proto2.SendMessageResponse{
 		MessageId: msgID,
 		CreatedAt: createdAt.Format(time.RFC3339),
 	}, nil
 }
 
-func (s *Service) SubscribeChat(req *proto.SubscribeChatRequest, stream proto.ChatService_SubscribeChatServer) error {
+func (s *Service) SubscribeChat(req *proto2.SubscribeChatRequest, stream proto2.PesterService_SubscribeChatServer) error {
 	<-stream.Context().Done()
 	return nil
 }
 
-func (s *Service) GetPublicUserData(ctx context.Context, req *proto.GetPublicUserDataRequest) (*proto.GetPublicUserDataResponse, error) {
+func (s *Service) GetPublicUserData(ctx context.Context, req *proto2.GetPublicUserDataRequest) (*proto2.GetPublicUserDataResponse, error) {
 	var username, color string
 	err := s.repo.db.QueryRow(ctx, `
         SELECT username, color 
@@ -450,7 +450,7 @@ func (s *Service) GetPublicUserData(ctx context.Context, req *proto.GetPublicUse
 		return nil, status.Error(codes.Internal, "user not found")
 	}
 
-	return &proto.GetPublicUserDataResponse{
+	return &proto2.GetPublicUserDataResponse{
 		Username: username,
 		Color:    color,
 	}, nil
