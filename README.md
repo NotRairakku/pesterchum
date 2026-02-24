@@ -47,7 +47,7 @@ protoc --go_out=. --go-grpc_out=. proto/pesterchum.proto
 - [X] Relatively stable client 
 - [X] Changing user data 
 - [X] Friendship feature
-- [ ] Chat function (It's funny that it's not here yet)
+- [X] Chat function (I still have a long way to go to fix this...)
 - [ ] Improve the UI
 - [ ] I haven't figured it out yet...
 ---
