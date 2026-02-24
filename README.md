@@ -9,7 +9,7 @@ This project is not affiliated with, endorsed by, or associated with Andrew Huss
 
 ---
 ## Notice ⚠️
-At the moment the application is tested only on Windows 11 because I don’t have any macOS or Linux devices. In the near future I plan to rewrite the client in pure Go + Fyne. This will ensure stable operation on all major operating systems and help me deepen my knowledge of the language.
+At the moment the application is tested only on Windows 11 because I don’t have any macOS or Linux devices.
 
 ---
 ## Development setup
