@@ -4,7 +4,7 @@ package proto;
 
 option go_package = "/proto;proto";
 
-service ChatService {
+service PesterService {
   rpc Register (RegisterRequest) returns (Empty);
   rpc Login (LoginRequest) returns (LoginResponse);
   rpc Logout (Empty) returns (Empty);
@@ -70,8 +70,8 @@ message FriendRequest {
 
 message GetChatHistoryRequest {
   string friend_id = 1;
-  int32 limit = 2;          // 20–100
-  string before_msg_id = 3; // для пагинации вверх
+  int32 limit = 2;
+  string before_msg_id = 3;
 }
 
 message GetChatHistoryResponse {
@@ -85,7 +85,7 @@ message SendMessageRequest {
 
 message SendMessageResponse {
   string message_id = 1;
-  string created_at = 2;     // RFC3339
+  string created_at = 2;
 }
 
 message SubscribeChatRequest {
@@ -105,7 +105,7 @@ message ChatMessage {
   string sender_id = 2;
   string recipient_id = 3;
   string text = 4;
-  string created_at = 5;      // RFC3339
+  string created_at = 5;
 }
 
 message TypingEvent {

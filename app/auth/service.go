@@ -2,12 +2,15 @@ package auth
 
 import (
 	"context"
+	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"log"
+	proto2 "pesterchum/proto"
 	"time"
 
 	"github.com/zalando/go-keyring"
 	"google.golang.org/grpc/metadata"
-	"pesterchum/server/proto"
 )
 
 const (
@@ -16,10 +19,10 @@ const (
 )
 
 type Service struct {
-	chat proto.ChatServiceClient
+	chat proto2.PesterServiceClient
 }
 
-func New(chat proto.ChatServiceClient) *Service {
+func New(chat proto2.PesterServiceClient) *Service {
 	return &Service{chat: chat}
 }
 
@@ -50,13 +53,20 @@ func (s *Service) Login(username, password string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	res, err := s.chat.Login(ctx, &proto.LoginRequest{
+	res, err := s.chat.Login(ctx, &proto2.LoginRequest{
 		Username: username,
 		Password: password,
 	})
 	if err != nil {
+		log.Printf("[Service] Login gRPC error: %v", err)
 		return err
 	}
+	if res.SessionId == "" {
+		log.Printf("[Service] WARNING: Server returned empty SessionId!")
+		return fmt.Errorf("server returned empty session")
+	}
+
+	log.Printf("[Service] Login successful, saving SID: %s", res.SessionId)
 	return keyring.Set(keyringService, keyringUser, res.SessionId)
 }
 
@@ -65,7 +75,7 @@ func (s *Service) Register(username, password string) error {
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
-	_, err := s.chat.Register(ctx, &proto.RegisterRequest{
+	_, err := s.chat.Register(ctx, &proto2.RegisterRequest{
 		Username: username,
 		Password: password,
 	})
@@ -81,7 +91,7 @@ func (s *Service) Logout() error {
 
 		ctx = metadata.NewOutgoingContext(ctx, metadata.New(map[string]string{"session-id": sid}))
 
-		_, _ = s.chat.Logout(ctx, &proto.Empty{})
+		_, _ = s.chat.Logout(ctx, &proto2.Empty{})
 	}
 	return keyring.Delete(keyringService, keyringUser)
 }
@@ -107,8 +117,17 @@ func (s *Service) contextWithSession() (context.Context, context.CancelFunc, err
 		return nil, nil, err
 	}
 
+	if sid == "" {
+		log.Printf("[Service] WARNING: SID is empty for service %s", keyringService)
+		return nil, nil, fmt.Errorf("session id is empty")
+	}
+
+	log.Printf("[Service] Using SID: %s", sid)
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	ctx = metadata.NewOutgoingContext(ctx, metadata.New(map[string]string{"session-id": sid}))
+
+	log.Printf("[Service] Outgoing context created with SID: %s...", sid[:8])
 	return ctx, cancel, nil
 }
 
@@ -119,9 +138,12 @@ func (s *Service) GetUserData() (*UserData, error) {
 		return nil, err
 	}
 	defer cancel()
-	res, err := s.chat.GetUserData(ctx, &proto.Empty{})
+	res, err := s.chat.GetUserData(ctx, &proto2.Empty{})
 	if err != nil {
-		log.Printf("[Service] Error GetUserData from server: %v", err)
+		if st, ok := status.FromError(err); ok && st.Code() == codes.Unauthenticated {
+			log.Printf("[Service] Session is invalid, clearing keyring...")
+			_ = keyring.Delete(keyringService, keyringUser)
+		}
 		return nil, err
 	}
 	return &UserData{
@@ -143,7 +165,7 @@ func (s *Service) GetUserFriends() ([]Friend, error) {
 	}
 	defer cancel()
 
-	res, err := s.chat.GetUserFriends(ctx, &proto.Empty{})
+	res, err := s.chat.GetUserFriends(ctx, &proto2.Empty{})
 	if err != nil {
 		return nil, err
 	}
@@ -166,7 +188,7 @@ func (s *Service) GetFriendsRequests() ([]FriendRequest, error) {
 	}
 	defer cancel()
 
-	res, err := s.chat.GetFriendsRequests(ctx, &proto.Empty{})
+	res, err := s.chat.GetFriendsRequests(ctx, &proto2.Empty{})
 	if err != nil {
 		return nil, err
 	}
@@ -190,7 +212,7 @@ func (s *Service) CreateFriendRequest(username string) error {
 	}
 	defer cancel()
 
-	_, err = s.chat.CreateRequestFriendship(ctx, &proto.CreateRequestFriendshipRequest{
+	_, err = s.chat.CreateRequestFriendship(ctx, &proto2.CreateRequestFriendshipRequest{
 		RequestFriendName: username,
 	})
 	return err
@@ -203,7 +225,7 @@ func (s *Service) AnswerFriendRequest(userID string, accept bool) error {
 	}
 	defer cancel()
 
-	_, err = s.chat.AnswerRequestFriendship(ctx, &proto.AnswerRequestFriendshipRequest{
+	_, err = s.chat.AnswerRequestFriendship(ctx, &proto2.AnswerRequestFriendshipRequest{
 		UserId: userID,
 		Accept: accept,
 	})
@@ -216,7 +238,7 @@ func (s *Service) UpdateUsername(newUsername string) error {
 		return err
 	}
 	defer cancel()
-	_, err = s.chat.UpdateUsername(ctx, &proto.UpdateUsernameRequest{NewUsername: newUsername})
+	_, err = s.chat.UpdateUsername(ctx, &proto2.UpdateUsernameRequest{NewUsername: newUsername})
 	if err != nil {
 		log.Printf("[Service] Error UpdateUsername: %v", err)
 	}
@@ -231,7 +253,7 @@ func (s *Service) UpdateDescription(newDescription string) error {
 		return err
 	}
 	defer cancel()
-	_, err = s.chat.UpdateDescription(ctx, &proto.UpdateDescriptionRequest{NewDescription: newDescription})
+	_, err = s.chat.UpdateDescription(ctx, &proto2.UpdateDescriptionRequest{NewDescription: newDescription})
 	if err != nil {
 		log.Printf("[Service] Error UpdateDescription: %v", err)
 	}
@@ -244,7 +266,7 @@ func (s *Service) UpdateMood(newMood string) error {
 		return err
 	}
 	defer cancel()
-	_, err = s.chat.UpdateMood(ctx, &proto.UpdateMoodRequest{NewMood: newMood})
+	_, err = s.chat.UpdateMood(ctx, &proto2.UpdateMoodRequest{NewMood: newMood})
 	if err != nil {
 		log.Printf("[Service] Error UpdateMood: %v", err)
 	}
@@ -257,7 +279,7 @@ func (s *Service) UpdateColor(newColor string) error {
 		return err
 	}
 	defer cancel()
-	_, err = s.chat.UpdateColor(ctx, &proto.UpdateColorRequest{NewColor: newColor})
+	_, err = s.chat.UpdateColor(ctx, &proto2.UpdateColorRequest{NewColor: newColor})
 	if err != nil {
 		log.Printf("[Service] Error UpdateColor: %v", err)
 	}
@@ -270,7 +292,7 @@ func (s *Service) UpdateBirthdate(newBirthdate string) error {
 		return err
 	}
 	defer cancel()
-	_, err = s.chat.UpdateBirthdate(ctx, &proto.UpdateBirthdateRequest{NewBirthdate: newBirthdate})
+	_, err = s.chat.UpdateBirthdate(ctx, &proto2.UpdateBirthdateRequest{NewBirthdate: newBirthdate})
 	if err != nil {
 		log.Printf("[Service] Error UpdateBirthdate: %v", err)
 	}
@@ -283,7 +305,7 @@ func (s *Service) UpdateAddress(newAddress string) error {
 		return err
 	}
 	defer cancel()
-	_, err = s.chat.UpdateAddress(ctx, &proto.UpdateAddressRequest{NewAddress: newAddress})
+	_, err = s.chat.UpdateAddress(ctx, &proto2.UpdateAddressRequest{NewAddress: newAddress})
 	if err != nil {
 		log.Printf("[Service] Error UpdateAddress: %v", err)
 	}

@@ -10,11 +10,10 @@ import (
 	"google.golang.org/grpc/metadata"
 	_ "google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
+	"pesterchum/proto"
 	_ "pesterchum/server/internal/session"
 	_ "sync"
 	"time"
-
-	"pesterchum/server/proto"
 )
 
 func (s *Service) Register(ctx context.Context, r *proto.RegisterRequest) (*proto.Empty, error) {
