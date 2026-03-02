@@ -2,6 +2,9 @@ package auth
 
 import (
 	"context"
+	"fmt"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 	"log"
 	proto2 "pesterchum/proto"
 	"time"
@@ -55,8 +58,15 @@ func (s *Service) Login(username, password string) error {
 		Password: password,
 	})
 	if err != nil {
+		log.Printf("[Service] Login gRPC error: %v", err)
 		return err
 	}
+	if res.SessionId == "" {
+		log.Printf("[Service] WARNING: Server returned empty SessionId!")
+		return fmt.Errorf("server returned empty session")
+	}
+
+	log.Printf("[Service] Login successful, saving SID: %s", res.SessionId)
 	return keyring.Set(keyringService, keyringUser, res.SessionId)
 }
 
@@ -107,8 +117,17 @@ func (s *Service) contextWithSession() (context.Context, context.CancelFunc, err
 		return nil, nil, err
 	}
 
+	if sid == "" {
+		log.Printf("[Service] WARNING: SID is empty for service %s", keyringService)
+		return nil, nil, fmt.Errorf("session id is empty")
+	}
+
+	log.Printf("[Service] Using SID: %s", sid)
+
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	ctx = metadata.NewOutgoingContext(ctx, metadata.New(map[string]string{"session-id": sid}))
+
+	log.Printf("[Service] Outgoing context created with SID: %s...", sid[:8])
 	return ctx, cancel, nil
 }
 
@@ -121,7 +140,10 @@ func (s *Service) GetUserData() (*UserData, error) {
 	defer cancel()
 	res, err := s.chat.GetUserData(ctx, &proto2.Empty{})
 	if err != nil {
-		log.Printf("[Service] Error GetUserData from server: %v", err)
+		if st, ok := status.FromError(err); ok && st.Code() == codes.Unauthenticated {
+			log.Printf("[Service] Session is invalid, clearing keyring...")
+			_ = keyring.Delete(keyringService, keyringUser)
+		}
 		return nil, err
 	}
 	return &UserData{

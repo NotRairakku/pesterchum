@@ -25,8 +25,8 @@ func Unary(db *pgxpool.Pool) grpc.UnaryServerInterceptor {
 	) (any, error) {
 
 		// public methods
-		if info.FullMethod == "/proto.ChatService/Login" ||
-			info.FullMethod == "/proto.ChatService/Register" {
+		if info.FullMethod == "/proto.PesterService/Login" ||
+			info.FullMethod == "/proto.PesterService/Register" {
 			return handler(ctx, req)
 		}
 
